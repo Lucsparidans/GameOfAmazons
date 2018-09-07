@@ -10,4 +10,7 @@ public class StateManager {
         stateStack.pop();
         return this;
     }
+    public void push(State state){
+        stateStack.push(state);
+    }
 }

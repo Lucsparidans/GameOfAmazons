@@ -1,8 +1,5 @@
 package com.dke.game.Controller.States;
 
-public class State2D extends State {
-    @Override
-    public void dispose() {
-
-    }
+public abstract class State2D extends State {
+    public abstract void dispose();
 }
