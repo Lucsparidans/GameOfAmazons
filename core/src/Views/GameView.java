@@ -1,11 +1,11 @@
-package com.dke.game.Controller.States;
+package Views;
 
-import com.dke.game.Controller.StateManager;
+import com.dke.game.Controller.ViewManager;
 
-public class GameState extends State2D {
+public class GameView extends View2D {
 
-    public GameState(StateManager stateManager) {
-        super(stateManager);
+    public GameView(ViewManager viewManager) {
+        super(viewManager);
     }
 
     @Override

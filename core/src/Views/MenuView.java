@@ -1,4 +1,4 @@
-package com.dke.game.Controller.States;
+package Views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -6,19 +6,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.dke.game.Controller.MainLoop;
-import com.dke.game.Controller.StateManager;
+import com.dke.game.Controller.ViewManager;
 
-public class MenuState extends State {
+public class MenuView extends View {
 
     private Stage stage;
 
-    public MenuState(StateManager stateManager) {
-        super(stateManager);
+    public MenuView(ViewManager viewManager) {
+        super(viewManager);
     }
 
     @Override
     public void create() {
-        stage = new Stage();
+        stage = new Stage(new ScalingViewport(Scaling.fit, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight()));
         stage.addActor(new TextButton("hey", MainLoop.skin));
 
     }
@@ -30,7 +30,7 @@ public class MenuState extends State {
 
     @Override
     public void render() {
-        if(stage != null){
+        if (stage != null) {
             stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
             Gdx.input.setInputProcessor(stage);
             stage.act();
@@ -52,4 +52,5 @@ public class MenuState extends State {
     public void dispose() {
 
     }
+
 }
