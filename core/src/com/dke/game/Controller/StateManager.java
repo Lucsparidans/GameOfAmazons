@@ -11,6 +11,7 @@ public class StateManager {
         return this;
     }
     public void push(State state){
+        state.create();
         stateStack.push(state);
     }
 

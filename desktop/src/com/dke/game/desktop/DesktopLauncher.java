@@ -6,8 +6,8 @@ import com.dke.game.Controller.MainLoop;
 
 
 public class DesktopLauncher {
-    private static final int width = 1920;
-    private static final int height = 1200;
+    private static final int width = 800;
+    private static final int height = 600;
     public static boolean fullScreen = false;   //Fullscreen is really buggy...
     private static LwjglApplicationConfiguration config;
 

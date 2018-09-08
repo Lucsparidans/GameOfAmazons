@@ -1,23 +1,33 @@
 package com.dke.game.Controller;
-import com.dke.game.Controller.States.*;
-import com.dke.game.Models.DataStructs.*;
-import com.dke.game.Models.GraphicalModels.*;
-import com.dke.game.View.*;
 
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.dke.game.Controller.States.MenuState;
 
-
-public class MainLoop {
-
-    private View view;
+public class MainLoop extends ApplicationAdapter {
     private StateManager stateManager;
+    public static Skin skin;
 
-    private Thread graphics;
-    private Thread gameLogic;
 
-    public MainLoop(View v){
-        this.view = v;
-        stateManager.push(new MenuState());
+    @Override
+    public void create() {
+        skin = new Skin(Gdx.files.internal("Skins/cloud-form/skin/cloud-form-ui.json"));
+        stateManager = new StateManager();
+        stateManager.push(new MenuState(stateManager));
+        Gdx.gl.glClearColor(1,1,1,1);
     }
 
+    @Override
+    public void render() {
 
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stateManager.peek().render();
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }
