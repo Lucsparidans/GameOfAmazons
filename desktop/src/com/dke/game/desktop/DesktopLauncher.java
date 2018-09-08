@@ -2,7 +2,7 @@ package com.dke.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.dke.game.View.View;
+import com.dke.game.Controller.MainLoop;
 
 
 public class DesktopLauncher {
@@ -19,7 +19,7 @@ public class DesktopLauncher {
         if(!fullScreen){
             setSize();
         }
-        new LwjglApplication(new View(), config);
+        new LwjglApplication(new MainLoop(), config);
     }
 
     private static void setSize() {

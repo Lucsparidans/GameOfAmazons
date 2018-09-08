@@ -13,4 +13,8 @@ public class StateManager {
     public void push(State state){
         stateStack.push(state);
     }
+
+    public State peek(){
+        return stateStack.peek();
+    }
 }

@@ -1,15 +1,35 @@
 package com.dke.game.Controller.States;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.dke.game.Controller.StateManager;
 
 public class MenuState extends State {
-    @Override
-    protected Stage createStage() {
-        return null;
+
+    public MenuState(StateManager stateManager) {
+        super(stateManager);
     }
 
     @Override
-    protected void updateView() {
+    public void create() {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void render() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
 
     }
 
