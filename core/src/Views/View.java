@@ -9,5 +9,5 @@ public abstract class View implements ApplicationListener {
     protected ViewManager viewManager;
     protected View(ViewManager viewManager){
         this.viewManager = viewManager;
-    }
+            }
 }

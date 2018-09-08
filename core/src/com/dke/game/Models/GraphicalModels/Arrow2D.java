@@ -1,4 +1,6 @@
 package com.dke.game.Models.GraphicalModels;
 
-public class Arrow2D {
+import com.dke.game.Models.DataStructs.Arrow;
+
+public class Arrow2D extends Arrow {
 }

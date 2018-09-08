@@ -1,6 +1,5 @@
 package com.dke.game.Controller;
 
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +12,7 @@ public class MainLoop extends ApplicationAdapter {
     public static Skin skin;
 
 
+
     @Override
     public void create() {
         skin = new Skin(Gdx.files.internal("Skins/cloud-form/skin/cloud-form-ui.json"));
@@ -23,15 +23,14 @@ public class MainLoop extends ApplicationAdapter {
 
     @Override
     public void render() {
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        viewManager.peek();
+        viewManager.peek().render();
 
     }
 
 
     @Override
     public void dispose() {
-
+        skin.dispose();
     }
 }

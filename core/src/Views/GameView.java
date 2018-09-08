@@ -1,16 +1,26 @@
 package Views;
 
+import com.badlogic.gdx.Gdx;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dke.game.Controller.ViewManager;
+import com.dke.game.Models.GraphicalModels.Board2D;
 
 public class GameView extends View2D {
 
+    private Board2D board2D;
+
+
     public GameView(ViewManager viewManager) {
         super(viewManager);
+
     }
 
     @Override
     public void create() {
 
+        board2D = new Board2D();
+        Gdx.gl.glClearColor(0,0,0,1);
     }
 
     @Override
@@ -20,7 +30,7 @@ public class GameView extends View2D {
 
     @Override
     public void render() {
-
+        board2D.draw();
     }
 
     @Override
