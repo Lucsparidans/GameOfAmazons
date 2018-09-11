@@ -1,4 +1,4 @@
-package Views;
+package com.dke.game.Views;
 
 
 import com.badlogic.gdx.ApplicationListener;

@@ -1,6 +1,6 @@
 package com.dke.game.Controller;
 
-import Views.View;
+import com.dke.game.Views.View;
 import java.util.Stack;
 
 public class ViewManager {

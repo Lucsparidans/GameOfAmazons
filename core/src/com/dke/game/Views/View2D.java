@@ -1,4 +1,4 @@
-package Views;
+package com.dke.game.Views;
 
 
 import com.dke.game.Controller.ViewManager;

@@ -12,7 +12,8 @@ public class Board2D extends Board {
 
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-
+    private final int xPosBoard = 15;
+    private final int yPosBoard = 10;
 
     public void draw() {
         shapeRenderer = new ShapeRenderer();
@@ -22,24 +23,30 @@ public class Board2D extends Board {
 //        shapeRenderer.translate(getX(), getY(), 0);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.WHITE);
-        for (int i = 0; i < super.height; i++) {
-            for (int j = 0; j < super.width; j++) {
+
+        for (int i = xPosBoard; i < (super.height + xPosBoard); i++) {
+            for (int j = yPosBoard; j < (super.width + yPosBoard); j++) {
                 if (i % 2 != 0) {
                     if (j % 2 != 0) {
+                        shapeRenderer.setColor(Color.WHITE);
                         shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-
+                    }
+                    else{
+                        shapeRenderer.setColor(Color.BLACK);
+                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
                     }
 
                 }
                 if (i % 2 == 0) {
                     if (j % 2 == 0) {
+                        shapeRenderer.setColor(Color.WHITE);
                         shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-
                     }
-
+                    else{
+                        shapeRenderer.setColor(Color.BLACK);
+                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
+                    }
                 }
-
             }
         }
 
