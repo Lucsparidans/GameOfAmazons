@@ -1,6 +1,6 @@
 package com.dke.game.Models.DataStructs;
 
-public class Arrow extends Piece{
+public abstract class Arrow extends Piece{
 
     private static int ID = 0;
     private Integer idNumber;
