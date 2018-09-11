@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -26,7 +27,7 @@ public class GameView extends View2D {
 
     @Override
     public void create() {
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new ExtendViewport(100,100));
         Gdx.input.setInputProcessor(stage);
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();

@@ -13,8 +13,8 @@ public class Board2D extends Board {
 
 
     private ShapeRenderer shapeRenderer;
-    private final int X_POS_BOARD = 15; //Cannot be 0!!
-    private final int Y_POS_BOARD = 10; //Cannot be 0!!
+    private final int X_POS_BOARD = 5; //Cannot be 0!!
+    private final int Y_POS_BOARD = 5; //Cannot be 0!!
     private final int MARGAIN_BACKGROUND = 0;
 
     @Override
@@ -52,7 +52,9 @@ public class Board2D extends Board {
                 }
             }
         }
-        shapeRenderer.rect(X_POS_BOARD,Y_POS_BOARD,(Cell.CELL_SIZE*super.height) + (2*Cell.CELL_SIZE),(Cell.CELL_SIZE*super.width) + (2*Cell.CELL_SIZE));
+        //shapeRenderer.rect(X_POS_BOARD,Y_POS_BOARD,(Cell.CELL_SIZE*super.width) + (2*Cell.CELL_SIZE),(Cell.CELL_SIZE*super.height) + (2*Cell.CELL_SIZE));
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(X_POS_BOARD*Cell.CELL_SIZE,Y_POS_BOARD*Cell.CELL_SIZE,10,10);
         shapeRenderer.end();
     }
 
