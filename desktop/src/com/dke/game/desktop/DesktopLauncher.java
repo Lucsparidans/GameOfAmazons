@@ -4,6 +4,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.dke.game.Controller.MainLoop;
 
+import java.util.Random;
+
 
 public class DesktopLauncher {
     private static final int width = 1280;
@@ -20,6 +22,9 @@ public class DesktopLauncher {
             setSize();
         }
         new LwjglApplication(new MainLoop(), config);
+
+
+
     }
 
     private static void setSize() {
