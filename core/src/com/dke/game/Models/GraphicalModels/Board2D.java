@@ -16,6 +16,10 @@ public class Board2D extends Board {
     private final int Y_POS_BOARD = 10; //Cannot be 0!!
     private final int MARGAIN_BACKGROUND = 0;
 
+    public Board2D() {
+        super.createBoard();
+    }
+
     public void draw() {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
@@ -54,5 +58,8 @@ public class Board2D extends Board {
         shapeRenderer.end();
 
 
+    }
+    public Cell[][] getBoard(){
+        return super.board.clone();
     }
 }

@@ -28,4 +28,5 @@ public class Cell {
     public void occupy(Piece piece){
         this.content = piece;
     }
+    public void unOccupy() { this.content = null; }
 }
