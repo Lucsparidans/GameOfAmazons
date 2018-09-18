@@ -48,7 +48,7 @@ public class GameView extends View2D {
 
         stage.act(delta);
         stage.draw();
-
+      //  System.out.println(board2D.getBoardCoordinates()[0][0].toString());
 
 
 

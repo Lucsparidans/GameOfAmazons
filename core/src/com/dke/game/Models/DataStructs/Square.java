@@ -25,4 +25,12 @@ public class Square {
     public Coordinate getBottomLeft() {
         return bottomLeft;
     }
+
+    @Override
+    public String toString() {
+        return "bottomLeft : " + "(" + bottomLeft.getX() + "," + bottomLeft.getY() + ")" + "\n"
+                + "topLeft : " + "(" + topLeft.getX() + "," + topLeft.getY() + ")" + "\n"
+                + "topRight : " + "(" + topRight.getX() + "," + topRight.getY() + ")" + "\n"
+                + "bottomRight : " + "(" + bottomRight.getX() + "," + bottomRight.getY() + ")" + "\n";
+    }
 }

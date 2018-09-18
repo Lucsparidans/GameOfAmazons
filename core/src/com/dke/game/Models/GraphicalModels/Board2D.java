@@ -35,38 +35,40 @@ public class Board2D extends Board {
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(X_POS_BOARD * Cell.CELL_SIZE - MARGAIN_BACKGROUND, Y_POS_BOARD * Cell.CELL_SIZE - MARGAIN_BACKGROUND, (Cell.CELL_SIZE * super.width) + (2 * MARGAIN_BACKGROUND), (Cell.CELL_SIZE * super.height) + (2 * MARGAIN_BACKGROUND));
 
-        for (int i = X_POS_BOARD; i < (super.height + X_POS_BOARD); i++) {
-            for (int j = Y_POS_BOARD; j < (super.width + Y_POS_BOARD); j++) {
-                if (i % 2 != 0) {
-                    if (j % 2 != 0) {
+        for (int i = X_POS_BOARD; i < (super.height * Cell.CELL_SIZE + X_POS_BOARD); i+=Cell.CELL_SIZE) {
+            for (int j = Y_POS_BOARD; j < (super.width * Cell.CELL_SIZE + Y_POS_BOARD); j+=Cell.CELL_SIZE) {
+                if (i/Cell.CELL_SIZE % 2 != 0) {
+                    if (j/Cell.CELL_SIZE % 2 != 0) {
+                        System.out.println("i: " + i);
+                        System.out.println("j: " + j);
                         shapeRenderer.setColor(Color.BLACK);
-                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j), //TODO Check coordinates for correctness!
+                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
+//                        boardCoordinates[i/Cell.CELL_SIZE][j/Cell.CELL_SIZE] = new Square(new Coordinate(i+Cell.CELL_SIZE,j), //TODO Check coordinates for correctness!
 //                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j));
                     } else {
                         shapeRenderer.setColor(Color.WHITE);
-                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
+                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
+//                        boardCoordinates[i/Cell.CELL_SIZE][j/Cell.CELL_SIZE] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
 //                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j));
                     }
 
                 }
-                if (i % 2 == 0) {
-                    if (j % 2 == 0) {
+                if (i/Cell.CELL_SIZE % 2 == 0) {
+                    if (j/Cell.CELL_SIZE % 2 == 0) {
                         shapeRenderer.setColor(Color.BLACK);
-                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
+                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
+//                        boardCoordinates[i/Cell.CELL_SIZE][j/Cell.CELL_SIZE] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
 //                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j));
                     } else {
                         shapeRenderer.setColor(Color.WHITE);
-                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
+                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
+//                        boardCoordinates[i/Cell.CELL_SIZE][j/Cell.CELL_SIZE] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
 //                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j+Cell.CELL_SIZE),
 //                                new Coordinate(i,j));
@@ -79,6 +81,9 @@ public class Board2D extends Board {
         font.draw(batch, "A", 60, 20);
 
 
+    }
+    public Square[][] getBoardCoordinates(){
+        return boardCoordinates.clone();
     }
 
 }
