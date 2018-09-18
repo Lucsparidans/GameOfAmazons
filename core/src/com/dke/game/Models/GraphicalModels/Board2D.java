@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Coordinate;
 import com.dke.game.Models.DataStructs.Square;
 
 
@@ -23,7 +22,7 @@ public class Board2D extends Board {
     public Board2D(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
         font.setColor(Color.BLACK);
-        font.getData().setScale(0.25f);
+        font.getData().setScale(0.2f);
         boardCoordinates = new Square[super.height][super.width];
     }
 
@@ -40,37 +39,37 @@ public class Board2D extends Board {
             for (int j = Y_POS_BOARD; j < (super.width + Y_POS_BOARD); j++) {
                 if (i % 2 != 0) {
                     if (j % 2 != 0) {
-                        shapeRenderer.setColor(Color.WHITE);
-                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j), //TODO Check coordinates for correctness!
-                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j));
-                    } else {
                         shapeRenderer.setColor(Color.BLACK);
                         shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
-                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j));
+//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j), //TODO Check coordinates for correctness!
+//                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j));
+                    } else {
+                        shapeRenderer.setColor(Color.WHITE);
+                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
+//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
+//                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j));
                     }
 
                 }
                 if (i % 2 == 0) {
                     if (j % 2 == 0) {
-                        shapeRenderer.setColor(Color.WHITE);
-                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
-                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j));
-                    } else {
                         shapeRenderer.setColor(Color.BLACK);
                         shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
-                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j+Cell.CELL_SIZE),
-                                new Coordinate(i,j));
+//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
+//                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j));
+                    } else {
+                        shapeRenderer.setColor(Color.WHITE);
+                        shapeRenderer.rect(i * Cell.CELL_SIZE, j * Cell.CELL_SIZE, Cell.CELL_SIZE, Cell.CELL_SIZE);
+//                        boardCoordinates[i][j] = new Square(new Coordinate(i+Cell.CELL_SIZE,j),
+//                                new Coordinate(i+Cell.CELL_SIZE,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j+Cell.CELL_SIZE),
+//                                new Coordinate(i,j));
                     }
                 }
             }
