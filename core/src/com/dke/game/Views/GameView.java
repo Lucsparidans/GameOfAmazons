@@ -71,7 +71,7 @@ public class GameView extends View2D {
     public void consoleRender(){
         for(int i = 0;i<10;i++){
             for (int j = 0; j < 10; j++) {
-                if(board[j][i] == null) {
+                if(board[j][i].getContentID().equals("This cell is empty")) {
                     System.out.print("_ ");
                 }
                 else{
