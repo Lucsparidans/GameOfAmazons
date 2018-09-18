@@ -1,5 +1,8 @@
 package com.dke.game.Models.DataStructs;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+
 public abstract class Amazon extends Piece{
     private final char side;    //B for black & W for white.
     private static String idString = "Amazon: ";
@@ -8,7 +11,9 @@ public abstract class Amazon extends Piece{
     private int posX;
     private int posY;
 
-    public Amazon(char side, int Xpos, int Ypos){
+    public Amazon(char side, int Xpos, int Ypos , ShapeRenderer shapeRenderer){
+
+        super(shapeRenderer);
         this.side = side;
         this.idNumber = ID++;
         this.posX = Xpos;

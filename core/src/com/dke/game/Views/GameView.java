@@ -1,7 +1,11 @@
 package com.dke.game.Views;
 
 import com.badlogic.gdx.Gdx;
-
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
@@ -12,6 +16,11 @@ public class GameView extends View2D {
 
     private boolean first = true;
     private Board2D board2D;
+    private ShapeRenderer shapeRenderer;
+    private Stage stage;
+    private Viewport vp;
+
+
     private Amazon2D amazon1;
     private Amazon2D amazon2;
     private char white = 'W';
@@ -24,36 +33,40 @@ public class GameView extends View2D {
 
     @Override
     public void create() {
-        board2D = new Board2D();
-        Gdx.gl.glClearColor(0, 0, 1, 1);
-
+        vp = new ExtendViewport(100,100);
+        stage = new Stage(vp);
+        Gdx.input.setInputProcessor(stage);
+        shapeRenderer = new ShapeRenderer();
+        board2D = new Board2D(shapeRenderer);
         board = board2D.getBoard();
-        placeAmazons(board);
         consoleRender();
-    }
+        stage.addActor(board2D);
+        placeAmazons(board);
 
+
+    }
     public void placeAmazons(Cell[][] board) {
-        amazon1 = new Amazon2D(white, 0, 3);
-        amazon2 = new Amazon2D(white, 0, 6);
+        amazon1 = new Amazon2D(white, 0, 3, shapeRenderer);
+        amazon2 = new Amazon2D(white, 0, 6, shapeRenderer);
         board[0][3].occupy(amazon1);
         board[0][6].occupy(amazon2);
     }
-
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height,true);
     }
 
     @Override
     public void render() {
+        float delta = Gdx.graphics.getDeltaTime();
+       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (first) {
-            amazon1.move(8, 3, board);
-            consoleRender();
+        stage.act(delta);
+        stage.draw();
 
-            first = false;
-        }
-        board2D.draw();
+
+
+
     }
 
     public void consoleRender(){
@@ -83,6 +96,7 @@ public class GameView extends View2D {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
+
 }
