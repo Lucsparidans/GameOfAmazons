@@ -7,7 +7,7 @@ public class Cell {
     private Coordinate bottomRight;
     private Coordinate topLeft;
     private Coordinate topRight;
-    private final String COORD;
+    private String COORD;
 
     public Cell(Coordinate bottomLeft, Coordinate bottomRight, Coordinate topLeft, Coordinate topRight, String COORD) {
         this.bottomLeft = bottomLeft;
@@ -15,6 +15,9 @@ public class Cell {
         this.topLeft = topLeft;
         this.topRight = topRight;
         this.COORD = COORD;
+    }
+
+    public Cell() {
     }
 
     public String getContentID(){

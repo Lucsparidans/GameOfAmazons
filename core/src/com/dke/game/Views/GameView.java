@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dke.game.Controller.ViewManager;
-import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -72,7 +71,7 @@ public class GameView extends View2D {
     public void consoleRender(){
         for(int i = 0;i<10;i++){
             for (int j = 0; j < 10; j++) {
-                if(board[j][i].getContentID() == "This cell is empty") {
+                if(board[j][i] == null) {
                     System.out.print("_ ");
                 }
                 else{
