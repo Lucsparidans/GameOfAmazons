@@ -2,7 +2,7 @@ package com.dke.game.Models.DataStructs;
 
 public class Cell {
     private Piece content;
-    public static final int CELL_SIZE = 30;
+    public static final int CELL_SIZE = 40;
     private Coordinate bottomLeft;
     private Coordinate bottomRight;
     private Coordinate topLeft;
