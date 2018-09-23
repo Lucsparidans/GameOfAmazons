@@ -7,11 +7,13 @@ public abstract class Amazon extends Piece{
     private static String idString = "Amazon: ";
     private static int ID = 0;
     private Integer idNumber;
+    protected Coordinate location;
 
-    public Amazon(char side, ShapeRenderer shapeRenderer){
+    public Amazon(char side, ShapeRenderer shapeRenderer, Coordinate location){
         super(shapeRenderer);
         this.side = side;
         this.idNumber = ID++;
+        this.location = location;
     }
 
     @Override

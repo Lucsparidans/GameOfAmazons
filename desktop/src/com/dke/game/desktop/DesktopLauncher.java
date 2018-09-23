@@ -6,27 +6,21 @@ import com.dke.game.Controller.MainLoop;
 
 
 public class DesktopLauncher {
-    private static final int width = 1280;
-    private static final int height = 720;
-    public static boolean fullScreen = false;   //Fullscreen is really buggy...
+    //    private static final int width = Gdx.graphics.getWidth();
+//    private static final int height = Gdx.graphics.getHeight();
     private static LwjglApplicationConfiguration config;
 
     public static void main(String[] args) {
         config = new LwjglApplicationConfiguration();
         config.title = "Game of Amazons";
+        config.fullscreen = true;
         config.resizable = false;
-        config.fullscreen = fullScreen;
-        if(!fullScreen){
-            setSize();
-        }
+        config.width = 1920;
+        config.height = 1080;
+
         new LwjglApplication(new MainLoop(), config);
 
 
-
     }
 
-    private static void setSize() {
-        config.width = width;
-        config.height = height;
-    }
 }
