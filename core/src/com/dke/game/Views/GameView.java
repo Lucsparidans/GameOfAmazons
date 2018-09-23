@@ -50,7 +50,8 @@ public class GameView extends View2D {
 
     }
     public void placeAmazons(Cell[][] board) {
-        amazon1 = new Amazon2D(white, 0, 3, shapeRenderer);
+        amazon0 = new Amazon2D(white, 9, 6, shapeRenderer);
+        amazon1 = new Amazon2D(black, 0, 3, shapeRenderer);
         amazon2 = new Amazon2D(white, 0, 6, shapeRenderer);
         amazon3 = new Amazon2D(black, 3, 0, shapeRenderer);
         amazon4 = new Amazon2D(white, 3, 9, shapeRenderer);
@@ -79,6 +80,7 @@ public class GameView extends View2D {
         float delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if (first) {
+            amazon1.move(2, 3,board);
             amazon1.shoot(0, 2, board);
             amazon1.shoot(1, 2, board);
             amazon1.shoot(3, 2, board);
