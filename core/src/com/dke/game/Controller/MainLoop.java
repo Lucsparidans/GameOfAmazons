@@ -12,7 +12,6 @@ public class MainLoop extends ApplicationAdapter {
     public static Skin skin;
 
 
-
     @Override
     public void create() {
         skin = new Skin(Gdx.files.internal("Skins/cloud-form/skin/cloud-form-ui.json"));
@@ -20,13 +19,14 @@ public class MainLoop extends ApplicationAdapter {
 
         viewManager.push(new GameView(viewManager));
         //viewManager.push(new MenuView(viewManager));
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
     }
 
     @Override
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        viewManager.peek().render();
+
+            viewManager.peek().render();
 
     }
 

@@ -11,15 +11,22 @@ import java.util.ArrayList;
 
 public class UIOverlaySquare extends Actor {
     private ArrayList<Coordinate> todo;
+    private ShapeRenderer renderer;
     private Square[][] boardCoordninates;
-    public UIOverlaySquare(ArrayList todo, Board2D board) {
+    public UIOverlaySquare(ArrayList todo, Board2D board, ShapeRenderer renderer) {
         this.todo = todo;
         this.boardCoordninates = board.getBoardCoordinates();
+        this.renderer = renderer;
+
+    }
+
+    public UIOverlaySquare(Board2D board2D, ShapeRenderer renderer) {
+        this(new ArrayList(),board2D,renderer);
 
     }
 
     public UIOverlaySquare(Board2D board2D) {
-        this(new ArrayList(),board2D);
+        this(new ArrayList(),board2D, new ShapeRenderer());
     }
 
     public void addObject(Coordinate c){
@@ -29,11 +36,11 @@ public class UIOverlaySquare extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
-        ShapeRenderer renderer = new ShapeRenderer();
-        renderer.setColor(Color.OLIVE);
+
+        renderer.setColor(Color.BLACK);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Coordinate c:todo) {
-            renderer.circle(c.getX(),c.getY(),20);
+            renderer.circle(c.getX(),c.getY(),5);
         }
         renderer.end();
         batch.begin();
