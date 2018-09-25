@@ -6,8 +6,8 @@ public abstract class Arrow extends Piece{
     private Integer idNumber;
     private static String idString = "Arrow: ";
 
-    public Arrow(Coordinate location) {
-        super(location);
+    public Arrow(Cell cell) {
+        super(cell);
         idNumber = ID++;
     }
 

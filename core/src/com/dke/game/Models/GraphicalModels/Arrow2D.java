@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.dke.game.Models.DataStructs.Arrow;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Coordinate;
 
 public class Arrow2D extends Arrow {
     private Texture icon;
 
-    public Arrow2D(Coordinate location) {
-        super(location);
+    public Arrow2D(Cell cell) {
+        super(cell);
         this.icon = new Texture(Gdx.files.internal("Icons/Arrow.png"));
     }
 

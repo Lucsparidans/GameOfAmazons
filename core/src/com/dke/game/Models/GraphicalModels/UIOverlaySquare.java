@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
-import com.dke.game.Models.DataStructs.Square;
 
 import java.util.ArrayList;
 
 public class UIOverlaySquare extends Actor {
     private ArrayList<Coordinate> todo;
     private ShapeRenderer renderer;
-    private Square[][] boardCoordninates;
+    private Cell[][] boardCoordninates;
     public UIOverlaySquare(ArrayList todo, Board2D board, ShapeRenderer renderer) {
         this.todo = todo;
         this.boardCoordninates = board.getBoardCoordinates();

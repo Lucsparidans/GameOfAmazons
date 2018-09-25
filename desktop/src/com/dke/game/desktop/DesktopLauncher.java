@@ -6,8 +6,8 @@ import com.dke.game.Controller.MainLoop;
 
 
 public class DesktopLauncher {
-    //    private static final int width = Gdx.graphics.getWidth();
-//    private static final int height = Gdx.graphics.getHeight();
+    private static final int width = 1280;
+    private static final int height = 720;
     private static LwjglApplicationConfiguration config;
 
     public static void main(String[] args) {

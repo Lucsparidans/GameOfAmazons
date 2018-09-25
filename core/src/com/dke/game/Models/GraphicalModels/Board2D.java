@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
-import com.dke.game.Models.DataStructs.Square;
 
 
 public class Board2D extends Board {
@@ -19,10 +18,10 @@ public class Board2D extends Board {
     private static ShapeRenderer shapeRenderer;
     private final int X_POS_BOARD = (Gdx.graphics.getWidth() / 2) - (this.calcBoardWidth() / 2);
     private final int Y_POS_BOARD = (Gdx.graphics.getHeight() / 2) - (this.calcBoardHeight() / 2);
-    private final int MARGAIN_BACKGROUND = Cell.CELL_SIZE;
+    //private final int MARGAIN_BACKGROUND = Cell.CELL_SIZE;
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
-    private Square[][] boardCoordinates;
-    private final float CAP_HEIGHT = font.getData().capHeight;
+    private Cell[][] boardCoordinates;
+    //private final float CAP_HEIGHT = font.getData().capHeight;
 
 
     public Board2D(ShapeRenderer shapeRenderer) {
@@ -30,7 +29,7 @@ public class Board2D extends Board {
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        boardCoordinates = new Square[super.height][super.width];
+        boardCoordinates = new Cell[super.height][super.width];
     }
 
     @Override
@@ -50,21 +49,25 @@ public class Board2D extends Board {
                     if (j / Cell.CELL_SIZE % 2 != 0) {
                         shapeRenderer.setColor(Color.BROWN);
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                new Square(
-                                        new Coordinate(i, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j),
-                                        new Coordinate(i, j));
+                        if(boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
                     } else {
                         shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                new Square(
-                                        new Coordinate(i, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j),
-                                        new Coordinate(i, j));
+                        if(boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
                     }
 
                 }
@@ -72,21 +75,25 @@ public class Board2D extends Board {
                     if (j / Cell.CELL_SIZE % 2 == 0) {
                         shapeRenderer.setColor(Color.BROWN);
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                new Square(
-                                        new Coordinate(i, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j),
-                                        new Coordinate(i, j));
+                        if(boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
                     } else {
                         shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                new Square(
-                                        new Coordinate(i, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                        new Coordinate(i + Cell.CELL_SIZE, j),
-                                        new Coordinate(i, j));
+                        if (boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
                     }
                 }
             }
@@ -121,7 +128,7 @@ public class Board2D extends Board {
 
     }
 
-    public Square[][] getBoardCoordinates() {
+    public Cell[][] getBoardCoordinates() {
         return boardCoordinates.clone();
     }
 
