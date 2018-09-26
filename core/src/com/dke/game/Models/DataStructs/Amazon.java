@@ -14,11 +14,13 @@ public abstract class Amazon extends Piece{
     private int width = 9;
     private int height = 9;
     private Arrow2D arrow;
+    private Cell cell;
 
 
 
     public Amazon(char side, Cell cell){
         super(cell);
+        this.cell = cell;
         this.side = side;
         this.idNumber = ID++;
 
@@ -36,21 +38,24 @@ public abstract class Amazon extends Piece{
     protected void updateLocation(Coordinate c){
         this.location = c;
     }
-    public void move(int newX, int newY, Cell[][] board){
-        board[this.getposX()][this.getposY()].unOccupy();
-        board[newX][newY].occupy(this);
+    
+    public void move(Cell cell){
+        this.cell.unOccupy();
+        cell.occupy(this);
+
 
     }
 
-    public void shoot(int newX, int newY, Cell[][] board){
-        arrow = new Arrow2D(shapeRenderer);
-        board[newX][newY].occupy(arrow);
+    public void shoot(Cell cell){
+        arrow = new Arrow2D(cell);
+        cell.occupy(arrow);
     }
 
     public boolean endMe(Cell[][] board){
         boolean isolated = false;
-        int xPos = this.getposX();
-        int yPos = this.getposY();
+        int xPos = this.cell.getI();
+        int yPos = this.cell.getJ();
+        
         boolean stop = false;
         int[][] checkArray = new int[10][10];
         for (int i = 0; i<10; i++){
@@ -201,21 +206,21 @@ public abstract class Amazon extends Piece{
         boolean negative = true;
         for(int i=1; i<10 ; i++)
         {
-            if(posX+i > width)
+            if(this.cell.getI()+i > width)
                 positive = false;
-            if(posX-i < 0)
+            if(this.cell.getI()-i < 0)
                 negative = false;
             if(positive)
             {
-                if(!board[posX+i][posY].isOccupied())
-                    board[posX+i][posY].setAvailable("true");
+                if(!board[this.cell.getI()+i][this.cell.getJ()].isOccupied())
+                    board[this.cell.getI()+i][this.cell.getJ()].setAvailable("true");
                 else
                     positive = false;
             }
             if(negative)
             {
-                if(!board[posX-i][posY].isOccupied() )
-                    board[posX-i][posY].setAvailable("true");
+                if(!board[this.cell.getI()-i][this.cell.getJ()].isOccupied() )
+                    board[this.cell.getI()-i][this.cell.getJ()].setAvailable("true");
                 else
                     negative = false;
             }
@@ -226,58 +231,25 @@ public abstract class Amazon extends Piece{
 
         for(int i=1; i<10 ; i++)
         {
-            int a = posX+i;
-            int b = posX-i;
-            if(posY+i > height)
+            int a = this.cell.getI()+i;
+            int b = this.cell.getI()-i;
+            if(this.cell.getJ()+i > height)
                 positive = false;
-            if(posY-i < 0)
+            if(this.cell.getJ()-i < 0)
                 negative = false;
 
             if(positive)
             {
-                if(!board[posX][posY+i].isOccupied())
-                    board[posX][posY+i].setAvailable("true");
+                if(!board[this.cell.getI()][this.cell.getJ()+i].isOccupied())
+                    board[this.cell.getI()][this.cell.getJ()+i].setAvailable("true");
                 else
                     positive = false;
             }
 
             if(negative)
             {
-                if(!board[posX][posY-i].isOccupied())
-                    board[posX][posY-i].setAvailable("true");
-                else
-                    negative = false;
-            }
-
-
-        }
-
-        positive = true;
-        negative = true;
-
-        for(int i=1; i<10 ; i++)
-        {
-
-            if(posX+i > width)
-                positive = false;
-            if(posX-i < 0)
-                negative = false;
-            if(posY+i > height)
-                positive = false;
-            if(posY-i < 0)
-                negative = false;
-
-            if(positive)
-            {
-                if(!board[posX+i][posY+i].isOccupied())
-                    board[posX+i][posY+i].setAvailable("true");
-                else
-                    positive = false;
-            }
-            if(negative)
-            {
-                if(!board[posX-i][posY-i].isOccupied())
-                    board[posX-i][posY-i].setAvailable("true");
+                if(!board[this.cell.getI()][this.cell.getJ()-i].isOccupied())
+                    board[this.cell.getI()][this.cell.getJ()-i].setAvailable("true");
                 else
                     negative = false;
             }
@@ -290,27 +262,60 @@ public abstract class Amazon extends Piece{
 
         for(int i=1; i<10 ; i++)
         {
-            if(posX-i < 0)
+
+            if(this.cell.getI()+i > width)
                 positive = false;
-            if(posY+i > height)
-                positive = false;
-            if(posY-i < 0)
+            if(this.cell.getI()-i < 0)
                 negative = false;
-            if(posX+i > width)
+            if(this.cell.getJ()+i > height)
+                positive = false;
+            if(this.cell.getJ()-i < 0)
                 negative = false;
 
             if(positive)
             {
-                if(!board[posX-i][posY+i].isOccupied())
-                    board[posX-i][posY+i].setAvailable("true");
+                if(!board[this.cell.getI()+i][this.cell.getJ()+i].isOccupied())
+                    board[this.cell.getI()+i][this.cell.getJ()+i].setAvailable("true");
+                else
+                    positive = false;
+            }
+            if(negative)
+            {
+                if(!board[this.cell.getI()-i][this.cell.getJ()-i].isOccupied())
+                    board[this.cell.getI()-i][this.cell.getJ()-i].setAvailable("true");
+                else
+                    negative = false;
+            }
+
+
+        }
+
+        positive = true;
+        negative = true;
+
+        for(int i=1; i<10 ; i++)
+        {
+            if(this.cell.getI()-i < 0)
+                positive = false;
+            if(this.cell.getJ()+i > height)
+                positive = false;
+            if(this.cell.getJ()-i < 0)
+                negative = false;
+            if(this.cell.getI()+i > width)
+                negative = false;
+
+            if(positive)
+            {
+                if(!board[this.cell.getI()-i][this.cell.getJ()+i].isOccupied())
+                    board[this.cell.getI()-i][this.cell.getJ()+i].setAvailable("true");
                 else
                     positive = false;
             }
 
             if(negative)
             {
-                if(!board[posX+i][posY-i].isOccupied())
-                    board[posX+i][posY-i].setAvailable("true");
+                if(!board[this.cell.getI()+i][this.cell.getJ()-i].isOccupied())
+                    board[this.cell.getI()+i][this.cell.getJ()-i].setAvailable("true");
                 else
                     negative = false;
             }

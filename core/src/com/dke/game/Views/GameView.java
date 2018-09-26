@@ -13,9 +13,6 @@ import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
 import com.dke.game.Models.GraphicalModels.*;
-import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.GraphicalModels.Amazon2D;
-import com.dke.game.Models.GraphicalModels.Board2D;
 
 public class GameView extends View2D {
 
@@ -76,10 +73,10 @@ public class GameView extends View2D {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (turnStart) {
-            System.out.println(board[6][0].getContentID());
+            System.out.println(boardCoordinates[6][0].getContentID());
             consoleRender();
 
-            if(!amazon0.endMe(board) || !amazon2.endMe(board) || !amazon4.endMe(board) || !amazon6.endMe(board)){
+            if(!amazons[0].endMe(boardCoordinates) || !amazons[1].endMe(boardCoordinates) || !amazons[3].endMe(boardCoordinates) || !amazons[4].endMe(boardCoordinates)){
                 System.out.println("not isolated");
             }
             else {
@@ -108,7 +105,8 @@ public class GameView extends View2D {
         handleInput();
 
     }
-    }
+
+
 
 
     public void consoleRender(){
@@ -117,18 +115,7 @@ public class GameView extends View2D {
                 if(boardCoordinates[j][i].getContentID().equals("This cell is empty")) {
                     System.out.print("_ ");
                 }
-                else{
-                    System.out.print("Q ");
-                }
-        }
-        System.out.println();
-    public void consoleRender(){
-        for(int i = 0;i<10;i++){
-            for (int j = 0; j < 10; j++) {
-                if(board[j][i].getContentID().equals("This cell is empty")) {
-                    System.out.print("_ ");
-                }
-                else if(board[j][i].getContentID().contains("Amazon")){
+                else if(boardCoordinates[j][i].getContentID().contains("Amazon")){
                     System.out.print("Q ");
                 }
                 else{

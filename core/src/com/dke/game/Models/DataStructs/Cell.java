@@ -2,10 +2,6 @@ package com.dke.game.Models.DataStructs;
 
 public class Cell {
     private Piece content;
-    private Coordinate bottomLeft;
-    private Coordinate bottomRight;
-    private Coordinate topLeft;
-    private Coordinate topRight;
     private boolean isAvailable = false;
     public static final int CELL_SIZE = 60;
     private Coordinate topLeft, topRight, bottomRight, bottomLeft;
@@ -124,5 +120,5 @@ public class Cell {
     public int getJ() {
         return j;
     }
-    public void unOccupy() { this.content = null; }
+
 }

@@ -26,7 +26,6 @@ public class Board2D extends Board {
 
     public Board2D(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
-        super.createBoard();
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
