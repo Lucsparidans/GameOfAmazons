@@ -1,6 +1,7 @@
 package com.dke.game.Models.DataStructs;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
 import java.util.Stack;
@@ -12,17 +13,15 @@ public abstract class Amazon extends Piece{
     private Integer idNumber;
     private int width = 9;
     private int height = 9;
-    private int posX;
-    private int posY;
     private Arrow2D arrow;
 
-    public Amazon(char side, int Xpos, int Ypos , ShapeRenderer shapeRenderer){
 
-        super(shapeRenderer);
+
+    public Amazon(char side, Cell cell){
+        super(cell);
         this.side = side;
         this.idNumber = ID++;
-        this.posX = Xpos;
-        this.posY = Ypos;
+
 
     }
 
@@ -30,13 +29,13 @@ public abstract class Amazon extends Piece{
     protected String getID() {
         return idString.concat(idNumber.toString() + side);
     }
-    protected int getposX() {
-        return posX;
-    }
-    protected int getposY() {
-        return posY;
-    }
 
+
+
+
+    protected void updateLocation(Coordinate c){
+        this.location = c;
+    }
     public void move(int newX, int newY, Cell[][] board){
         board[this.getposX()][this.getposY()].unOccupy();
         board[newX][newY].occupy(this);
@@ -95,7 +94,7 @@ public abstract class Amazon extends Piece{
                     xPos++;
                     yPos++;
                     moveMade = true;
-                    }
+                }
             }
             if(yPos!=9 && !moveMade) {
                 if (checkArray[xPos][yPos + 1] == 0) {
@@ -166,7 +165,7 @@ public abstract class Amazon extends Piece{
                 else{
                     xPos = (int) xStack.peek();
                     yPos = (int) yStack.peek();
-                    }
+                }
             }
 
             //console representation

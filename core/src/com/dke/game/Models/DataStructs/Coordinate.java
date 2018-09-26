@@ -13,7 +13,7 @@ public class Coordinate {
         return this.xPos;
     }
     public int getY() {
-        return yPos;
+        return this.yPos;
     }
 
     public void setCoords(int xPos, int yPos){
