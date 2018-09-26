@@ -70,33 +70,33 @@ public class GameView extends View2D {
         float delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //TODO each iteration, every cell of the board is newly created... to fix this put all the cells of the board in an array and then draw each element in that array each draw loop
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        if (turnStart) {
-            System.out.println(boardCoordinates[6][0].getContentID());
-            consoleRender();
-
-            if(!amazons[0].endMe(boardCoordinates) || !amazons[1].endMe(boardCoordinates) || !amazons[3].endMe(boardCoordinates) || !amazons[4].endMe(boardCoordinates)){
-                System.out.println("not isolated");
-            }
-            else {
-                System.out.println("isolated");
-            }
 
 
-
-            if(whiteTurn){
-                //requiring input method
-
-                whiteTurn = false;
-            }
-            else{
-                //requiring input method
-
-                whiteTurn = true;
-            }
-            turnStart = false;
-        }
+//        if (turnStart) {
+//            System.out.println(boardCoordinates[6][0].getContentID());
+//            consoleRender();
+//
+//            if(!amazons[0].endMe(boardCoordinates) || !amazons[1].endMe(boardCoordinates) || !amazons[3].endMe(boardCoordinates) || !amazons[4].endMe(boardCoordinates)){
+//                System.out.println("not isolated");
+//            }
+//            else {
+//                System.out.println("isolated");
+//            }
+//
+//
+//
+//            if(whiteTurn){
+//                //requiring input method
+//
+//                whiteTurn = false;
+//            }
+//            else{
+//                //requiring input method
+//
+//                whiteTurn = true;
+//            }
+//            turnStart = false;
+//        }
 
         stage.act(delta);
         stage.draw();
@@ -178,8 +178,11 @@ public class GameView extends View2D {
             int y = Gdx.graphics.getHeight() - Gdx.input.getY();
             Cell c = findCell(x, y);
             if (c != null) {
-                if(!c.isOccupied()) {
-                    uiOverlaySquare.addObject(getCellCenter(c));
+                if(c.isOccupied()) {
+                    //uiOverlaySquare.addObject(getCellCenter(c));
+                    if(c.getContent() instanceof Amazon2D){
+
+                    }
                 }
             }
             ui.addActor(uiOverlaySquare);

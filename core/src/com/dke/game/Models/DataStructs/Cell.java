@@ -121,4 +121,7 @@ public class Cell {
         return j;
     }
 
+    public Piece getContent() {
+        return content;
+    }
 }

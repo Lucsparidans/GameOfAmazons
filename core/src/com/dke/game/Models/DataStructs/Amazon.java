@@ -1,9 +1,8 @@
 package com.dke.game.Models.DataStructs;
 
+import com.dke.game.Models.GraphicalModels.Board2D;
 
-
-import com.dke.game.Models.GraphicalModels.Arrow2D;
-
+import java.util.ArrayList;
 import java.util.Stack;
 
 public abstract class Amazon extends Piece{
@@ -11,10 +10,8 @@ public abstract class Amazon extends Piece{
     private static String idString = "Amazon: ";
     private static int ID = 0;
     private Integer idNumber;
-    private int width = 9;
-    private int height = 9;
-    private Arrow2D arrow;
     private Cell cell;
+    private ArrayList<Cell> possibleMoves;
 
 
 
@@ -46,10 +43,9 @@ public abstract class Amazon extends Piece{
 
     }
 
-    public void shoot(Cell cell){
-        arrow = new Arrow2D(cell);
-        cell.occupy(arrow);
-    }
+//    public void shoot(Cell cell){
+//
+//    }
 
     public boolean endMe(Cell[][] board){
         boolean isolated = false;
@@ -200,91 +196,68 @@ public abstract class Amazon extends Piece{
         return board;
     }
 
-    public Cell[][] possibleMoves(Cell[][] board)
+    public void possibleMoves(Board2D board2D)
     {
+        Cell[][] boardCoordinates = board2D.getBoardCoordinates();
+        possibleMoves = new ArrayList<>();
         boolean positive = true;
         boolean negative = true;
-        for(int i=1; i<10 ; i++)
-        {
-            if(this.cell.getI()+i > width)
+        for(int i=1; i<10 ; i++){
+            if(this.cell.getI()+i > board2D.width) {
                 positive = false;
-            if(this.cell.getI()-i < 0)
-                negative = false;
-            if(positive)
-            {
-                if(!board[this.cell.getI()+i][this.cell.getJ()].isOccupied())
-                    board[this.cell.getI()+i][this.cell.getJ()].setAvailable("true");
-                else
-                    positive = false;
             }
-            if(negative)
-            {
-                if(!board[this.cell.getI()-i][this.cell.getJ()].isOccupied() )
-                    board[this.cell.getI()-i][this.cell.getJ()].setAvailable("true");
-                else
+            if(this.cell.getI()-i < 0) {
+                negative = false;
+            }
+            if(positive){
+                if(!boardCoordinates[this.cell.getI()+i][this.cell.getJ()].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI() + i][this.cell.getJ()]);
+                    //boardCoordinates[this.cell.getI() + i][this.cell.getJ()].setAvailable("true");
+                }
+                else{
+                    positive = false;
+                }
+            }
+            if(negative){
+                if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()].isOccupied() ) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()]);
+                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ()].setAvailable("true");
+                }
+                else {
                     negative = false;
+                }
             }
         }
 
         positive = true;
         negative = true;
 
-        for(int i=1; i<10 ; i++)
-        {
-            int a = this.cell.getI()+i;
-            int b = this.cell.getI()-i;
-            if(this.cell.getJ()+i > height)
+        for(int i=1; i<10 ; i++){
+            if(this.cell.getJ()+i > board2D.height) {
                 positive = false;
-            if(this.cell.getJ()-i < 0)
+            }
+            if(this.cell.getJ()-i < 0) {
                 negative = false;
+            }
 
-            if(positive)
-            {
-                if(!board[this.cell.getI()][this.cell.getJ()+i].isOccupied())
-                    board[this.cell.getI()][this.cell.getJ()+i].setAvailable("true");
-                else
+            if(positive){
+                if(!boardCoordinates[this.cell.getI()][this.cell.getJ()+i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()][this.cell.getJ()+i]);
+                    //boardCoordinates[this.cell.getI()][this.cell.getJ() + i].setAvailable("true");
+                }
+                else {
                     positive = false;
+                }
             }
 
-            if(negative)
-            {
-                if(!board[this.cell.getI()][this.cell.getJ()-i].isOccupied())
-                    board[this.cell.getI()][this.cell.getJ()-i].setAvailable("true");
-                else
+            if(negative){
+                if(!boardCoordinates[this.cell.getI()][this.cell.getJ()-i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()][this.cell.getJ()-i]);
+                    //boardCoordinates[this.cell.getI()][this.cell.getJ() - i].setAvailable("true");
+                }
+                else {
                     negative = false;
-            }
-
-
-        }
-
-        positive = true;
-        negative = true;
-
-        for(int i=1; i<10 ; i++)
-        {
-
-            if(this.cell.getI()+i > width)
-                positive = false;
-            if(this.cell.getI()-i < 0)
-                negative = false;
-            if(this.cell.getJ()+i > height)
-                positive = false;
-            if(this.cell.getJ()-i < 0)
-                negative = false;
-
-            if(positive)
-            {
-                if(!board[this.cell.getI()+i][this.cell.getJ()+i].isOccupied())
-                    board[this.cell.getI()+i][this.cell.getJ()+i].setAvailable("true");
-                else
-                    positive = false;
-            }
-            if(negative)
-            {
-                if(!board[this.cell.getI()-i][this.cell.getJ()-i].isOccupied())
-                    board[this.cell.getI()-i][this.cell.getJ()-i].setAvailable("true");
-                else
-                    negative = false;
+                }
             }
 
 
@@ -293,35 +266,82 @@ public abstract class Amazon extends Piece{
         positive = true;
         negative = true;
 
-        for(int i=1; i<10 ; i++)
-        {
-            if(this.cell.getI()-i < 0)
-                positive = false;
-            if(this.cell.getJ()+i > height)
-                positive = false;
-            if(this.cell.getJ()-i < 0)
-                negative = false;
-            if(this.cell.getI()+i > width)
-                negative = false;
+        for(int i=1; i<10 ; i++){
 
-            if(positive)
-            {
-                if(!board[this.cell.getI()-i][this.cell.getJ()+i].isOccupied())
-                    board[this.cell.getI()-i][this.cell.getJ()+i].setAvailable("true");
-                else
-                    positive = false;
+            if(this.cell.getI()+i > board2D.width) {
+                positive = false;
+            }
+            if(this.cell.getI()-i < 0) {
+                negative = false;
+            }
+            if(this.cell.getJ()+i > board2D.width) {
+                positive = false;
+            }
+            if(this.cell.getJ()-i < 0) {
+                negative = false;
             }
 
-            if(negative)
-            {
-                if(!board[this.cell.getI()+i][this.cell.getJ()-i].isOccupied())
-                    board[this.cell.getI()+i][this.cell.getJ()-i].setAvailable("true");
-                else
+            if(positive){
+                if(!boardCoordinates[this.cell.getI()+i][this.cell.getJ()+i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()+i][this.cell.getJ()+i]);
+                    //boardCoordinates[this.cell.getI() + i][this.cell.getJ() + i].setAvailable("true");
+                }
+                else {
+                    positive = false;
+                }
+            }
+            if(negative){
+                if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()-i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()-i]);
+                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].setAvailable("true");
+                }
+                else {
                     negative = false;
+                }
+            }
+
+
+        }
+
+        positive = true;
+        negative = true;
+
+        for(int i=1; i<10 ; i++){
+            if(this.cell.getI()-i < 0) {
+                positive = false;
+            }
+            if(this.cell.getJ()+i > board2D.height) {
+                positive = false;
+            }
+            if(this.cell.getJ()-i < 0) {
+                negative = false;
+            }
+            if(this.cell.getI()+i > board2D.width) {
+                negative = false;
+            }
+
+            if(positive){
+                if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()+i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()+i]);
+                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].setAvailable("true");
+                }
+                else {
+                    positive = false;
+                }
+            }
+
+            if(negative){
+                if(!boardCoordinates[this.cell.getI()+i][this.cell.getJ()-i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()+i][this.cell.getJ()-i]);
+                    //boardCoordinates[this.cell.getI() + i][this.cell.getJ() - i].setAvailable("true");
+                }
+                else {
+                    negative = false;
+                }
             }
         }
 
-        return board;
+
     }
 
 }
