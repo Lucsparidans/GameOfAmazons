@@ -78,35 +78,115 @@ public class Cell {
 
         else
             this.isAvailable = false;
-
-    }
-
-
-    public boolean isValidChoice(int phase, boolean colour, Cell[][] board, int xPos, int yPos){
-
-        if(phase == 1){
-            if(this.getContentID().contains("Amazon")) {
-                if (colour == true && this.getContentID().contains("W")) {
-                    if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()))
-                        return true;
-                }
-                else if(colour == false && this.getContentID().contains("B")){
-                    if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()))
-                        return true;
-                }
-            }
-        }
-        if((phase == 2) || (phase == 3)){
-            if(this.getContentID().contains("This cell is empty")){
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean getAvailable(){
         return isAvailable;
     }
+
+    public boolean isValidChoice(int phase, boolean colour, Cell[][] board, int xPos, int yPos) {
+
+        if (phase == 1) {
+            if (this.getContentID().contains("Amazon")) {
+                if (xPos == 0 && yPos == 0) {
+                    if (colour == true && this.getContentID().contains("W")) {
+
+                        if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos][yPos + 1].isOccupied()))
+                            return true;
+                    } else if (colour == false && this.getContentID().contains("B")) {
+                        if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos][yPos + 1].isOccupied()))
+                            return true;
+
+                    }
+                }
+                if (xPos == 0 && yPos == board.length) {
+                    if (colour == true && this.getContentID().contains("W")) {
+
+                        if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()))
+                            return true;
+                    } else if (colour == false && this.getContentID().contains("B")) {
+                        if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()))
+                            return true;
+
+                    }
+                }
+                if (xPos == board.length && yPos == board.length) {
+                    if (colour == true && this.getContentID().contains("W")) {
+
+                        if (!(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()))
+                            return true;
+                    } else if (colour == false && this.getContentID().contains("B")) {
+                        if (!(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()))
+                            return true;
+
+                    }
+                }
+                if (xPos == board.length && yPos == 0) {
+                    if (colour == true && this.getContentID().contains("W")) {
+
+                        if (!(board[xPos][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos].isOccupied()))
+                            return true;
+                    } else if (colour == false && this.getContentID().contains("B")) {
+                        if (!(board[xPos][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()) || !(board[xPos - 1][yPos].isOccupied()))
+                            return true;
+
+                    }
+                }
+                if (xPos == 0) {
+                    if (colour == true && this.getContentID().contains("W")) {
+
+                        if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()))
+                            return true;
+                    } else if (colour == false && this.getContentID().contains("B")) {
+                        if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()))
+                            return true;
+
+                    }
+
+                }
+                if (xPos == board.length) {
+                    if (colour == true && this.getContentID().contains("W")) {
+
+                        if (!(board[xPos - 1][yPos].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()))
+                            return true;
+                    } else if (colour == false && this.getContentID().contains("B")) {
+                        if (!(board[xPos - 1][yPos].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()))
+                            return true;
+                    }
+                }
+                if (yPos == 0) {
+                    if (colour == true && this.getContentID().contains("W")) {
+
+                        if (!(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()) || !(board[xPos][yPos + 1].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos + 1][yPos].isOccupied()))
+                            return true;
+                    } else if (colour == false && this.getContentID().contains("B")) {
+                        if (!(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos + 1].isOccupied()) || !(board[xPos][yPos + 1].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos + 1][yPos].isOccupied()))
+                            return true;
+                    }
+                }
+                if (yPos == board.length) {
+
+                }
+                if (colour == true && this.getContentID().contains("W")) {
+
+                    if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()))
+                        return true;
+                } else if (colour == false && this.getContentID().contains("B")) {
+                    if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos - 1][yPos].isOccupied()) || !(board[xPos - 1][yPos - 1].isOccupied()) || !(board[xPos][yPos - 1].isOccupied()) || !(board[xPos + 1][yPos - 1].isOccupied()))
+                        return true;
+
+                }
+            }
+        }
+            if ((phase == 2) || (phase == 3)) {
+                if (this.getContentID().contains("This cell is empty")) {
+                    return true;
+                }
+            }
+            return false;
+
+    }
+
 
     public void occupy(Piece piece){
         this.content = piece;
