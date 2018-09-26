@@ -13,7 +13,7 @@ import com.dke.game.Models.GraphicalModels.Board2D;
 
 public class GameView extends View2D {
 
-    private boolean first = true;
+    private boolean turnStart = true;
     private Board2D board2D;
     private ShapeRenderer shapeRenderer;
     private Stage stage;
@@ -30,6 +30,7 @@ public class GameView extends View2D {
     private char white = 'W';
     private char black = 'B';
     private Cell[][] board;
+    private boolean whiteTurn = true;
 
     public GameView(ViewManager viewManager) {
         super(viewManager);
@@ -79,39 +80,35 @@ public class GameView extends View2D {
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if (first) {
-            amazon1.move(2, 3,board);
-            amazon1.shoot(0, 2, board);
-            amazon1.shoot(1, 2, board);
-            amazon1.shoot(3, 2, board);
-            amazon1.shoot(2, 2, board);
-            amazon1.shoot(3, 3, board);
-            amazon1.shoot(3, 4, board);
-            amazon1.shoot(3, 5, board);
-            amazon1.shoot(2, 5, board);
-            amazon1.shoot(0, 5, board);
-            amazon1.shoot(8, 5, board);
-            amazon1.shoot(7, 5, board);
-            amazon1.shoot(8, 7, board);
-            amazon1.shoot(7, 7, board);
-            amazon1.shoot(8, 6, board);
+
+        if (turnStart) {
+            System.out.println(board[6][0].getContentID());
             consoleRender();
 
-            if(!amazon1.endMe(board)){
+            if(!amazon0.endMe(board) || !amazon2.endMe(board) || !amazon4.endMe(board) || !amazon6.endMe(board)){
                 System.out.println("not isolated");
             }
             else {
                 System.out.println("isolated");
             }
-            first = false;
+
+
+
+            if(whiteTurn){
+                //requiring input method
+                
+                whiteTurn = false;
+            }
+            else{
+                //requiring input method
+                
+                whiteTurn = true;
+            }
+            turnStart = false;
         }
 
         stage.act(delta);
         stage.draw();
-
-
-
-
     }
 
     public void consoleRender(){

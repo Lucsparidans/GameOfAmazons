@@ -10,6 +10,8 @@ public abstract class Amazon extends Piece{
     private static String idString = "Amazon: ";
     private static int ID = 0;
     private Integer idNumber;
+    private int width = 9;
+    private int height = 9;
     private int posX;
     private int posY;
     private Arrow2D arrow;
@@ -26,7 +28,7 @@ public abstract class Amazon extends Piece{
 
     @Override
     protected String getID() {
-        return idString.concat(idNumber.toString());
+        return idString.concat(idNumber.toString() + side);
     }
     protected int getposX() {
         return posX;
@@ -180,4 +182,142 @@ public abstract class Amazon extends Piece{
         }
         return isolated;
     }
+
+    public Cell[][] clearPossibleMoves(Cell[][] board)
+    {
+        for(int i=0; i<9; i++)
+        {
+            for(int j=0; j<9; j++)
+            {
+                board[i][j].setAvailable("false");
+            }
+        }
+
+        return board;
+    }
+
+    public Cell[][] possibleMoves(Cell[][] board)
+    {
+        boolean positive = true;
+        boolean negative = true;
+        for(int i=1; i<10 ; i++)
+        {
+            if(posX+i > width)
+                positive = false;
+            if(posX-i < 0)
+                negative = false;
+            if(positive)
+            {
+                if(!board[posX+i][posY].isOccupied())
+                    board[posX+i][posY].setAvailable("true");
+                else
+                    positive = false;
+            }
+            if(negative)
+            {
+                if(!board[posX-i][posY].isOccupied() )
+                    board[posX-i][posY].setAvailable("true");
+                else
+                    negative = false;
+            }
+        }
+
+        positive = true;
+        negative = true;
+
+        for(int i=1; i<10 ; i++)
+        {
+            int a = posX+i;
+            int b = posX-i;
+            if(posY+i > height)
+                positive = false;
+            if(posY-i < 0)
+                negative = false;
+
+            if(positive)
+            {
+                if(!board[posX][posY+i].isOccupied())
+                    board[posX][posY+i].setAvailable("true");
+                else
+                    positive = false;
+            }
+
+            if(negative)
+            {
+                if(!board[posX][posY-i].isOccupied())
+                    board[posX][posY-i].setAvailable("true");
+                else
+                    negative = false;
+            }
+
+
+        }
+
+        positive = true;
+        negative = true;
+
+        for(int i=1; i<10 ; i++)
+        {
+
+            if(posX+i > width)
+                positive = false;
+            if(posX-i < 0)
+                negative = false;
+            if(posY+i > height)
+                positive = false;
+            if(posY-i < 0)
+                negative = false;
+
+            if(positive)
+            {
+                if(!board[posX+i][posY+i].isOccupied())
+                    board[posX+i][posY+i].setAvailable("true");
+                else
+                    positive = false;
+            }
+            if(negative)
+            {
+                if(!board[posX-i][posY-i].isOccupied())
+                    board[posX-i][posY-i].setAvailable("true");
+                else
+                    negative = false;
+            }
+
+
+        }
+
+        positive = true;
+        negative = true;
+
+        for(int i=1; i<10 ; i++)
+        {
+            if(posX-i < 0)
+                positive = false;
+            if(posY+i > height)
+                positive = false;
+            if(posY-i < 0)
+                negative = false;
+            if(posX+i > width)
+                negative = false;
+
+            if(positive)
+            {
+                if(!board[posX-i][posY+i].isOccupied())
+                    board[posX-i][posY+i].setAvailable("true");
+                else
+                    positive = false;
+            }
+
+            if(negative)
+            {
+                if(!board[posX+i][posY-i].isOccupied())
+                    board[posX+i][posY-i].setAvailable("true");
+                else
+                    negative = false;
+            }
+        }
+
+        return board;
+    }
+
 }
