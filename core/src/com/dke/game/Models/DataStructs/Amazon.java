@@ -31,13 +31,17 @@ public abstract class Amazon extends Piece{
 
 
 
-
+protected void updateCell(Cell c){
+        this.cell = c;
+        updateLocation(c.getBottomLeft());
+}
     protected void updateLocation(Coordinate c){
         this.location = c;
     }
     
     public void move(Cell cell){
         this.cell.unOccupy();
+        updateCell(cell);
         cell.occupy(this);
 
 

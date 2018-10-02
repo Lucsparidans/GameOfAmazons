@@ -15,6 +15,8 @@ import com.dke.game.Models.DataStructs.Coordinate;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.*;
 
+import java.util.ArrayList;
+
 public class GameView extends View2D {
 
     private Cell[][] boardCoordinates;
@@ -31,6 +33,8 @@ public class GameView extends View2D {
     private boolean whiteTurn = true;
     private boolean displayOverlay = false;
     private Piece lastCell;
+    private boolean amazonSelected = false;
+    private Amazon2D selectedAmazon;
 
     //private Viewport vp;
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
@@ -180,10 +184,11 @@ public class GameView extends View2D {
             int x = Gdx.input.getX();
             int y = Gdx.graphics.getHeight() - Gdx.input.getY();
             Cell c = findCell(x, y);
+            if(!amazonSelected) {
 
-            if(!displayOverlay){
-                ui.clear();
-            }
+                if (!displayOverlay) {
+                    ui.clear();
+                }
 
                 if (c != null) {
                     if (c.isOccupied()) {
@@ -191,13 +196,14 @@ public class GameView extends View2D {
                         //uiOverlaySquare.addObject(getCellCenter(c));
                         Piece content = c.getContent();
                         if (content instanceof Amazon2D) {
-                            if(lastCell == null){
+                            amazonSelected = true;
+                            selectedAmazon = (Amazon2D)content;
+                            if (lastCell == null) {
                                 lastCell = content;
                             }
-                            if(lastCell == content){
+                            if (lastCell == content) {
                                 displayOverlay = false;
-                            }
-                            else{
+                            } else {
                                 ui.clear();
                             }
                             displayOverlay = true;
@@ -205,17 +211,29 @@ public class GameView extends View2D {
                             uiOverlaySquare = new UIOverlaySquare(((Amazon2D) content).getPossibleMoves(), board2D, shapeRenderer);
                             ui.addActor(uiOverlaySquare);
                         }
-                    }
-                    else{
+                    } else {
                         displayOverlay = false;
                         ui.clear();
                     }
                 }
-                if(displayOverlay){
-                ui.addActor(uiOverlaySquare);
+                if (displayOverlay) {
+                    ui.addActor(uiOverlaySquare);
+                }
+                //ui.addActor(uiOverlaySquare);
             }
-            //ui.addActor(uiOverlaySquare);
+            else{
 
+                ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
+                for (Cell cC:pm) {
+                    if(cC.getI() == c.getI() && cC.getJ() == c.getJ()){
+                        selectedAmazon.move(cC);
+                        selectedAmazon = null;
+                        amazonSelected = false;
+                        ui.clear();
+                    }
+
+                }
+            }
 
         }
         //This is temporary-----------------------------------------
