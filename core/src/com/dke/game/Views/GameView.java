@@ -29,7 +29,7 @@ public class GameView extends View2D {
     private boolean displayUI;
     private UIOverlaySquare uiOverlaySquare;
     private Amazon2D[] amazons;
-    private Arrow2D[] arrows;
+    private Arrow2D arrow;
     private boolean whiteTurn = true;
     private boolean displayOverlay = false;
     private Piece lastCell;
@@ -79,31 +79,12 @@ public class GameView extends View2D {
 //TODO each iteration, every cell of the board is newly created... to fix this put all the cells of the board in an array and then draw each element in that array each draw loop
 
 
-//        if (turnStart) {
-//            System.out.println(boardCoordinates[6][0].getContentID());
-//            consoleRender();
-//
-//            if(!amazons[0].endMe(boardCoordinates) || !amazons[1].endMe(boardCoordinates) || !amazons[3].endMe(boardCoordinates) || !amazons[4].endMe(boardCoordinates)){
-//                System.out.println("not isolated");
-//            }
-//            else {
-//                System.out.println("isolated");
-//            }
-//
-//
-//
-//            if(whiteTurn){
-//                //requiring input method
-//
-//                whiteTurn = false;
-//            }
-//            else{
-//                //requiring input method
-//
-//                whiteTurn = true;
-//            }
-//            turnStart = false;
-//        }
+        if (turnStart) {
+            consoleRender();
+            turnOrder();
+            consoleRender();
+            turnStart = false;
+        }
 
         stage.act(delta);
         stage.draw();
@@ -114,7 +95,59 @@ public class GameView extends View2D {
     }
 
 
+    public void turnOrder(){
+        int isolCount = 0;
+        for(int i = 0; i<amazons.length; i++) {
+            if (amazons[i].endMe(boardCoordinates)) {
+                isolCount++;
+            }
+        }
+        if (isolCount == amazons.length){
+            System.out.println("Game ends");
+        }
+        int phase = 1;
+        if(boardCoordinates[0][3].isValidChoice(phase, true, boardCoordinates, 0, 3)) {
 
+                ((Amazon2D) (boardCoordinates[0][3].getContent())).possibleMoves(board2D);
+                phase++;
+                if (boardCoordinates[0][5].isValidChoice(phase, true, boardCoordinates, 0, 5) && ((Amazon2D)(boardCoordinates[0][3].getContent())).getPossibleMoves().contains(boardCoordinates[0][5])) {
+                    ((Amazon2D) (boardCoordinates[0][3].getContent())).move(boardCoordinates[0][5]);
+
+                    phase++;
+                    ((Amazon2D) (boardCoordinates[0][5].getContent())).possibleMoves(board2D);
+                    if (boardCoordinates[5][5].isValidChoice(phase, true, boardCoordinates, 5, 5) && ((Amazon2D)(boardCoordinates[0][5].getContent())).getPossibleMoves().contains(boardCoordinates[5][5])) {
+                        arrow = new Arrow2D(boardCoordinates[5][5]);
+                    }
+                }
+        }
+        isolCount = 0;
+        for(int i = 0; i<amazons.length; i++) {
+            if (amazons[i].endMe(boardCoordinates)) {
+                isolCount++;
+            }
+        }
+        if (isolCount == amazons.length){
+            System.out.println("Game ends");
+        }
+        /*phase = 1;
+        if(boardCoordinates[0][3].isValidChoice(phase, false, boardCoordinates, 0, 3)) {
+
+            ((Amazon2D) (boardCoordinates[0][3].getContent())).possibleMoves(board2D);
+            phase++;
+            if (boardCoordinates[0][5].isValidChoice(phase, false, boardCoordinates, 0, 5)) {
+                ((Amazon2D) (boardCoordinates[0][3].getContent())).move(boardCoordinates[0][5]);
+                phase++;
+                if (boardCoordinates[5][5].isValidChoice(phase, false, boardCoordinates, 5, 5)) {
+                    arrow = new Arrow2D(boardCoordinates[5][5]);
+                }
+            }
+
+        }
+        //then black turn, change endMe to a loop to check all amazons
+
+*/
+
+    }
 
     public void consoleRender(){
         for(int i = 0;i<10;i++){
@@ -171,6 +204,7 @@ public class GameView extends View2D {
             stage.addActor(a);
 
         }
+
     }
 
     //<editor-fold desc="Click Feedback">
@@ -250,8 +284,8 @@ public class GameView extends View2D {
             for (int j = 0; j < boardCoordinates[i].length; j++) {
                 if (boardCoordinates[i][j].getTopLeft().getX() < x && x < boardCoordinates[i][j].getTopRight().getX()) {
                     if (boardCoordinates[i][j].getTopLeft().getY() > y && y > boardCoordinates[i][j].getBottomLeft().getY()) {
-                        //System.out.printf("i: %d & j: %d \n",i,j);
-                        //System.out.println("x = [" + x + "], y = [" + y + "]");
+                        System.out.printf("i: %d & j: %d \n",i,j);
+                        System.out.println("x = [" + x + "], y = [" + y + "]");
 
                         return boardCoordinates[i][j];
 

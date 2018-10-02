@@ -96,7 +96,6 @@ public class Cell {
                     } else if (colour == false && this.getContentID().contains("B")) {
                         if (!(board[xPos + 1][yPos].isOccupied()) || !(board[xPos + 1][yPos + 1].isOccupied()) || !(board[xPos][yPos + 1].isOccupied()))
                             return true;
-
                     }
                 }
                 if (xPos == 0 && yPos == board.length) {
