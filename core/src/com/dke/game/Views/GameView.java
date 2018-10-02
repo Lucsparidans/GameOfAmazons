@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
+import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.*;
 
 public class GameView extends View2D {
@@ -28,6 +29,8 @@ public class GameView extends View2D {
     private Amazon2D[] amazons;
     private Arrow2D[] arrows;
     private boolean whiteTurn = true;
+    private boolean displayOverlay = false;
+    private Piece lastCell;
 
     //private Viewport vp;
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
@@ -177,15 +180,41 @@ public class GameView extends View2D {
             int x = Gdx.input.getX();
             int y = Gdx.graphics.getHeight() - Gdx.input.getY();
             Cell c = findCell(x, y);
-            if (c != null) {
-                if(c.isOccupied()) {
-                    //uiOverlaySquare.addObject(getCellCenter(c));
-                    if(c.getContent() instanceof Amazon2D){
 
+            if(!displayOverlay){
+                ui.clear();
+            }
+
+                if (c != null) {
+                    if (c.isOccupied()) {
+
+                        //uiOverlaySquare.addObject(getCellCenter(c));
+                        Piece content = c.getContent();
+                        if (content instanceof Amazon2D) {
+                            if(lastCell == null){
+                                lastCell = content;
+                            }
+                            if(lastCell == content){
+                                displayOverlay = false;
+                            }
+                            else{
+                                ui.clear();
+                            }
+                            displayOverlay = true;
+                            ((Amazon2D) content).possibleMoves(board2D);
+                            uiOverlaySquare = new UIOverlaySquare(((Amazon2D) content).getPossibleMoves(), board2D, shapeRenderer);
+                            ui.addActor(uiOverlaySquare);
+                        }
+                    }
+                    else{
+                        displayOverlay = false;
+                        ui.clear();
                     }
                 }
+                if(displayOverlay){
+                ui.addActor(uiOverlaySquare);
             }
-            ui.addActor(uiOverlaySquare);
+            //ui.addActor(uiOverlaySquare);
 
 
         }

@@ -10,7 +10,7 @@ import com.dke.game.Models.DataStructs.Coordinate;
 import java.util.ArrayList;
 
 public class UIOverlaySquare extends Actor {
-    private ArrayList<Coordinate> todo;
+    private ArrayList<Cell> todo;
     private ShapeRenderer renderer;
     private Cell[][] boardCoordninates;
     public UIOverlaySquare(ArrayList todo, Board2D board, ShapeRenderer renderer) {
@@ -29,7 +29,7 @@ public class UIOverlaySquare extends Actor {
         this(new ArrayList(),board2D, new ShapeRenderer());
     }
 
-    public void addObject(Coordinate c){
+    public void addObject(Cell c){
         todo.add(c);
     }
 
@@ -39,10 +39,19 @@ public class UIOverlaySquare extends Actor {
 
         renderer.setColor(Color.BLACK);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Coordinate c:todo) {
-            renderer.circle(c.getX(),c.getY(),5);
+        for (Cell c:todo) {
+            Coordinate center = getCellCenter(c);
+            renderer.circle(center.getX(),center.getY(),5);
         }
         renderer.end();
         batch.begin();
+    }
+    private Coordinate getCellCenter(Cell cell) {
+
+//        System.out.printf("topLeft x: %d & y: %d\n", boardCoordinates[i][j].getTopLeft().getX(),boardCoordinates[i][j].getTopLeft().getY());
+//        System.out.printf("bottomLeft x: %d & y: %d\n", boardCoordinates[i][j].getBottomLeft().getX(),boardCoordinates[i][j].getBottomLeft().getY());
+//        System.out.printf("bottomRight x: %d & y: %d\n", boardCoordinates[i][j].getBottomRight().getX(),boardCoordinates[i][j].getBottomRight().getY());
+        return new Coordinate(cell.getBottomLeft().getX() + ((cell.getBottomRight().getX() - cell.getBottomLeft().getX()) / 2),
+                cell.getBottomLeft().getY() + ((cell.getTopLeft().getY() - cell.getBottomLeft().getY()) / 2));
     }
 }

@@ -203,7 +203,7 @@ public abstract class Amazon extends Piece{
         boolean positive = true;
         boolean negative = true;
         for(int i=1; i<10 ; i++){
-            if(this.cell.getI()+i > board2D.width) {
+            if(this.cell.getI()+i >= board2D.width) {
                 positive = false;
             }
             if(this.cell.getI()-i < 0) {
@@ -233,7 +233,7 @@ public abstract class Amazon extends Piece{
         negative = true;
 
         for(int i=1; i<10 ; i++){
-            if(this.cell.getJ()+i > board2D.height) {
+            if(this.cell.getJ()+i >= board2D.height) {
                 positive = false;
             }
             if(this.cell.getJ()-i < 0) {
@@ -268,13 +268,13 @@ public abstract class Amazon extends Piece{
 
         for(int i=1; i<10 ; i++){
 
-            if(this.cell.getI()+i > board2D.width) {
+            if(this.cell.getI()+i >= board2D.width) {
                 positive = false;
             }
             if(this.cell.getI()-i < 0) {
                 negative = false;
             }
-            if(this.cell.getJ()+i > board2D.width) {
+            if(this.cell.getJ()+i >= board2D.width) {
                 positive = false;
             }
             if(this.cell.getJ()-i < 0) {
@@ -310,13 +310,13 @@ public abstract class Amazon extends Piece{
             if(this.cell.getI()-i < 0) {
                 positive = false;
             }
-            if(this.cell.getJ()+i > board2D.height) {
+            if(this.cell.getJ()+i >= board2D.height) {
                 positive = false;
             }
             if(this.cell.getJ()-i < 0) {
                 negative = false;
             }
-            if(this.cell.getI()+i > board2D.width) {
+            if(this.cell.getI()+i >= board2D.width) {
                 negative = false;
             }
 
@@ -344,4 +344,7 @@ public abstract class Amazon extends Piece{
 
     }
 
+    public ArrayList<Cell> getPossibleMoves() {
+        return possibleMoves;
+    }
 }
