@@ -36,7 +36,6 @@ public class GameView extends View2D {
     private boolean amazonSelected = false;
     private Amazon2D selectedAmazon;
 
-    //private Viewport vp;
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
 
 
@@ -47,7 +46,6 @@ public class GameView extends View2D {
 
     @Override
     public void create() {
-        //vp = new ExtendViewport(50,50);
         stage = new Stage();
         stage.addActor(new Background());
         ui = new Stage();
@@ -227,7 +225,6 @@ public class GameView extends View2D {
                 if (c != null) {
                     if (c.isOccupied()) {
 
-                        //uiOverlaySquare.addObject(getCellCenter(c));
                         Piece content = c.getContent();
                         if (content instanceof Amazon2D) {
                             amazonSelected = true;
@@ -253,7 +250,6 @@ public class GameView extends View2D {
                 if (displayOverlay) {
                     ui.addActor(uiOverlaySquare);
                 }
-                //ui.addActor(uiOverlaySquare);
             } else {
                 if (c != null) {
 
@@ -270,7 +266,6 @@ public class GameView extends View2D {
                         }
                     }
                 }
-            }
 
 
                 ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
@@ -286,9 +281,10 @@ public class GameView extends View2D {
 
 
             }
+        }
 
-            //This is temporary-----------------------------------------
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        //This is temporary-----------------------------------------
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 Gdx.app.exit();
             }
             //----------------------------------------------------------
@@ -311,8 +307,6 @@ public class GameView extends View2D {
                 }
             }
         }
-//        System.out.println("x = [" + x + "], y = [" + y + "]");
-//        System.out.println("null");
         return null;
 
     }
@@ -320,28 +314,10 @@ public class GameView extends View2D {
 
     private Coordinate getCellCenter(Cell cell) {
         Cell s = boardCoordinates[cell.getI()][cell.getJ()];
-//        System.out.printf("topLeft x: %d & y: %d\n", boardCoordinates[i][j].getTopLeft().getX(),boardCoordinates[i][j].getTopLeft().getY());
-//        System.out.printf("bottomLeft x: %d & y: %d\n", boardCoordinates[i][j].getBottomLeft().getX(),boardCoordinates[i][j].getBottomLeft().getY());
-//        System.out.printf("bottomRight x: %d & y: %d\n", boardCoordinates[i][j].getBottomRight().getX(),boardCoordinates[i][j].getBottomRight().getY());
         return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
                 s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
     }
 
 //</editor-fold>
-     /*
 
-        private void drawPath() {
-        if (!this.displayUI) {
-        this.displayUI = true;
-        if (ui.getActors().size == 0) {
-        this.ui.addActor(uiOverlaySquare);
-        }
-
-        } else {
-        this.displayUI = false;
-        this.ui.clear();
-        }
-
-        }
-        */
 }
