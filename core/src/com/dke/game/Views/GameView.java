@@ -184,7 +184,7 @@ public class GameView extends View2D {
             int x = Gdx.input.getX();
             int y = Gdx.graphics.getHeight() - Gdx.input.getY();
             Cell c = findCell(x, y);
-            if(!amazonSelected) {
+            if (!amazonSelected) {
 
                 if (!displayOverlay) {
                     ui.clear();
@@ -197,7 +197,7 @@ public class GameView extends View2D {
                         Piece content = c.getContent();
                         if (content instanceof Amazon2D) {
                             amazonSelected = true;
-                            selectedAmazon = (Amazon2D)content;
+                            selectedAmazon = (Amazon2D) content;
                             if (lastCell == null) {
                                 lastCell = content;
                             }
@@ -220,12 +220,28 @@ public class GameView extends View2D {
                     ui.addActor(uiOverlaySquare);
                 }
                 //ui.addActor(uiOverlaySquare);
+            } else {
+                if (c != null) {
+
+                    Piece content = c.getContent();
+                    if(content != null) {
+                        if (content instanceof Amazon2D) {
+                            ui.clear();
+                            selectedAmazon = (Amazon2D) content;
+
+                            displayOverlay = true;
+                            selectedAmazon.possibleMoves(board2D);
+                            uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                            ui.addActor(uiOverlaySquare);
+                        }
+                    }
+                }
             }
-            else{
+
 
                 ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
-                for (Cell cC:pm) {
-                    if(cC.getI() == c.getI() && cC.getJ() == c.getJ()){
+                for (Cell cC : pm) {
+                    if (cC.getI() == c.getI() && cC.getJ() == c.getJ()) {
                         selectedAmazon.move(cC);
                         selectedAmazon = null;
                         amazonSelected = false;
@@ -233,15 +249,17 @@ public class GameView extends View2D {
                     }
 
                 }
+
+
             }
 
+            //This is temporary-----------------------------------------
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                Gdx.app.exit();
+            }
+            //----------------------------------------------------------
         }
-        //This is temporary-----------------------------------------
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
-        }
-        //----------------------------------------------------------
-    }
+
 
 
     private Cell findCell(int x, int y) {
