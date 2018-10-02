@@ -47,9 +47,9 @@ protected void updateCell(Cell c){
 
     }
 
-//    public void shoot(Cell cell){
-//
-//    }
+    public void shoot(Cell cell){
+
+    }
 
     public boolean endMe(Cell[][] board){
         boolean isolated = false;
