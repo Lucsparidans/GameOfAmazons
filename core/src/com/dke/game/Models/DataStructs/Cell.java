@@ -3,7 +3,7 @@ package com.dke.game.Models.DataStructs;
 public class Cell {
     private Piece content;
     private boolean isAvailable = false;
-    public static final int CELL_SIZE = 80;
+    public static int CELL_SIZE = 50;
     private Coordinate topLeft, topRight, bottomRight, bottomLeft;
     private int i,j;
 

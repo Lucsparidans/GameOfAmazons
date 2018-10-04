@@ -1,7 +1,6 @@
 package com.dke.game.Views;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
@@ -41,9 +39,10 @@ public class GameView extends View2D {
     private UIOverlaySquare uiOverlaySquare;
     private Cell[][] boardCoordinates;
     private boolean displayOverlay = false;
-    private Piece lastCell;
+    //    private Piece lastCell;
     private boolean amazonSelected = false;
     private Amazon2D selectedAmazon;
+    private Cell selectedCell;
     private ArrayList<Actor> actors;
     private Board2D board2D;
     private Amazon2D[] amazons;
@@ -60,11 +59,6 @@ public class GameView extends View2D {
         this.board2D = board2D;
         this.amazons = amazons;
         uiOverlaySquare = new UIOverlaySquare(board2D, shapeRenderer);
-
-    }
-
-    @Override
-    public void create() {
         stage = new Stage();
         stage.addActor(new Background());
         ui = new Stage();
@@ -73,26 +67,14 @@ public class GameView extends View2D {
         this.actors = new ArrayList<>();
 
 
-
-
-
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-    }
-    private void addActorsToStage(){
-        Array<Actor> stageActors = stage.getActors();
-        for (Actor actor: actors) {
-            if(!stageActors.contains(actor,false)){
-                stage.addActor(actor);
-            }
-
-        }
     }
 
-    public void addActor(Actor actor){
-        this.actors.add(actor);
+    @Override
+    public void create() {
+
     }
 
     @Override
@@ -109,11 +91,9 @@ public class GameView extends View2D {
         stage.draw();
         ui.act(delta);
         ui.draw();
-        handleInput();
+        //handleInput();
 
     }
-
-
 
 
     @Override
@@ -132,120 +112,163 @@ public class GameView extends View2D {
     }
 
 
-
-
-
     //<editor-fold desc="Click Feedback">
 
 
+    @Override
+    protected Cell getSelectedCell() {
+
+        int x = Gdx.input.getX();
+        int y = Gdx.graphics.getHeight() - Gdx.input.getY();
+        Cell c = findCell(x, y);
+        return c;
+
+    }
 
     @Override
     protected void handleInput() {
         super.handleInput();
-        if (Gdx.input.justTouched()) {
-            int x = Gdx.input.getX();
-            int y = Gdx.graphics.getHeight() - Gdx.input.getY();
-            Cell c = findCell(x, y);
-            if (!amazonSelected) {
-
-                if (!displayOverlay) {
-                    ui.clear();
-                }
-
-                if (c != null) {
-                    if (c.isOccupied()) {
-
-                        Piece content = c.getContent();
-                        if (content instanceof Amazon2D) {
-                            amazonSelected = true;
-                            selectedAmazon = (Amazon2D) content;
-                            if (lastCell == null) {
-                                lastCell = content;
-                            }
-                            if (lastCell == content) {
-                                displayOverlay = false;
-                            } else {
-                                ui.clear();
-                            }
-                            displayOverlay = true;
-                            ((Amazon2D) content).possibleMoves(board2D);
-                            uiOverlaySquare = new UIOverlaySquare(((Amazon2D) content).getPossibleMoves(), board2D, shapeRenderer);
-                            ui.addActor(uiOverlaySquare);
-                        }
-                    } else {
-                        displayOverlay = false;
-                        ui.clear();
-                    }
-                }
-                if (displayOverlay) {
-                    ui.addActor(uiOverlaySquare);
-                }
-            } else {
-                if (c != null) {
+        if (gameLoop.getPhase() == 1) {
+            Cell c = getSelectedCell();
+            if (c != null) {
+                if (c.isOccupied()) {
 
                     Piece content = c.getContent();
-                    if(content != null) {
-                        if (content instanceof Amazon2D) {
-                            ui.clear();
+                    if (content instanceof Amazon2D) {
+//                            amazonSelected = true;
+//                            selectedAmazon = (Amazon2D) content;
+                        if (selectedAmazon == null) {
                             selectedAmazon = (Amazon2D) content;
-
                             displayOverlay = true;
-                            selectedAmazon.possibleMoves(board2D);
-                            uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                        }
+                        if (selectedAmazon == content) {
+                            displayOverlay = false;
+                        } else {
+                            ui.clear();
+                        }
+                        selectedAmazon.possibleMoves(board2D);
+                        uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                        if(displayOverlay) {
                             ui.addActor(uiOverlaySquare);
                         }
                     }
                 }
+            }
+            } else if (gameLoop.getPhase() == 2) {
+
+            } else if (gameLoop.getPhase() == 3) {
+
+            } else {
+
+            }
+//        if (Gdx.input.justTouched()) {
+//            int x = Gdx.input.getX();
+//            int y = Gdx.graphics.getHeight() - Gdx.input.getY();
+//            Cell c = findCell(x, y);
+//            if (!amazonSelected) {
+//
+//                if (!displayOverlay) {
+//                    ui.clear();
+//                }
+//
+//                if (c != null) {
+//                    if (c.isOccupied()) {
+//
+//                        Piece content = c.getContent();
+//                        if (content instanceof Amazon2D) {
+//                            amazonSelected = true;
+//                            selectedAmazon = (Amazon2D) content;
+//                            if (lastCell == null) {
+//                                lastCell = content;
+//                            }
+//                            if (lastCell == content) {
+//                                displayOverlay = false;
+//                            } else {
+//                                ui.clear();
+//                            }
+//                            displayOverlay = true;
+//                            ((Amazon2D) content).possibleMoves(board2D);
+//                            uiOverlaySquare = new UIOverlaySquare(((Amazon2D) content).getPossibleMoves(), board2D, shapeRenderer);
+//                            ui.addActor(uiOverlaySquare);
+//                        }
+//                    } else {
+//                        displayOverlay = false;
+//                        ui.clear();
+//                    }
+//                }
+//                if (displayOverlay) {
+//                    ui.addActor(uiOverlaySquare);
+//                }
+//            } else {
+//                if (c != null) {
+//
+//                    Piece content = c.getContent();
+//                    if(content != null) {
+//                        if (content instanceof Amazon2D) {
+//                            ui.clear();
+//                            selectedAmazon = (Amazon2D) content;
+//
+//                            displayOverlay = true;
+//                            selectedAmazon.possibleMoves(board2D);
+//                            uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+//                            ui.addActor(uiOverlaySquare);
+//                        }
+//                    }
+//                }
+//
+//
+//                ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
+//                for (Cell cC : pm) {
+//                    if (cC.getI() == c.getI() && cC.getJ() == c.getJ()) {
+//                        selectedAmazon.move(cC);
+//                        selectedAmazon = null;
+//                        amazonSelected = false;
+//                        ui.clear();
+//                    }
+//
+//                }
+//
+//
+//            }
+//        }
+
+//            //This is temporary-----------------------------------------
+//            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+//                Gdx.app.exit();
+//            }
+//            //----------------------------------------------------------
+        }
 
 
-                ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
-                for (Cell cC : pm) {
-                    if (cC.getI() == c.getI() && cC.getJ() == c.getJ()) {
-                        selectedAmazon.move(cC);
-                        selectedAmazon = null;
-                        amazonSelected = false;
-                        ui.clear();
+        private Cell findCell ( int x, int y){
+            //Return the center of the selected square.
+            for (int i = 0; i < boardCoordinates.length; i++) {
+                for (int j = 0; j < boardCoordinates[i].length; j++) {
+                    if (boardCoordinates[i][j].getTopLeft().getX() < x && x < boardCoordinates[i][j].getTopRight().getX()) {
+                        if (boardCoordinates[i][j].getTopLeft().getY() > y && y > boardCoordinates[i][j].getBottomLeft().getY()) {
+
+                            return boardCoordinates[i][j];
+
+                        }
                     }
-
-                }
-
-
-            }
-        }
-
-        //This is temporary-----------------------------------------
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-                Gdx.app.exit();
-            }
-            //----------------------------------------------------------
-        }
-
-
-
-    private Cell findCell(int x, int y) {
-        //Return the center of the selected square.
-        for (int i = 0; i < boardCoordinates.length; i++) {
-            for (int j = 0; j < boardCoordinates[i].length; j++) {
-                if (boardCoordinates[i][j].getTopLeft().getX() < x && x < boardCoordinates[i][j].getTopRight().getX()) {
-                    if (boardCoordinates[i][j].getTopLeft().getY() > y && y > boardCoordinates[i][j].getBottomLeft().getY()) {
-
-                        return boardCoordinates[i][j];
-
-                    }
                 }
             }
+            return null;
+
         }
-        return null;
-
-    }
 
 
-    private Coordinate getCellCenter(Cell cell) {
-        Cell s = boardCoordinates[cell.getI()][cell.getJ()];
-        return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
-                s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
-    }
+        private Coordinate getCellCenter (Cell cell){
+            Cell s = boardCoordinates[cell.getI()][cell.getJ()];
+            return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
+                    s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
+        }
 
 //</editor-fold>
 
-}
+        public Stage getStage () {
+            return stage;
+        }
+    }
+
+

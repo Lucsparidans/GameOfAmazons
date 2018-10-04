@@ -55,24 +55,23 @@ public class Board2D extends Board {
                         shapeRenderer.setColor(Color.BROWN);
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
 
+                    } else {
+                        shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
+                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
+
                     }
-                } else {
-                    shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
-                    shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
 
                 }
-
-
                 if (i / Cell.CELL_SIZE % 2 == 0) {
                     if (j / Cell.CELL_SIZE % 2 == 0) {
                         shapeRenderer.setColor(Color.BROWN);
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
 
-                    }
-                } else {
-                    shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
-                    shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
+                    } else {
+                        shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
+                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
 
+                    }
                 }
             }
         }

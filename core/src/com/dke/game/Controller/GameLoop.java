@@ -12,33 +12,49 @@ public class GameLoop {
 
     private GameView gameView;
     private Board2D board2D;
-    private boolean running = false;
+    //private boolean running = false;
     private Cell[][] boardCoordinates;
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow;
     private Thread thread;
     private ViewManager viewManager;
+    private int phase = 1;
 
 
     public GameLoop(ViewManager viewmanager) {
         this.viewManager = viewmanager;
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
+        gameView.getStage().addActor(board2D);
+        placePieces();
         this.viewManager.push(gameView);
-        thread = new Thread(new GameThread());
+        thread = new GameThread();
         thread.start();
+
+
     }
 
-    public boolean isRunning(){
-        if (running){
-            return true;
+//    public boolean isRunning(){
+//        if (running){
+//            return true;
+//        }
+//        else{
+//            return false;
+//        }
+//    }
+    private void update(){
+        if(phase == 1){
+
+        }
+        else if(phase == 2){
+
+        }
+        else if(phase == 3){
+
         }
         else{
-            return false;
-        }
-    }
-    private void update(){
 
+        }
 
 
 
@@ -59,7 +75,7 @@ public class GameLoop {
        board2D = new Board2D();
        boardCoordinates = board2D.getBoardCoordinates();
        this.amazons = new Amazon2D[8];
-       placePieces();
+
    }
     private void placePieces() {
         amazons[0] = new Amazon2D('W', boardCoordinates[0][3]);
@@ -71,17 +87,18 @@ public class GameLoop {
         amazons[6] = new Amazon2D('B', boardCoordinates[3][9]);
         amazons[7] = new Amazon2D('B', boardCoordinates[6][9]);
         for (Amazon2D a : amazons) {
-            gameView.addActor(a);
+            gameView.getStage().addActor(a);
 
         }
 
     }
 
 
-    public Board2D getBoard2D(){
-        return this.board2D;
+    public int getPhase() {
+        return phase;
     }
-    class GameThread implements Runnable{
+
+    class GameThread extends Thread{
 
         @Override
         public void run() {
