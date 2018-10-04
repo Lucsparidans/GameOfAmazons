@@ -14,8 +14,8 @@ public class DesktopLauncher {
         config.title = "Game of Amazons";
         config.fullscreen = false;
         config.resizable = false;
-        config.width = 1920;
-        config.height = 1080;
+        config.width = 800;
+        config.height = 600;
 
         new LwjglApplication(new MainLoop(), config);
 

@@ -4,23 +4,22 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.dke.game.Views.GameView;
 
 
 public class MainLoop extends ApplicationAdapter {
     private ViewManager viewManager;
     public static Skin skin;
-    public static final GameLoop gameLoop = new GameLoop();
+    private GameLoop gameLoop;
 
 
     @Override
     public void create() {
 
-
         skin = new Skin(Gdx.files.internal("Skins/cloud-form/skin/cloud-form-ui.json"));
         viewManager = new ViewManager();
 
-        viewManager.push(new GameView(viewManager));
+        gameLoop = new GameLoop(viewManager);
+        //viewManager.push(new GameView(viewManager));
         //viewManager.push(new MenuView(viewManager));
         Gdx.gl.glClearColor(1, 1, 1, 1);
     }

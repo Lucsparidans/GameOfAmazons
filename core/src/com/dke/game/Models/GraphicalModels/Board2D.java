@@ -24,12 +24,17 @@ public class Board2D extends Board {
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
 
+    public Board2D() {
+        this(new ShapeRenderer());
+    }
+
     public Board2D(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         boardCoordinates = new Cell[super.height][super.width];
+        initialiseBoard();
     }
 
     @Override
@@ -49,55 +54,30 @@ public class Board2D extends Board {
                     if (j / Cell.CELL_SIZE % 2 != 0) {
                         shapeRenderer.setColor(Color.BROWN);
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        if(boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
-                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                    new Cell(
-                                            new Coordinate(i, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j),
-                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
-                        }
-                    } else {
-                        shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
-                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        if(boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
-                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                    new Cell(
-                                            new Coordinate(i, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j),
-                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
-                        }
+
                     }
+                } else {
+                    shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
+                    shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
 
                 }
+
+
                 if (i / Cell.CELL_SIZE % 2 == 0) {
                     if (j / Cell.CELL_SIZE % 2 == 0) {
                         shapeRenderer.setColor(Color.BROWN);
                         shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        if(boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
-                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                    new Cell(
-                                            new Coordinate(i, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j),
-                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
-                        }
-                    } else {
-                        shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
-                        shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
-                        if (boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
-                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
-                                    new Cell(
-                                            new Coordinate(i, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
-                                            new Coordinate(i + Cell.CELL_SIZE, j),
-                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
-                        }
+
                     }
+                } else {
+                    shapeRenderer.setColor(Color.valueOf("#FFF8DC"));
+                    shapeRenderer.rect(i, j, Cell.CELL_SIZE, Cell.CELL_SIZE);
+
                 }
             }
         }
+
+
         shapeRenderer.end();
         batch.begin();
         GlyphLayout layout = new GlyphLayout();
@@ -108,10 +88,9 @@ public class Board2D extends Board {
                 if (j == 0) {
                     Coordinate c = boardCoordinates[i][j].getBottomLeft();
                     layout.setText(font, Character.toString(ch));
-                    if(ch == 'I') {
-                        font.draw(batch, layout, c.getX() + layout.width, c.getY() - (font.getLineHeight()/10));
-                    }
-                    else{
+                    if (ch == 'I') {
+                        font.draw(batch, layout, c.getX() + layout.width, c.getY() - (font.getLineHeight() / 10));
+                    } else {
                         font.draw(batch, layout, c.getX() + (Cell.CELL_SIZE / 10), c.getY() - (font.getLineHeight() / 10));
 
                     }
@@ -135,11 +114,63 @@ public class Board2D extends Board {
     private int calcBoardWidth() {
         return super.width * Cell.CELL_SIZE;
     }
-    public Cell[][] getBoard(){
+
+    public Cell[][] getBoard() {
         return super.board.clone();
     }
 
     private int calcBoardHeight() {
         return super.height * Cell.CELL_SIZE;
     }
+
+    private void initialiseBoard() {
+        for (int i = X_POS_BOARD; i < (super.height * Cell.CELL_SIZE + X_POS_BOARD); i += Cell.CELL_SIZE) {
+            for (int j = Y_POS_BOARD; j < (super.width * Cell.CELL_SIZE + Y_POS_BOARD); j += Cell.CELL_SIZE) {
+                if (i / Cell.CELL_SIZE % 2 != 0) {
+                    if (j / Cell.CELL_SIZE % 2 != 0) {
+                        if (boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
+                    } else {
+                        if (boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
+                    }
+
+                }
+                if (i / Cell.CELL_SIZE % 2 == 0) {
+                    if (j / Cell.CELL_SIZE % 2 == 0) {
+                        if (boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
+                    } else {
+                        if (boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] == null) {
+                            boardCoordinates[(i - X_POS_BOARD) / Cell.CELL_SIZE][(j - Y_POS_BOARD) / Cell.CELL_SIZE] =
+                                    new Cell(
+                                            new Coordinate(i, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j + Cell.CELL_SIZE),
+                                            new Coordinate(i + Cell.CELL_SIZE, j),
+                                            new Coordinate(i, j), (i - X_POS_BOARD) / Cell.CELL_SIZE, (j - Y_POS_BOARD) / Cell.CELL_SIZE);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+
