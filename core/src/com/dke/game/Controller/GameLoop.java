@@ -28,8 +28,8 @@ public class GameLoop {
         gameView.getStage().addActor(board2D);
         placePieces();
         this.viewManager.push(gameView);
-        thread = new GameThread();
-        thread.start();
+        //thread = new GameThread();
+        //thread.start();
 
 
     }

@@ -15,9 +15,9 @@ public class DesktopLauncher {
         config.title = "Game of Amazons";
 
         config.resizable = false;
-        DisplayMode displayMode = DisplayMode.SMALL_REZ;
+        DisplayMode displayMode = DisplayMode.MED_REZ;
         switch (displayMode) {
-            case SMALL_REZ:
+            case LOW_REZ:
                 config.fullscreen = false;
                 config.width = 800;
                 config.height = 600;
@@ -44,6 +44,6 @@ public class DesktopLauncher {
     }
 
     public enum DisplayMode {
-        SMALL_REZ, MED_REZ, HIGH_REZ
+        LOW_REZ, MED_REZ, HIGH_REZ
     }
 }
