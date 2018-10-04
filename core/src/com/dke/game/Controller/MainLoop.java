@@ -10,10 +10,13 @@ import com.dke.game.Views.GameView;
 public class MainLoop extends ApplicationAdapter {
     private ViewManager viewManager;
     public static Skin skin;
+    public static final GameLoop gameLoop = new GameLoop();
 
 
     @Override
     public void create() {
+
+
         skin = new Skin(Gdx.files.internal("Skins/cloud-form/skin/cloud-form-ui.json"));
         viewManager = new ViewManager();
 

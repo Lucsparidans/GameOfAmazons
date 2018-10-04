@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.dke.game.Controller.GameLoop;
+import com.dke.game.Controller.MainLoop;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
@@ -17,6 +19,16 @@ import com.dke.game.Models.GraphicalModels.*;
 
 import java.util.ArrayList;
 
+//TODO:
+/*
+- Move the gameLoop related parts to the gameLoop class, in order to respect the model view controller architecture.
+- Restructure input handling to be able to provide the received input/info to the gameLoop where it will be precessed
+    + This class can still do a bit of the pre-processing like finding the cell relative to the selected coordinates.
+- Join the game logic with the graphics part.
+- Setup working phase system.
+    + Work out the foreseen complications.
+-
+ */
 public class GameView extends View2D {
 
     private Cell[][] boardCoordinates;
@@ -35,6 +47,7 @@ public class GameView extends View2D {
     private Piece lastCell;
     private boolean amazonSelected = false;
     private Amazon2D selectedAmazon;
+    private static final GameLoop gameLoop = MainLoop.gameLoop;
 
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
 
@@ -74,13 +87,12 @@ public class GameView extends View2D {
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//TODO each iteration, every cell of the board is newly created... to fix this put all the cells of the board in an array and then draw each element in that array each draw loop
 
 
         if (turnStart) {
-            consoleRender();
+            //consoleRender();
             turnOrder();
-            consoleRender();
+            //consoleRender();
             turnStart = false;
         }
 
@@ -298,8 +310,6 @@ public class GameView extends View2D {
             for (int j = 0; j < boardCoordinates[i].length; j++) {
                 if (boardCoordinates[i][j].getTopLeft().getX() < x && x < boardCoordinates[i][j].getTopRight().getX()) {
                     if (boardCoordinates[i][j].getTopLeft().getY() > y && y > boardCoordinates[i][j].getBottomLeft().getY()) {
-                        System.out.printf("i: %d & j: %d \n",i,j);
-                        System.out.println("x = [" + x + "], y = [" + y + "]");
 
                         return boardCoordinates[i][j];
 
