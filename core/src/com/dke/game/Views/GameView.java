@@ -39,10 +39,7 @@ public class GameView extends View2D {
     private UIOverlaySquare uiOverlaySquare;
     private Cell[][] boardCoordinates;
     private boolean displayOverlay = false;
-    //    private Piece lastCell;
-    private boolean amazonSelected = false;
     private Amazon2D selectedAmazon = null;
-    private Cell selectedCell;
     private ArrayList<Actor> actors;
     private Board2D board2D;
     private Amazon2D[] amazons;
