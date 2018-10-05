@@ -142,6 +142,13 @@ public class GameView extends View2D {
                 phaseTwo();
             } else if (gameLoop.getPhase() == 3) {
                 phaseThree();
+                if(gameLoop.getCurrentSide() == 'W'){
+                    gameLoop.setCurrentSide('B');
+                }else if(gameLoop.getCurrentSide() == 'B'){
+                    gameLoop.setCurrentSide('W');
+                }else{
+                    Gdx.app.error("Unkown side", "Unknown/unexpected side");
+                }
             } else {
                 Gdx.app.error("Unkown Phase", "Unknown/unexpected phase");
             }
@@ -229,34 +236,35 @@ public class GameView extends View2D {
 
                 Piece content = c.getContent();
                 if (content instanceof Amazon2D) {
-
-                    if (selectedAmazon == null) {
-                        selectedAmazon = (Amazon2D) content;        //Amazon is selected
-                        displayOverlay = true;
-                        gameLoop.setPhase(2);
-                    } else if (selectedAmazon == content) {
-                        ui.clear();                                 //Toggle visibility of certain amazon
-                        //<editor-fold desc="Toggle displayOverlay">
-                        if (displayOverlay) {
-                            displayOverlay = false;
-                            gameLoop.setPhase(1);
+                    if (((Amazon2D) content).getSide() == gameLoop.getCurrentSide()) {
+                        if (selectedAmazon == null) {
+                            selectedAmazon = (Amazon2D) content;        //Amazon is selected
+                            displayOverlay = true;
+                            gameLoop.setPhase(2);
+                        } else if (selectedAmazon == content) {
+                            ui.clear();                                 //Toggle visibility of certain amazon
+                            //<editor-fold desc="Toggle displayOverlay">
+                            if (displayOverlay) {
+                                displayOverlay = false;
+                                gameLoop.setPhase(1);
+                            } else {
+                                displayOverlay = true;
+                                gameLoop.setPhase(2);
+                            }
+                            //</editor-fold>
                         } else {
+                            ui.clear();
+                            selectedAmazon = (Amazon2D) content; //Different amazon was selected
                             displayOverlay = true;
                             gameLoop.setPhase(2);
                         }
-                        //</editor-fold>
-                    } else {
-                        ui.clear();
-                        selectedAmazon = (Amazon2D) content; //Different amazon was selected
-                        displayOverlay = true;
-                        gameLoop.setPhase(2);
-                    }
 
-                    selectedAmazon.possibleMoves(board2D);
-                    uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
-                    if (displayOverlay) {
-                        ui.addActor(uiOverlaySquare);
+                        selectedAmazon.possibleMoves(board2D);
+                        uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                        if (displayOverlay) {
+                            ui.addActor(uiOverlaySquare);
 
+                        }
                     }
                 }
             }

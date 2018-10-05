@@ -19,6 +19,7 @@ public class GameLoop {
     private Thread thread;
     private ViewManager viewManager;
     private int phase = 1;
+    private char currentSide = 'W';
 
 
     public GameLoop(ViewManager viewmanager) {
@@ -101,6 +102,14 @@ public class GameLoop {
 
     public void setPhase(int phase) {
         this.phase = phase;
+    }
+
+    public char getCurrentSide() {
+        return currentSide;
+    }
+
+    public void setCurrentSide(char currentSide) {
+        this.currentSide = currentSide;
     }
 
     class GameThread extends Thread{

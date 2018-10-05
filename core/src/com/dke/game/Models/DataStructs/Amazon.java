@@ -29,7 +29,9 @@ public abstract class Amazon extends Piece{
     protected String getID() {
         return idString.concat(idNumber.toString() + side);
     }
-
+    public char getSide(){
+        return side;
+    }
 
 
 protected void updateCell(Cell c){
