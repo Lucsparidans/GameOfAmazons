@@ -16,7 +16,7 @@ public class GameLoop {
     private Cell[][] boardCoordinates;
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow;
-    private Thread thread;
+    private volatile Thread thread;
     private ViewManager viewManager;
     private int phase = 1;
     private char currentSide = 'W';
@@ -30,8 +30,8 @@ public class GameLoop {
         gameView.getStage().addActor(board2D);
         placePieces();
         this.viewManager.push(gameView);
-        //thread = new GameThread();
-        //thread.start();
+        thread = new GameThread();
+        thread.start();
 
 
     }
@@ -55,7 +55,11 @@ public class GameLoop {
 
         }
         else{
-
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -116,6 +120,7 @@ public class GameLoop {
 
         @Override
         public void run() {
+
             update();
 
 

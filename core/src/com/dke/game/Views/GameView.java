@@ -82,14 +82,16 @@ public class GameView extends View2D {
 
     @Override
     public void render() {
-        float delta = Gdx.graphics.getDeltaTime();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        printArrows();
-        stage.act(delta);
-        stage.draw();
-        ui.act(delta);
-        ui.draw();
-        handleInput();
+        synchronized (this) {
+            float delta = Gdx.graphics.getDeltaTime();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            printArrows();
+            stage.act(delta);
+            stage.draw();
+            ui.act(delta);
+            ui.draw();
+            handleInput();
+        }
 
     }
 
