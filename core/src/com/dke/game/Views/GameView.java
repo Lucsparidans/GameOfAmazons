@@ -1,7 +1,6 @@
 package com.dke.game.Views;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -143,7 +142,7 @@ public class GameView extends View2D {
                                 selectedAmazon = (Amazon2D) content;        //Amazon is selected
                                 displayOverlay = true;
                             }
-                            if (selectedAmazon == content) {
+                            else if (selectedAmazon == content) {
                                 ui.clear();                                 //Toggle visibility of certain amazon
                                 //<editor-fold desc="Toggle displayOverlay">
                                 if (displayOverlay) {
@@ -167,9 +166,37 @@ public class GameView extends View2D {
                             }
                         }
                     }
-                } else if (gameLoop.getPhase() == 2) {
+                }
+                }else if (gameLoop.getPhase() == 2) {
+                Cell c = this.getSelectedCell()
+                if (c != null) {
 
-                } else if (gameLoop.getPhase() == 3) {
+                    Piece content = c.getContent();
+                    if(content != null) {
+                        if (content instanceof Amazon2D) {
+                            ui.clear();
+                            selectedAmazon = (Amazon2D) content;
+                            displayOverlay = true;
+                            selectedAmazon.possibleMoves(board2D);
+                            uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                            ui.addActor(uiOverlaySquare);
+                        }
+                    }
+                    ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
+                    for (Cell test : pm) {
+                        if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
+                            selectedAmazon.move(test);
+                            ui.clear();
+                        }
+
+                    }
+                }
+
+
+
+
+            }
+                else if (gameLoop.getPhase() == 3) {
 
                 } else {
 
