@@ -23,6 +23,7 @@ public class GameLoop {
 
     public GameLoop(ViewManager viewmanager) {
         this.viewManager = viewmanager;
+        arrow = new ArrayList<>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
         gameView.getStage().addActor(board2D);
@@ -96,6 +97,10 @@ public class GameLoop {
 
     public int getPhase() {
         return phase;
+    }
+
+    public void setPhase(int phase) {
+        this.phase = phase;
     }
 
     class GameThread extends Thread{

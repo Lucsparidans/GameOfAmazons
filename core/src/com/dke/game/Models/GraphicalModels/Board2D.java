@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
+import com.dke.game.Models.DataStructs.Piece;
 
 
 public class Board2D extends Board {
@@ -35,6 +36,11 @@ public class Board2D extends Board {
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         boardCoordinates = new Cell[super.height][super.width];
         initialiseBoard();
+    }
+
+    public Piece occupy(Piece piece, Cell cell){
+        this.boardCoordinates[cell.getI()][cell.getJ()].occupy(piece);
+        return piece;
     }
 
     @Override

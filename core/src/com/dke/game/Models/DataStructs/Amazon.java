@@ -1,5 +1,6 @@
 package com.dke.game.Models.DataStructs;
 
+import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
 import java.util.ArrayList;
@@ -47,8 +48,10 @@ protected void updateCell(Cell c){
 
     }
 
-    public void shoot(Cell cell){
-
+    public Arrow2D shoot(Board2D board2D, Cell cell){
+        Arrow2D arrow = new Arrow2D(cell);
+        board2D.occupy(arrow, cell);
+        return arrow;
     }
 
     public boolean endMe(Cell[][] board){

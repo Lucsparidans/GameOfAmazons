@@ -47,6 +47,7 @@ public class GameView extends View2D {
     private Board2D board2D;
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow2DS;
+    private boolean repeat = false;
 
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
 
@@ -65,7 +66,7 @@ public class GameView extends View2D {
         Gdx.input.setInputProcessor(new InputMultiplexer(ui, stage));
         displayUI = false;
         this.actors = new ArrayList<>();
-
+        this.arrow2DS = arrow2Ds;
 
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
@@ -86,7 +87,7 @@ public class GameView extends View2D {
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        printArrows();
         stage.act(delta);
         stage.draw();
         ui.act(delta);
@@ -111,9 +112,13 @@ public class GameView extends View2D {
         stage.dispose();
     }
 
-
-
-
+    private void printArrows(){
+        for (Arrow2D arrow:arrow2DS) {
+            if(!stage.getActors().contains(arrow,false)){
+                stage.addActor(arrow);
+            }
+        }
+    }
 
     @Override
     protected Cell getSelectedCell() {
@@ -129,82 +134,21 @@ public class GameView extends View2D {
     protected void handleInput() {
         super.handleInput();
 
-        if (Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched() || repeat) {
+            repeat = false;
             if (gameLoop.getPhase() == 1) {
-                Cell c = getSelectedCell();
-                if (c != null) {
-                    if (c.isOccupied()) {
-
-                        Piece content = c.getContent();
-                        if (content instanceof Amazon2D) {
-
-                            if (selectedAmazon == null) {
-                                selectedAmazon = (Amazon2D) content;        //Amazon is selected
-                                displayOverlay = true;
-                            }
-                            else if (selectedAmazon == content) {
-                                ui.clear();                                 //Toggle visibility of certain amazon
-                                //<editor-fold desc="Toggle displayOverlay">
-                                if (displayOverlay) {
-                                    displayOverlay = false;
-                                }
-                                else{
-                                    displayOverlay = true;
-                                }
-                                //</editor-fold>
-                            } else {
-                                ui.clear();
-                                selectedAmazon = (Amazon2D) content; //Different amazon was selected
-                                displayOverlay = true;
-                            }
-
-                            selectedAmazon.possibleMoves(board2D);
-                            uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
-                            if (displayOverlay) {
-                                ui.addActor(uiOverlaySquare);
-
-                            }
-                        }
-                    }
-                }
-                }else if (gameLoop.getPhase() == 2) {
-                Cell c = this.getSelectedCell()
-                if (c != null) {
-
-                    Piece content = c.getContent();
-                    if(content != null) {
-                        if (content instanceof Amazon2D) {
-                            ui.clear();
-                            selectedAmazon = (Amazon2D) content;
-                            displayOverlay = true;
-                            selectedAmazon.possibleMoves(board2D);
-                            uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
-                            ui.addActor(uiOverlaySquare);
-                        }
-                    }
-                    ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
-                    for (Cell test : pm) {
-                        if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
-                            selectedAmazon.move(test);
-                            ui.clear();
-                        }
-
-                    }
-                }
-
-
-
-
-            }
-                else if (gameLoop.getPhase() == 3) {
-
-                } else {
-
-                }
+                phaseOne();
+            } else if (gameLoop.getPhase() == 2) {
+                phaseTwo();
+            } else if (gameLoop.getPhase() == 3) {
+                phaseThree();
+            } else {
+                Gdx.app.error("Unkown Phase", "Unknown/unexpected phase");
             }
         }
+    }
 
-        //<editor-fold desc="Old code">
+    //<editor-fold desc="Old code">
         /*
         if (Gdx.input.justTouched()) {
             int x = Gdx.input.getX();
@@ -277,9 +221,89 @@ public class GameView extends View2D {
             }
             //----------------------------------------------------------
             */
-        //</editor-fold>
+    //</editor-fold>
+    private void phaseOne() {
+        Cell c = getSelectedCell();
+        if (c != null) {
+            if (c.isOccupied()) {
+
+                Piece content = c.getContent();
+                if (content instanceof Amazon2D) {
+
+                    if (selectedAmazon == null) {
+                        selectedAmazon = (Amazon2D) content;        //Amazon is selected
+                        displayOverlay = true;
+                        gameLoop.setPhase(2);
+                    } else if (selectedAmazon == content) {
+                        ui.clear();                                 //Toggle visibility of certain amazon
+                        //<editor-fold desc="Toggle displayOverlay">
+                        if (displayOverlay) {
+                            displayOverlay = false;
+                            gameLoop.setPhase(1);
+                        } else {
+                            displayOverlay = true;
+                            gameLoop.setPhase(2);
+                        }
+                        //</editor-fold>
+                    } else {
+                        ui.clear();
+                        selectedAmazon = (Amazon2D) content; //Different amazon was selected
+                        displayOverlay = true;
+                        gameLoop.setPhase(2);
+                    }
+
+                    selectedAmazon.possibleMoves(board2D);
+                    uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                    if (displayOverlay) {
+                        ui.addActor(uiOverlaySquare);
+
+                    }
+                }
+            }
+        }
     }
 
+    private void phaseTwo() {
+        Cell c = this.getSelectedCell();
+        if (c != null) {
+
+            Piece content = c.getContent();
+            if (content != null) {
+                this.gameLoop.setPhase(1);
+                repeat = true;
+
+            } else {
+                ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
+                for (Cell test : pm) {
+                    if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
+                        selectedAmazon.move(test);
+                        ui.clear();
+                        selectedAmazon.possibleMoves(board2D);
+                        uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                        ui.addActor(uiOverlaySquare);
+                        gameLoop.setPhase(3);
+                    }
+
+                }
+            }
+        }
+    }
+
+    private void phaseThree() {
+        Cell c = this.getSelectedCell();
+        if(c!=null){
+            if(!c.isOccupied()){
+                ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
+                for (Cell test : pm) {
+                    if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
+                        arrow2DS.add(selectedAmazon.shoot(board2D,test));
+                        ui.clear();
+                        gameLoop.setPhase(1);
+                    }
+                }
+            }
+        }
+    }
 
     private Cell findCell(int x, int y) {
         //Return the center of the selected square.
@@ -304,7 +328,6 @@ public class GameView extends View2D {
         return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
                 s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
     }
-
 
 
     public Stage getStage() {
