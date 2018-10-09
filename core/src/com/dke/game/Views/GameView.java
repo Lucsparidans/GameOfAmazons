@@ -141,15 +141,23 @@ public class GameView extends View2D {
                 phaseTwo();
             } else if (gameLoop.getPhase() == 3) {
                 phaseThree();
+                if(gameLoop.checkEnd()){
+                    System.out.println("Game over");
+                    Amazon2D[] white = {amazons[0],amazons[1],amazons[2],amazons[3]};
+                    Amazon2D[] black = {amazons[4],amazons[5],amazons[6],amazons[7]};
+                    System.out.println(getTerritory(white) + "   " + getTerritory(black));
+
+                    gameLoop.endGame();
+                }
                 if(gameLoop.getCurrentSide() == 'W'){
                     gameLoop.setCurrentSide('B');
                 }else if(gameLoop.getCurrentSide() == 'B'){
                     gameLoop.setCurrentSide('W');
                 }else{
-                    Gdx.app.error("Unkown side", "Unknown/unexpected side");
+                    Gdx.app.error("Unknown side", "Unknown/unexpected side");
                 }
             } else {
-                Gdx.app.error("Unkown Phase", "Unknown/unexpected phase");
+                Gdx.app.error("Unknown Phase", "Unknown/unexpected phase");
             }
         }
     }
@@ -229,6 +237,7 @@ public class GameView extends View2D {
             */
     //</editor-fold>
     private void phaseOne() {
+
         Cell c = getSelectedCell();
         if (c != null) {
             if (c.isOccupied()) {
@@ -327,6 +336,29 @@ public class GameView extends View2D {
         }
         return null;
 
+    }
+
+    private int getTerritory(Amazon2D[] colour){
+        int[][] territory = new int[10][10];
+        for(int i = 0; i<colour.length; i++) {
+            int terSize = (colour[i].countTerritory(boardCoordinates))[0].length;
+            for (int j = 0; j < terSize; j++) {
+                territory[colour[i].countTerritory(boardCoordinates)[0][j]][colour[i].countTerritory(boardCoordinates)[1][j]] = 1;
+            }
+        }
+        int oneCount = 0;
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                //System.out.print(territory[j][i]);
+                if(territory[j][i] == 1){
+                    oneCount++;
+                }
+            }
+            //System.out.println();
+        }
+        //System.out.println(oneCount);
+
+        return oneCount;
     }
 
 

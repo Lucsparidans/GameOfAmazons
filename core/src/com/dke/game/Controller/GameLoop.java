@@ -98,6 +98,22 @@ public class GameLoop {
         }
 
     }
+    public void endGame(){
+
+    }
+
+    public boolean checkEnd(){
+       int checkCount = 0;
+       for(int i = 0; i<amazons.length; i++){
+           if(amazons[i].endMe(boardCoordinates)){
+               checkCount++;
+           }
+       }
+       if(checkCount==amazons.length){
+           return true;
+       }
+       return false;
+    }
 
 
     public int getPhase() {
