@@ -45,22 +45,7 @@ public class GameLoop {
 //        }
 //    }
     private void update(){
-        if(phase == 1){
 
-        }
-        else if(phase == 2){
-
-        }
-        else if(phase == 3){
-
-        }
-        else{
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
 
 
@@ -103,10 +88,11 @@ public class GameLoop {
     public int getPhase() {
         return phase;
     }
-
-    public void setPhase(int phase) {
+    public void setPhase(int phase){
         this.phase = phase;
     }
+
+
 
     public char getCurrentSide() {
         return currentSide;
@@ -126,7 +112,55 @@ public class GameLoop {
 
         }
     }
+    public void turnOrder(){
+        int isolCount = 0;
+        for(int i = 0; i<amazons.length; i++) {
+            if (amazons[i].endMe(boardCoordinates)) {
+                isolCount++;
+            }
+        }
+        if (isolCount == amazons.length){
+            System.out.println("Game ends");
+        }
+        int phase = 1;
+        if(boardCoordinates[0][3].isValidChoice(phase, true, boardCoordinates, 0, 3)) {
 
+            ((Amazon2D) (boardCoordinates[0][3].getContent())).possibleMoves(board2D);
+            phase++;
+            if (boardCoordinates[0][5].isValidChoice(phase, true, boardCoordinates, 0, 5) && ((Amazon2D)(boardCoordinates[0][3].getContent())).getPossibleMoves().contains(boardCoordinates[0][5])) {
+                ((Amazon2D) (boardCoordinates[0][3].getContent())).move(boardCoordinates[0][5]);
+
+                phase++;
+                ((Amazon2D) (boardCoordinates[0][5].getContent())).possibleMoves(board2D);
+                if (boardCoordinates[5][5].isValidChoice(phase, true, boardCoordinates, 5, 5) && ((Amazon2D)(boardCoordinates[0][5].getContent())).getPossibleMoves().contains(boardCoordinates[5][5])) {
+                    //arrow = new Arrow2D(boardCoordinates[5][5]);
+                }
+            }
+        }
+        isolCount = 0;
+        for(int i = 0; i<amazons.length; i++) {
+            if (amazons[i].endMe(boardCoordinates)) {
+                isolCount++;
+            }
+        }
+        if (isolCount == amazons.length){
+            System.out.println("Game ends");
+        }
+        /*phase = 1;
+        if(boardCoordinates[0][3].isValidChoice(phase, false, boardCoordinates, 0, 3)) {
+
+            ((Amazon2D) (boardCoordinates[0][3].getContent())).possibleMoves(board2D);
+            phase++;
+            if (boardCoordinates[0][5].isValidChoice(phase, false, boardCoordinates, 0, 5)) {
+                ((Amazon2D) (boardCoordinates[0][3].getContent())).move(boardCoordinates[0][5]);
+                phase++;
+                if (boardCoordinates[5][5].isValidChoice(phase, false, boardCoordinates, 5, 5)) {
+                    arrow = new Arrow2D(boardCoordinates[5][5]);
+                }
+            }
+
+        */}
+        //then black turn, change endMe to a loop to check all amazons
 
 
 
