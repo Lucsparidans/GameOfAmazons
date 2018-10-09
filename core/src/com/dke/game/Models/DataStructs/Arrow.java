@@ -6,8 +6,9 @@ public abstract class Arrow extends Piece{
     private Integer idNumber;
     private static String idString = "Arrow: ";
 
-    public Arrow() {
-        this.idNumber = ID++;
+    public Arrow(Cell cell) {
+        super(cell);
+        idNumber = ID++;
     }
 
     @Override
