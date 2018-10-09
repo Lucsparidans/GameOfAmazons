@@ -147,7 +147,7 @@ public class GameView extends View2D {
                     Amazon2D[] black = {amazons[4],amazons[5],amazons[6],amazons[7]};
                     System.out.println(getTerritory(white) + "   " + getTerritory(black));
 
-                    gameLoop.endGame();
+                    gameLoop.endGame(getTerritory(white), getTerritory(black));
                 }
                 if(gameLoop.getCurrentSide() == 'W'){
                     gameLoop.setCurrentSide('B');
