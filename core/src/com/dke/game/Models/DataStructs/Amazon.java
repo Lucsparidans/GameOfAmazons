@@ -207,7 +207,7 @@ protected void updateCell(Cell c){
         int[][] checkArray = new int[10][10];
         for (int i = 0; i<10; i++){
             for(int j = 0; j<10; j++){
-                if(board[i][j].getContentID().contains("Arrow")){
+                if(board[i][j].getContent() instanceof Arrow2D){
                     checkArray[i][j] = 3;
                 }
             }

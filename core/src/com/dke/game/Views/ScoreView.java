@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.dke.game.Controller.MainLoop;
 import com.dke.game.Controller.ViewManager;
 
@@ -28,12 +29,16 @@ public class ScoreView extends View {
         Table table = new Table();
         table.setFillParent(true);
 
-        Label title = new Label("Scoreboard" + "\nWhite: " + white + "  Black: " + black, MainLoop.skin,"title");
+        Label title = new Label("Scoreboard", MainLoop.skin,"title");
         table.add(title).center();
+        table.row();
+        Label score = new Label("White: " + white + "  Black: " + black,MainLoop.skin);
+        score.setAlignment(Align.center);
+        table.add(score).center();
         table.row();
 
         createListeners();
-
+        //table.debugAll();
         stage.addActor(table);
 
     }
@@ -54,11 +59,11 @@ public class ScoreView extends View {
 
     @Override
     public void render() {
-        if (stage != null) {
-            stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        if (this.stage != null) {
+            this.stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
             Gdx.input.setInputProcessor(stage);
-            stage.act();
-            stage.draw();
+            this.stage.act();
+            this.stage.draw();
         }
     }
 
