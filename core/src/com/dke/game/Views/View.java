@@ -1,6 +1,4 @@
 package com.dke.game.Views;
-
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

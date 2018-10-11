@@ -56,11 +56,153 @@ protected void updateCell(Cell c){
         return arrow;
     }
 
+    public int[][] countTerritory(Cell[][] board){
+        int xPos = this.cell.getI();
+        int yPos = this.cell.getJ();
+        int[][] checkArray = new int[10][10];
+        boolean stop = false;
+
+        for (int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                if(board[i][j].getContentID().contains("Arrow") || board[i][j].getContentID().contains("Amazon")){
+                    checkArray[i][j] = 3;
+                }
+            }
+        }
+        Stack xStack = new java.util.Stack();
+        Stack yStack = new java.util.Stack();
+        Stack xStore = new java.util.Stack();
+        Stack yStore = new java.util.Stack();
+        while(!stop) {
+            boolean moveMade = false;
+            boolean taken = false;
+
+            //Checking for free neighbouring tile
+            if(xPos !=9){
+                if (checkArray[xPos + 1][yPos] == 0) {
+
+                    xPos++;
+                    moveMade = true;
+                }
+            } if (xPos!=9 && yPos != 9 && !moveMade){
+                if(checkArray[xPos + 1][yPos + 1] == 0) {
+
+                    xPos++;
+                    yPos++;
+                    moveMade = true;
+                }
+            }
+            if(yPos!=9 && !moveMade) {
+                if (checkArray[xPos][yPos + 1] == 0) {
+
+                    yPos++;
+                    moveMade = true;
+                }
+            }
+            else if(yPos != 9 && xPos !=0 && !moveMade) {
+                if (checkArray[xPos - 1][yPos + 1] == 0) {
+
+                    xPos--;
+                    yPos++;
+                    moveMade = true;
+                }
+            }
+            if(xPos != 0 && !moveMade) {
+                if (checkArray[xPos - 1][yPos] == 0) {
+
+                    xPos--;
+                    moveMade = true;
+                }
+            }
+            if(xPos != 0 && yPos != 0 && !moveMade) {
+                if (checkArray[xPos - 1][yPos - 1] == 0) {
+
+                    xPos--;
+                    yPos--;
+                    moveMade = true;
+                }
+            }
+            if(yPos != 0 && !moveMade) {
+                if (checkArray[xPos][yPos - 1] == 0) {
+
+                    yPos--;
+                    moveMade = true;
+                }
+            }
+            if(xPos != 9 && yPos != 0 && !moveMade) {
+                if (checkArray[xPos + 1][yPos - 1] == 0) {
+
+                    xPos++;
+                    yPos--;
+                    moveMade = true;
+                }
+            }
+
+            for(int i = 0; i<xStore.size(); i++) {
+                if (xStore.elementAt(i).equals(xPos) && yStore.elementAt(i).equals(yPos)) {
+                    taken = true;
+                }
+            }
+            if (checkArray[xPos][yPos] == 0 ) {
+                xStack.push(xPos);
+                yStack.push(yPos);
+                checkArray[xPos][yPos] = 1;
+                if (!taken) {
+                    xStore.push(xPos);
+                    yStore.push(yPos);
+
+                }
+            }
+            if(xStack.isEmpty()){
+                //System.out.println("No amazon of opposite colour found");
+                stop = true;
+            }
+            //Recurs
+            if(!moveMade && !stop){
+                xStack.pop();
+                yStack.pop();
+                if(xStack.isEmpty()) {
+                    //System.out.println("No amazon of opposite colour found");
+                    stop = true;
+                }
+                else{
+                    xPos = (int) xStack.peek();
+                    yPos = (int) yStack.peek();
+                }
+            }
+
+            //console representation
+            if(!stop) {
+                // System.out.println(xStack.peek() + "," + yStack.peek());
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        //    System.out.print(checkArray[j][i] + " ");
+                    }
+                    //System.out.println();
+                }
+            }
+        }
+
+        int[][] count = new int[2][xStore.size()];
+        int loopSize = xStore.size();
+        for(int i = 0; i<loopSize; i++){
+            count[0][i] = (int)xStore.pop();
+            //System.out.println(count[0][i]);
+            count[1][i] = (int)yStore.pop();
+            //System.out.print(count[1][i]);
+
+        }
+        return count;
+    }
+
+
+
+
     public boolean endMe(Cell[][] board){
         boolean isolated = false;
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
-        
+
         boolean stop = false;
         int[][] checkArray = new int[10][10];
         for (int i = 0; i<10; i++){
@@ -77,14 +219,14 @@ protected void updateCell(Cell c){
             boolean moveMade = false;
             checkArray[xPos][yPos] = 1;
             if(this.side == 'W'){
-                if (board[xPos][yPos].getContentID().contains("Amazon: 1") || board[xPos][yPos].getContentID().contains("Amazon: 3") || board[xPos][yPos].getContentID().contains("Amazon: 5") || board[xPos][yPos].getContentID().contains("Amazon: 7")) {
-                    System.out.println("Found amazon of opposite colour");
+                if (board[xPos][yPos].getContentID().contains("Amazon: 4") || board[xPos][yPos].getContentID().contains("Amazon: 5") || board[xPos][yPos].getContentID().contains("Amazon: 6") || board[xPos][yPos].getContentID().contains("Amazon: 7")) {
+                    //System.out.println("Found amazon of opposite colour");
                     break;
                 }
             }
             if(this.side == 'B'){
-                if (board[xPos][yPos].getContentID().contains("Amazon: 0") || board[xPos][yPos].getContentID().contains("Amazon: 2") || board[xPos][yPos].getContentID().contains("Amazon: 4") || board[xPos][yPos].getContentID().contains("Amazon: 6")) {
-                    System.out.println("Found amazon of opposite colour");
+                if (board[xPos][yPos].getContentID().contains("Amazon: 0") || board[xPos][yPos].getContentID().contains("Amazon: 1") || board[xPos][yPos].getContentID().contains("Amazon: 2") || board[xPos][yPos].getContentID().contains("Amazon: 3")) {
+                    //System.out.println("Found amazon of opposite colour");
                     break;
                 }
             }
@@ -158,7 +300,7 @@ protected void updateCell(Cell c){
                 }
             }
             if(xStack.isEmpty()){
-                System.out.println("No amazon of opposite colour found");
+                //System.out.println("No amazon of opposite colour found");
                 stop = true;
                 isolated = true;
 
@@ -168,7 +310,7 @@ protected void updateCell(Cell c){
                 xStack.pop();
                 yStack.pop();
                 if(xStack.isEmpty()) {
-                    System.out.println("No amazon of opposite colour found");
+                    //System.out.println("No amazon of opposite colour found");
                     stop = true;
                     isolated = true;
                 }
@@ -180,12 +322,12 @@ protected void updateCell(Cell c){
 
             //console representation
             if(!stop) {
-                System.out.println(xStack.peek() + "," + yStack.peek());
+               // System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                        System.out.print(checkArray[j][i] + " ");
+                    //    System.out.print(checkArray[j][i] + " ");
                     }
-                    System.out.println();
+                    //System.out.println();
                 }
             }
         }
@@ -349,11 +491,14 @@ protected void updateCell(Cell c){
                 }
             }
         }
-
-
     }
 
     public ArrayList<Cell> getPossibleMoves() {
         return possibleMoves;
     }
+
+    public Cell getCell() {
+        return this.cell;
+    }
 }
+

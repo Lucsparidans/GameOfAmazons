@@ -5,6 +5,7 @@ import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 import com.dke.game.Views.GameView;
+import com.dke.game.Views.ScoreView;
 
 import java.util.ArrayList;
 
@@ -82,6 +83,24 @@ public class GameLoop {
 
         }
 
+    }
+    public void endGame(int wScore, int bScore){
+        ScoreView scoreTime = new ScoreView(viewManager, wScore, bScore);
+        this.viewManager.push(scoreTime);
+
+    }
+
+    public boolean checkEnd(){
+       int checkCount = 0;
+       for(int i = 0; i<amazons.length; i++){
+           if(amazons[i].endMe(boardCoordinates)){
+               checkCount++;
+           }
+       }
+       if(checkCount==amazons.length){
+           return true;
+       }
+       return false;
     }
 
 
