@@ -82,7 +82,7 @@ public class GameView extends View2D {
 
     @Override
     public void render() {
-        synchronized (this) {
+
             float delta = Gdx.graphics.getDeltaTime();
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             printArrows();
@@ -91,10 +91,38 @@ public class GameView extends View2D {
             ui.act(delta);
             ui.draw();
             handleInput();
-        }
+            if(!gameLoop.isRunning()){
+                //System.out.println("Game over");
+                Amazon2D[] white = {amazons[0],amazons[1],amazons[2],amazons[3]};
+                Amazon2D[] black = {amazons[4],amazons[5],amazons[6],amazons[7]};
+                //System.out.println(getTerritory(white) + "   " + getTerritory(black));
+                gameLoop.endGame(getTerritory(white), getTerritory(black));
+
+            }
 
     }
+    private int getTerritory(Amazon2D[] colour){
+        int[][] territory = new int[10][10];
+        for(int i = 0; i<colour.length; i++) {
+            int terSize = (colour[i].countTerritory(boardCoordinates))[0].length;
+            for (int j = 0; j < terSize; j++) {
+                territory[colour[i].countTerritory(boardCoordinates)[0][j]][colour[i].countTerritory(boardCoordinates)[1][j]] = 1;
+            }
+        }
+        int oneCount = 0;
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                //System.out.print(territory[j][i]);
+                if(territory[j][i] == 1){
+                    oneCount++;
+                }
+            }
+            //System.out.println();
+        }
+        //System.out.println(oneCount);
 
+        return oneCount;
+    }
 
     @Override
     public void pause() {
@@ -141,14 +169,7 @@ public class GameView extends View2D {
                 phaseTwo();
             } else if (gameLoop.getPhase() == 3) {
                 phaseThree();
-                if(gameLoop.checkEnd()){
-                    System.out.println("Game over");
-                    Amazon2D[] white = {amazons[0],amazons[1],amazons[2],amazons[3]};
-                    Amazon2D[] black = {amazons[4],amazons[5],amazons[6],amazons[7]};
-                    System.out.println(getTerritory(white) + "   " + getTerritory(black));
 
-                    gameLoop.endGame(getTerritory(white), getTerritory(black));
-                }
                 if(gameLoop.getCurrentSide() == 'W'){
                     gameLoop.setCurrentSide('B');
                 }else if(gameLoop.getCurrentSide() == 'B'){
@@ -338,28 +359,7 @@ public class GameView extends View2D {
 
     }
 
-    private int getTerritory(Amazon2D[] colour){
-        int[][] territory = new int[10][10];
-        for(int i = 0; i<colour.length; i++) {
-            int terSize = (colour[i].countTerritory(boardCoordinates))[0].length;
-            for (int j = 0; j < terSize; j++) {
-                territory[colour[i].countTerritory(boardCoordinates)[0][j]][colour[i].countTerritory(boardCoordinates)[1][j]] = 1;
-            }
-        }
-        int oneCount = 0;
-        for(int i = 0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                //System.out.print(territory[j][i]);
-                if(territory[j][i] == 1){
-                    oneCount++;
-                }
-            }
-            //System.out.println();
-        }
-        //System.out.println(oneCount);
 
-        return oneCount;
-    }
 
 
     private Coordinate getCellCenter(Cell cell) {

@@ -13,7 +13,7 @@ public class GameLoop {
 
     private GameView gameView;
     private Board2D board2D;
-    //private boolean running = false;
+    private boolean running = false;
     private Cell[][] boardCoordinates;
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow;
@@ -37,38 +37,27 @@ public class GameLoop {
 
     }
 
-//    public boolean isRunning(){
-//        if (running){
-//            return true;
-//        }
-//        else{
-//            return false;
-//        }
-//    }
-    private void update(){
+    public boolean isRunning() {
+        return running;
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
+    private void update() {
+        if(this.checkEnd()){
+            running = false;
+        }
 
 
     }
 
-   private void initialiseGame(){
-       board2D = new Board2D();
-       boardCoordinates = board2D.getBoardCoordinates();
-       this.amazons = new Amazon2D[8];
 
-   }
+    private void initialiseGame() {
+        board2D = new Board2D();
+        boardCoordinates = board2D.getBoardCoordinates();
+        this.amazons = new Amazon2D[8];
+
+    }
+
     private void placePieces() {
         amazons[0] = new Amazon2D('W', boardCoordinates[0][3]);
         amazons[1] = new Amazon2D('W', boardCoordinates[9][3]);
@@ -87,6 +76,11 @@ public class GameLoop {
     public void endGame(int wScore, int bScore){
         ScoreView scoreTime = new ScoreView(viewManager, wScore, bScore);
         this.viewManager.push(scoreTime);
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -121,16 +115,19 @@ public class GameLoop {
         this.currentSide = currentSide;
     }
 
-    class GameThread extends Thread{
+    class GameThread extends Thread {
 
         @Override
         public void run() {
-
-            update();
+            running = true;
+            while(running) {
+                update();
+            }
 
 
         }
     }
+    /*
     public void turnOrder(){
         int isolCount = 0;
         for(int i = 0; i<amazons.length; i++) {
@@ -183,7 +180,7 @@ public class GameLoop {
 
 
 
-}
+
 
 
 

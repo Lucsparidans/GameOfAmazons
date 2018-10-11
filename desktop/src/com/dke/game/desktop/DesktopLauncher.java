@@ -15,7 +15,7 @@ public class DesktopLauncher {
         config.title = "Game of Amazons";
 
         config.resizable = false;
-        DisplayMode displayMode = DisplayMode.HIGH_REZ;
+        DisplayMode displayMode = DisplayMode.LOW_REZ;
         switch (displayMode) {
             case LOW_REZ:
                 config.fullscreen = false;
