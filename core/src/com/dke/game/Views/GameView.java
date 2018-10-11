@@ -18,16 +18,6 @@ import com.dke.game.Models.GraphicalModels.*;
 
 import java.util.ArrayList;
 
-//TODO:
-/*
-- Move the gameLoop related parts to the gameLoop class, in order to respect the model view controller architecture.
-- Restructure input handling to be able to provide the received input/info to the gameLoop where it will be precessed
-    + This class can still do a bit of the pre-processing like finding the cell relative to the selected coordinates.
-- Join the game logic with the graphics part.
-- Setup working phase system.
-    + Work out the foreseen complications.
--
- */
 public class GameView extends View2D {
 
 
@@ -82,23 +72,24 @@ public class GameView extends View2D {
 
     @Override
     public void render() {
+synchronized (this) {
+    float delta = Gdx.graphics.getDeltaTime();
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    printArrows();
+    stage.act(delta);
+    stage.draw();
+    ui.act(delta);
+    ui.draw();
+    handleInput();
+    if (!gameLoop.isRunning()) {
+        //System.out.println("Game over");
+        Amazon2D[] white = {amazons[0], amazons[1], amazons[2], amazons[3]};
+        Amazon2D[] black = {amazons[4], amazons[5], amazons[6], amazons[7]};
+        //System.out.println(getTerritory(white) + "   " + getTerritory(black));
+        gameLoop.endGame(getTerritory(white), getTerritory(black));
 
-            float delta = Gdx.graphics.getDeltaTime();
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            printArrows();
-            stage.act(delta);
-            stage.draw();
-            ui.act(delta);
-            ui.draw();
-            handleInput();
-            if(!gameLoop.isRunning()){
-                //System.out.println("Game over");
-                Amazon2D[] white = {amazons[0],amazons[1],amazons[2],amazons[3]};
-                Amazon2D[] black = {amazons[4],amazons[5],amazons[6],amazons[7]};
-                //System.out.println(getTerritory(white) + "   " + getTerritory(black));
-                gameLoop.endGame(getTerritory(white), getTerritory(black));
-
-            }
+    }
+}
 
     }
     private int getTerritory(Amazon2D[] colour){
