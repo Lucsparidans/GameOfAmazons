@@ -4,7 +4,7 @@ import com.dke.game.Views.View;
 import java.util.Stack;
 
 public class ViewManager {
-    private static Stack<View> viewStack = new Stack<>();
+    private static Stack<View> viewStack = new Stack<View>();
     public ViewManager pop(){
         viewStack.peek().dispose();
         viewStack.pop();
