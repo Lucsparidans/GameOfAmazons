@@ -28,15 +28,18 @@ public class MenuView extends View {
 
 
         Table table = new Table();
-        table.setFillParent(true);
 
         Label title = new Label("Game of Amazons", MainLoop.skin,"title");
-        table.add(title).center();
-        table.row();
+        table.add(title).center().fillX();
+        table.row().fillX();
 
         textButton = new TextButton("Click me", MainLoop.skin);
         table.add(textButton).center();
+        table.row().fillX();
         createListeners();
+        //table.debugAll();
+        table.setFillParent(true);
+
 
         stage.addActor(table);
 
