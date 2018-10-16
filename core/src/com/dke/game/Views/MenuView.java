@@ -1,6 +1,7 @@
 package com.dke.game.Views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -66,6 +67,10 @@ public class MenuView extends View {
             Gdx.input.setInputProcessor(stage);
             stage.act();
             stage.draw();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+            new GameLoop(viewManager);
+
         }
     }
 
