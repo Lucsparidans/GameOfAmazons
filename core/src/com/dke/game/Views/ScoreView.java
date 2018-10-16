@@ -1,6 +1,7 @@
 package com.dke.game.Views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -32,6 +33,20 @@ public class ScoreView extends View {
         Label title = new Label("Scoreboard", MainLoop.skin,"title");
         table.add(title).center();
         table.row();
+
+        Label result;
+        if(white > black){
+            result = new Label("White won", MainLoop.skin);
+        }else if(black > white){
+            result = new Label("Black won", MainLoop.skin);
+        }
+        else{
+            result = new Label("It's a draw", MainLoop.skin);
+        }
+        result.setAlignment(Align.center);
+        table.add(result).center();
+        table.row();
+
         Label score = new Label("White: " + white + "  Black: " + black,MainLoop.skin);
         score.setAlignment(Align.center);
         table.add(score).center();
@@ -64,6 +79,10 @@ public class ScoreView extends View {
             Gdx.input.setInputProcessor(stage);
             this.stage.act();
             this.stage.draw();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+            viewManager.pop();
+            viewManager.pop();
         }
     }
 
