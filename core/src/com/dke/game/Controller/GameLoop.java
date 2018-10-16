@@ -86,14 +86,32 @@ public class GameLoop {
 
     public boolean checkEnd(){
        int checkCount = 0;
+
        for(int i = 0; i<amazons.length; i++){
+
            if(amazons[i].endMe(boardCoordinates)){
                checkCount++;
            }
        }
+        int current = 0;
+        for(int i = 0; i<amazons.length; i++) {
+
+            if (!(amazons[i].endMe(boardCoordinates))) {
+                amazons[i].possibleMoves(board2D);
+                if((amazons[i].getPossibleMoves()).size() == 0) {
+                    current++;
+                }
+            }
+        }
+        //if all isolated
        if(checkCount==amazons.length){
            return true;
        }
+       //if all isolated or immobile
+       else if(current == amazons.length - checkCount){
+           return true;
+       }
+
        return false;
     }
 
