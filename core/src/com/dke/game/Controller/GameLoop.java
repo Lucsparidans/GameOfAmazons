@@ -43,7 +43,7 @@ public class GameLoop {
 
 
     private void update() {
-        if(this.checkEnd()){
+        if(this.checkEnd() && this.getPhase() == 1){
             running = false;
         }
 
@@ -103,12 +103,26 @@ public class GameLoop {
                 }
             }
         }
+        int currentWhite = 0;
+        for(int j = 0; j<4; j++){
+            amazons[j].possibleMoves(board2D);
+            if(amazons[j].getPossibleMoves().size() == 0){
+                currentWhite++;
+        }
+        }
+        int currentBlack = 0;
+        for(int j = 4; j<8; j++){
+            amazons[j].possibleMoves(board2D);
+            if(amazons[j].getPossibleMoves().size() == 0){
+                currentBlack++;
+            }
+        }
         //if all isolated
        if(checkCount==amazons.length){
            return true;
        }
        //if all isolated or immobile
-       else if(current == amazons.length - checkCount){
+       else if(current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4){
            return true;
        }
 

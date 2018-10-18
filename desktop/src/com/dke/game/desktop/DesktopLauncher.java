@@ -15,7 +15,7 @@ public class DesktopLauncher {
         config.title = "Game of Amazons";
 
         config.resizable = false;
-        DisplayMode displayMode = DisplayMode.HIGH_REZ;
+        DisplayMode displayMode = DisplayMode.MED_REZ;
         setDisplayMode(config,displayMode);
 
         new LwjglApplication(new MainLoop(), config);
