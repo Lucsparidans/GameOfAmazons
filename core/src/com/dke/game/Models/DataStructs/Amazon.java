@@ -196,6 +196,18 @@ protected void updateCell(Cell c){
     }
 
 
+    public int countOwnTerritory(int[][] ownTerritory){
+        int territory = 0;
+        for(int i = 10; i<10; i++){
+            for(int j = 0; j<10; j++){
+                if(ownTerritory[i][j] == 1){
+                    territory++;
+                }
+            }
+        }
+        return territory;
+    }
+
 
 
     public boolean endMe(Cell[][] board){
