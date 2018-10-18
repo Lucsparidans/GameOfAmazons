@@ -7,19 +7,21 @@ import java.util.List;
 
 public class TreeNode<Double> {
     // Board2D board2D;
-    ArrayList<Amazon> enemyQueens;
-    ArrayList<Amazon> ourQueens;
-    Cell cell;
-    List<TreeNode<Double>> children = new ArrayList<TreeNode<Double>>(); //connections
-    double value;
-    String gameState = null;
-    String[][] board;
-
+    private ArrayList<Amazon> enemyQueens;
+    private ArrayList<Amazon> ourQueens;
+    private Cell cell;
+    private List<TreeNode<Double>> children = new ArrayList<TreeNode<Double>>(); //connections
+    private double value;
+    private String gameState = null;
+    private String[][] board;
+    private Cell[][] boardCoordinates;
+    private Board2D board2D;
 
     //constructor
-    public TreeNode(double data) {
+    public TreeNode(double data, Board2D board2D) {
         this.value = data;
-
+        this.board2D = board2D;
+        this.boardCoordinates = board2D.getBoardCoordinates();
     }
 
     /**
@@ -84,14 +86,26 @@ public class TreeNode<Double> {
                 Cell ourQueenCell = queen.getCell();
                 int i = ourQueenCell.getI();
                 int j = ourQueenCell.getJ();
-                ArrayList<Cell> territory = queen.countTerritory(board); //basically how many cells are free to use from that position
+                int[][] territory = queen.countTerritory(boardCoordinates); //basically how many cells are free to use from that position
                 //WARNING: due to no coordinates, can't put the location of the queen in question.
-                value = +territory.size();
+                value = territoryToInt(territory);
                 //Score"territory" ends
             }
 
         }
         return value;
+    }
+
+    private int territoryToInt(int[][] territory){
+        int count = 0;
+        for (int i = 0; i < territory.length; i++) {
+            for (int j = 0; j < territory[i].length; j++) {
+                if(territory[i][j] == 1){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public double shotsHeuristics() {
@@ -138,19 +152,19 @@ public class TreeNode<Double> {
         return gameState;
     }
 
-    public void stringToBoard(String state){
-        char[] cellIDs = state.toCharArray();
-      int k= 0;
-      Piece piece;
-        for (char cellID: cellIDs ) {
-          String ID = ((String) cellID);
-            for(int i = 0;i<10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    board[i][j] = cellID;
-                }
-            }
-
-
-
-    }
+//    public void stringToBoard(String state) {
+//        char[] cellIDs = state.toCharArray();
+//        int k = 0;
+//        Piece piece;
+//        for (char cellID : cellIDs) {
+//            String ID = ((String) cellID);
+//            for (int i = 0; i < 10; i++) {
+//                for (int j = 0; j < 10; j++) {
+//                    board[i][j] = cellID;
+//                }
+//            }
+//
+//
+//        }
+//    }
 }

@@ -2,25 +2,27 @@ package com.dke.game.Models.AI;
 
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
+import com.dke.game.Models.GraphicalModels.Board2D;
 
 import java.util.ArrayList;
 
 public class GameStateTree {
-    TreeNode<Double> stateRoot;
-    Amazon queen;
-
+    private TreeNode<Double> stateRoot;
+    private Amazon queen;
+    private ArrayList<Cell> possibleMoves;
     public GameStateTree(Amazon queen) {
         this.queen = queen; //initial queen
     }
 
-    public void makeTree(){
+    public void makeTree(Board2D board2d){
         //basically need the state of the board per queen's move
         //queens possible moves
         //each move individually stored in a node with other queen's locations
         //need to save which cell is occupied
         for (Amazon queen:stateRoot.ourQueens
              ) {
-            ArrayList<Cell> possibleMoves= queen.getPossibleMoves();
+            queen.possibleMoves(board2d);
+            possibleMoves = queen.getPossibleMoves();
 
         }
 
