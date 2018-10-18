@@ -19,8 +19,7 @@ public class GameStateTree {
         //queens possible moves
         //each move individually stored in a node with other queen's locations
         //need to save which cell is occupied
-        for (Amazon queen:stateRoot.ourQueens
-             ) {
+        for (Amazon queen:stateRoot.getOurQueens()) {
             queen.possibleMoves(board2d);
             possibleMoves = queen.getPossibleMoves();
 
@@ -30,7 +29,7 @@ public class GameStateTree {
        for(Cell cell: possibleMoves){
 
            queen.move(cell);
-           stateRoot.allQueens.add(queen);//add queen to the state
+           stateRoot.addQueen(queen);//add queen to the state
            //add position of others to the state
 
        }

@@ -1,7 +1,9 @@
 package com.dke.game.Models.AI;
 
-import com.dke.game.Models.DataStructs.*;
+import com.dke.game.Models.DataStructs.Amazon;
+import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Board2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,14 @@ public class TreeNode<Double> {
         this.value = data;
         this.board2D = board2D;
         this.boardCoordinates = board2D.getBoardCoordinates();
+    }
+
+    public void addQueen(Amazon amazon){
+        this.ourQueens.add(amazon);
+    }
+
+    public ArrayList<Amazon> getOurQueens() {
+        return ourQueens;
     }
 
     /**
