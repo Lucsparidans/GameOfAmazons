@@ -156,7 +156,6 @@ synchronized (this) {
             repeat = false;
             if (gameLoop.getPhase() == 1) {
                 phaseOne();
-                System.out.println(amazons[0].countOwnTerritory(amazons[0].countTerritory(boardCoordinates)));
             } else if (gameLoop.getPhase() == 2) {
                 phaseTwo();
             } else if (gameLoop.getPhase() == 3) {

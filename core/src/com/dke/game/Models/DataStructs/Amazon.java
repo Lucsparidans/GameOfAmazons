@@ -196,18 +196,6 @@ protected void updateCell(Cell c){
     }
 
 
-    public int countOwnTerritory(int[][] ownTerritory){
-        int territory = 0;
-        for(int i = 10; i<10; i++){
-            for(int j = 0; j<10; j++){
-                if(ownTerritory[i][j] == 1){
-                    territory++;
-                }
-            }
-        }
-        return territory;
-    }
-
 
 
     public boolean endMe(Cell[][] board){
@@ -359,10 +347,6 @@ protected void updateCell(Cell c){
         return board;
     }
 
-    /*
-    * @param board2d
-    * what does this do?
-    * */
     public void possibleMoves(Board2D board2D)
     {
         Cell[][] boardCoordinates = board2D.getBoardCoordinates();
@@ -508,10 +492,7 @@ protected void updateCell(Cell c){
             }
         }
     }
-/*
-*
-* @return possibleMoves list
-* */
+
     public ArrayList<Cell> getPossibleMoves() {
         return possibleMoves;
     }
