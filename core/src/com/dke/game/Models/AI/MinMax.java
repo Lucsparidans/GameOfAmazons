@@ -8,23 +8,23 @@ public class MinMax {
     public double MiniMax(TreeNode<Double> aNode,int depth, boolean maxPlayer){
 
         double chNodeVal;
-        if(depth==0|| aNode.children.isEmpty()){
-            return aNode.value;
+        if(depth==0|| aNode.getChildren().isEmpty()){
+            return aNode.getValue();
         }
         //no
         if(maxPlayer){
             double bestValue= (double)Integer.MIN_VALUE;
 
 
-            for(int i =0; i< aNode.children.size();i++){
-                chNodeVal= MiniMax(aNode.children.get(i),depth-1,false);
+            for(int i =0; i< aNode.getChildren().size();i++){
+                chNodeVal= MiniMax(aNode.getChildren().get(i),depth-1,false);
                 bestValue =Math.max( bestValue,chNodeVal);
 
             }return bestValue;
         } else{
             double bestValue= Integer.MAX_VALUE;
-            for(int i =0; i< aNode.children.size();i++){
-                chNodeVal= MiniMax(aNode.children.get(i),depth-1,true);
+            for(int i =0; i< aNode.getChildren().size();i++){
+                chNodeVal= MiniMax(aNode.getChildren().get(i),depth-1,true);
                 bestValue =Math.min( bestValue, chNodeVal);
 
             }return bestValue;
