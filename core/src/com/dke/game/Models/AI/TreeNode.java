@@ -3,27 +3,53 @@ package com.dke.game.Models.AI;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Board2D;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode<Double> {
     // Board2D board2D;
+    TreeNode root;
     private ArrayList<Amazon> enemyQueens;
     private ArrayList<Amazon> ourQueens;
+    private Cell[][] board;
     private Cell cell;
     private List<TreeNode<Double>> children = new ArrayList<TreeNode<Double>>(); //connections
     private double value;
     private String gameState = null;
-    private String[][] board;
+    private int coordinateI;
+    private int coordinateJ;
+
     private Cell[][] boardCoordinates;
-    private Board2D board2D;
+
+
+    public void setRoot(TreeNode root){
+        this.root=root;
+
+
+    }
+    public Cell[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(Cell[][] board) {
+        this.board = board;
+    }
 
     //constructor
-    public TreeNode(double data, Board2D board2D) {
-        this.value = data;
-        this.board2D = board2D;
-        this.boardCoordinates = board2D.getBoardCoordinates();
+    public TreeNode( int i, int j) {
+
+        this.coordinateI=i;
+        this.coordinateJ=j;
+
+    }
+
+    public double getValue() {
+        return value;
+    }
+    public void setValue(double value){
+        this.value=value;
     }
 
     public void addQueen(Amazon amazon){
@@ -62,7 +88,7 @@ public class TreeNode<Double> {
     }
 
     //calculating the score for the node
-    public double positioHheuristics(Cell[][] board) {
+    public double positioHheuristics() {
 
 
         for (Amazon queen : ourQueens) {
@@ -151,6 +177,7 @@ public class TreeNode<Double> {
         return value;
     }
 
+    // might be needed in the future
     public String boardToString(Cell[][] board){
         for(int i = 0;i<10; i++){
             for(int j =0; j<10;j++ ){
@@ -162,19 +189,5 @@ public class TreeNode<Double> {
         return gameState;
     }
 
-//    public void stringToBoard(String state) {
-//        char[] cellIDs = state.toCharArray();
-//        int k = 0;
-//        Piece piece;
-//        for (char cellID : cellIDs) {
-//            String ID = ((String) cellID);
-//            for (int i = 0; i < 10; i++) {
-//                for (int j = 0; j < 10; j++) {
-//                    board[i][j] = cellID;
-//                }
-//            }
-//
-//
-//        }
-//    }
+
 }
