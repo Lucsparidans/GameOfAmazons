@@ -8,7 +8,7 @@ public class MinMax {
     public double MiniMax(TreeNode<Double> aNode,int depth, boolean maxPlayer){
 
         double chNodeVal;
-        if((depth == 0) || aNode.getChildren().isEmpty()){
+        if(depth==0|| aNode.getChildren().isEmpty()){
             return aNode.getValue();
         }
         //no

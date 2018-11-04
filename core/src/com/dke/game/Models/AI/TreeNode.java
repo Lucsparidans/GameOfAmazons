@@ -60,6 +60,10 @@ public class TreeNode<Double> {
         return ourQueens;
     }
 
+    public double getValue() {
+        return value;
+    }
+
     /**
      * @return children
      */
@@ -110,7 +114,6 @@ public class TreeNode<Double> {
                                 }
                             }
                         }
-
                     }
                 } catch (IndexOutOfBoundsException ex) {
                     continue;
