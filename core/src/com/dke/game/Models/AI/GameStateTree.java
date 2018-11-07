@@ -1,9 +1,10 @@
 package com.dke.game.Models.AI;
 
+import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Board2D;
-
+import  com.dke.game.Controller.GameLoop.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,10 @@ public class GameStateTree {
     private TreeNode<Double> stateRoot;
     private Amazon queen;
     private ArrayList<Cell> possibleMoves;
+
+    //constructor
     public GameStateTree(Amazon queen) {
+
         this.queen = queen; //initial queen
     }
 
@@ -25,7 +29,9 @@ public class GameStateTree {
         for (Amazon queen:stateRoot.getOurQueens()) {// for every queen
             queen.possibleMoves(board2d); //get possible moves
             possibleMoves = queen.getPossibleMoves();
-            stateRoot.setBoard(Board2D.getBoard()); // save the board state into the stateroot node
+            GameLoop gameLoop= new GameLoop();
+            Board2D board2DD = gameLoop.getBoard2D();
+            stateRoot.setBoard(board2DD.getBoard()); // save the board state into the stateroot node
             for (Cell child : possibleMoves) { //for every one of thoes potential cells to palce the queen
 
 
@@ -33,13 +39,13 @@ public class GameStateTree {
                 node.setRoot(stateRoot);// set that it came from that state
                 node.getHeight(stateRoot);// we get height of the tree so far, should be 2
 
-                node.setBoard(Board2D.getBoard()); //we save that board state in tat node
+                node.setBoard(board2DD.getBoard()); //we save that board state in tat node
                 double dataNode = node.positioHheuristics();
                 node.setValue(dataNode);
 
 
             }
-            double data = MinMax.MiniMax(stateRoot, 2, true);//calling the minmax to tell us which one is the best
+            double data = MinMax.MiniMax(stateRoot, 2, true,Integer.MIN_VALUE,Integer.MAX_VALUE);//calling the minmax to tell us which one is the best
 
            List<TreeNode<Double>> children = stateRoot.getChildren();
             for (TreeNode child : children) {//search for the node with this value

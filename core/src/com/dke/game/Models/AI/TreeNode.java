@@ -39,19 +39,20 @@ public class TreeNode<Double> {
 
     //constructor
     public TreeNode( int i, int j) {
-
+//coordinates of chosen queen
         this.coordinateI=i;
         this.coordinateJ=j;
 
     }
 
-    public double getValue() {
-        return value;
-    }
+
     public void setValue(double value){
         this.value=value;
     }
 
+    public double getValue() {
+        return value;
+    }
     public void addQueen(Amazon amazon){
         this.ourQueens.add(amazon);
     }
@@ -60,9 +61,7 @@ public class TreeNode<Double> {
         return ourQueens;
     }
 
-    public double getValue() {
-        return value;
-    }
+
 
     /**
      * @return children
@@ -75,11 +74,11 @@ public class TreeNode<Double> {
         this.children.add(children);
     }
 
-    public Integer getHeight(TreeNode<Double> root) {
+    public int getHeight(TreeNode<Double> root) {
         if (root == null) {
             return 0;
         }
-        Integer h = 0;
+        int h = 0;
 
         for (TreeNode<Double> n : root.getChildren()) {
             h = Math.max(h, getHeight(n));
@@ -105,13 +104,14 @@ public class TreeNode<Double> {
                 try {
                     for (int i = arrowCell.getI() - 1; i <= arrowCell.getI() + 1; i++) {
                         for (int j = arrowCell.getJ() - 1; j <= arrowCell.getJ() + 1; j++) { // going around  and over the potential arrow placement
-
+                                if(i!=arrowCell.getI() && j!=arrowCell.getJ()){ //avoiding the cell in questioning
                             for (Amazon enemyQueen : enemyQueens) {
                                 //need list of enemy queens
 
                                 if (i == enemyQueen.getX() && j == enemyQueen.getY()) {
                                     value = +1;
                                 }
+                            }
                             }
                         }
                     }
@@ -127,7 +127,7 @@ public class TreeNode<Double> {
                 int j = ourQueenCell.getJ();
                 int[][] territory = queen.countTerritory(boardCoordinates); //basically how many cells are free to use from that position
                 //WARNING: due to no coordinates, can't put the location of the queen in question.
-                value = territoryToInt(territory);
+                value = + territoryToInt(territory);
                 //Score"territory" ends
             }
 
@@ -193,4 +193,6 @@ public class TreeNode<Double> {
     }
 
 
+    public void setBoard(Board2D board2DD) {
+    }
 }

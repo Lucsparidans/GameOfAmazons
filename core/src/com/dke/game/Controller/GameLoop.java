@@ -22,7 +22,14 @@ public class GameLoop {
     private int phase = 1;
     private char currentSide = 'W';
 
-
+    // get current board
+    public Board2D getBoard2D() {
+        return board2D;
+    }
+    // another constructor to avoid static fields
+    public GameLoop(){
+        //it shouldn't sabotage anything in the project
+    }
     public GameLoop(ViewManager viewmanager) {
         this.viewManager = viewmanager;
         arrow = new ArrayList<>();

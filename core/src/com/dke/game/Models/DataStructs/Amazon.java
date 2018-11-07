@@ -56,6 +56,8 @@ protected void updateCell(Cell c){
         return arrow;
     }
 
+    //counts the territorry around a queen
+
     public int[][] countTerritory(Cell[][] board){
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();

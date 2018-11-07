@@ -4,8 +4,8 @@ public class MinMax {
     public TreeNode<Double> node;
     boolean maxPlayer=true;
 
-    //returns the best score of all possible Board Status'
-    public double MiniMax(TreeNode<Double> aNode,int depth, boolean maxPlayer){
+    //returns the best score of all possible Board Status
+    public static double MiniMax(TreeNode<Double> aNode, int depth, boolean maxPlayer, double alpha, double beta){
 
         double chNodeVal;
         if(depth==0|| aNode.getChildren().isEmpty()){
@@ -17,15 +17,20 @@ public class MinMax {
 
 
             for(int i =0; i< aNode.getChildren().size();i++){
-                chNodeVal= MiniMax(aNode.getChildren().get(i),depth-1,false);
+                chNodeVal= MiniMax(aNode.getChildren().get(i),depth-1,false, alpha, beta);
                 bestValue =Math.max( bestValue,chNodeVal);
+                alpha = Math.max(alpha,bestValue);
+                    if(beta<=alpha) break;
 
             }return bestValue;
         } else{
             double bestValue= Integer.MAX_VALUE;
             for(int i =0; i< aNode.getChildren().size();i++){
-                chNodeVal= MiniMax(aNode.getChildren().get(i),depth-1,true);
+                chNodeVal= MiniMax(aNode.getChildren().get(i),depth-1,true,alpha, beta);
                 bestValue =Math.min( bestValue, chNodeVal);
+                beta= Math.min(beta,bestValue);
+                if(beta<= alpha) break;
+
 
             }return bestValue;
 
