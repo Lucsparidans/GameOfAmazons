@@ -10,11 +10,16 @@ public abstract class Amazon extends Piece{
     private final char side;    //B for black & W for white.
     private static String idString = "Amazon: ";
     private static int ID = 0;
-    private Integer idNumber;
+    private Integer idNumber; // what is this exactly??
     private Cell cell;
     private ArrayList<Cell> possibleMoves;
 
 
+    /* constructor
+     * @param side color of amazon
+      * @param cell position of amazon
+      * position of amazon saved
+      * color and number of amazon are saved*/
 
     public Amazon(char side, Cell cell){
         super(cell);
@@ -24,7 +29,7 @@ public abstract class Amazon extends Piece{
 
 
     }
-
+//returns id num(1-4) and color)
     @Override
     protected String getID() {
         return idString.concat(idNumber.toString() + side);
@@ -33,15 +38,19 @@ public abstract class Amazon extends Piece{
         return side;
     }
 
-
+/*@param c change of cell position*/
 protected void updateCell(Cell c){
         this.cell = c;
         updateLocation(c.getBottomLeft());
 }
+/* where is location????
+* @param c for coordinate
+* */
     protected void updateLocation(Coordinate c){
         this.location = c;
     }
-    
+    /*@param cell
+    * moves a piece to the given cell, frees the previous one */
     public void move(Cell cell){
         this.cell.unOccupy();
         updateCell(cell);
@@ -49,14 +58,21 @@ protected void updateCell(Cell c){
 
 
     }
-
+/*
+* @param board2D current board state
+* @param cell self explanatory
+* places an arrow in the given cell,
+* marks the cell occupied in the board
+* and gives back the arrow
+* */
     public Arrow2D shoot(Board2D board2D, Cell cell){
         Arrow2D arrow = new Arrow2D(cell);
         board2D.occupy(arrow, cell);
         return arrow;
     }
 
-    //counts the territorry around a queen
+    /* omg this is long not gonna read
+    *counts the territorry around a queen*/
 
     public int[][] countTerritory(Cell[][] board){
         int xPos = this.cell.getI();
@@ -199,7 +215,8 @@ protected void updateCell(Cell c){
 
 
 
-
+/*@param board[][]
+* counts how many cells are weaway from winning or losing???*/
     public boolean endMe(Cell[][] board){
         boolean isolated = false;
         int xPos = this.cell.getI();
@@ -335,7 +352,8 @@ protected void updateCell(Cell c){
         }
         return isolated;
     }
-
+/*
+* @param board[][] what, how??????????*/
     public Cell[][] clearPossibleMoves(Cell[][] board)
     {
         for(int i=0; i<9; i++)
@@ -351,7 +369,7 @@ protected void updateCell(Cell c){
 
     /*
     * @param board2d
-    * what does this do?
+    * what does this do????
     * */
     public void possibleMoves(Board2D board2D)
     {
@@ -499,13 +517,13 @@ protected void updateCell(Cell c){
         }
     }
 /*
-*
 * @return possibleMoves list
 * */
     public ArrayList<Cell> getPossibleMoves() {
         return possibleMoves;
     }
-
+/*
+* @return cell a specific cell */
     public Cell getCell() {
         return this.cell;
     }

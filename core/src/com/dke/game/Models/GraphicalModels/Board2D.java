@@ -24,11 +24,11 @@ public class Board2D extends Board {
     private Cell[][] boardCoordinates;
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
-
+//draw
     public Board2D() {
         this(new ShapeRenderer());
     }
-
+//draw
     public Board2D(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
         font.setColor(Color.BLACK);
@@ -38,11 +38,12 @@ public class Board2D extends Board {
         initialiseBoard();
     }
 
+//mark as occupied?????
     public Piece occupy(Piece piece, Cell cell){
         this.boardCoordinates[cell.getI()][cell.getJ()].occupy(piece);
         return piece;
     }
-
+//draw
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
@@ -120,6 +121,8 @@ public class Board2D extends Board {
         return super.width * Cell.CELL_SIZE;
     }
 
+    /*@return a matrix with locations of pieces
+    * occupied or not*/
     public Cell[][] getBoard() {
         return super.board.clone();
     }

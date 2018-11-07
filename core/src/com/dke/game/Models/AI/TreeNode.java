@@ -2,6 +2,7 @@ package com.dke.game.Models.AI;
 
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
+import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Board2D;
 import sun.reflect.generics.tree.Tree;
 
@@ -9,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode<Double> {
-    // Board2D board2D;
+     Board2D board2D;
     TreeNode root;
+    private Piece piece;
     private ArrayList<Amazon> enemyQueens;
     private ArrayList<Amazon> ourQueens;
     private Cell[][] board;
@@ -20,48 +22,61 @@ public class TreeNode<Double> {
     private String gameState = null;
     private int coordinateI;
     private int coordinateJ;
-
     private Cell[][] boardCoordinates;
-
-
-    public void setRoot(TreeNode root){
-        this.root=root;
-
-
-    }
-    public Cell[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(Cell[][] board) {
-        this.board = board;
-    }
 
     //constructor
     public TreeNode( int i, int j) {
-//coordinates of chosen queen
+        //coordinates of chosen queen
         this.coordinateI=i;
         this.coordinateJ=j;
 
     }
-
-
+    //root
+    public void setRoot(TreeNode root){
+        this.root=root;
+    }
+    //Board2D
+    public Board2D getBoard2D() {
+       return board2D;
+    }
+    public void setBoard2D(Board2D board2D) {
+       this.board2D = board2D;
+    }
+    //Board
+    public Cell[][] getBoard() {
+       return board;
+    }
+    public void setBoard(Cell[][] board) {
+      this.board = board;
+    }
+    //value
     public void setValue(double value){
         this.value=value;
     }
-
     public double getValue() {
         return value;
     }
+    //ourQ
     public void addQueen(Amazon amazon){
         this.ourQueens.add(amazon);
     }
-
     public ArrayList<Amazon> getOurQueens() {
         return ourQueens;
     }
+    public void setOurQueens(ArrayList<Amazon> ourQueens) {
+        this.ourQueens = ourQueens;
+    }
+    //enemyQ
+    public void addEnemyQueen(Amazon amazon) {
+        this.enemyQueens.add(amazon);
+    }
+    public void setEnemyQueens(ArrayList<Amazon> enemyQueens) {
+        this.enemyQueens = enemyQueens;
+    }
 
-
+    public ArrayList<Amazon> getEnemyQueens() {
+        return enemyQueens;
+    }
 
     /**
      * @return children
@@ -69,11 +84,10 @@ public class TreeNode<Double> {
     public List<TreeNode<Double>> getChildren() {
         return children;
     }
-
     public void setChild(TreeNode<Double> children) {
         this.children.add(children);
     }
-
+    //height of tree from that node
     public int getHeight(TreeNode<Double> root) {
         if (root == null) {
             return 0;
@@ -86,12 +100,12 @@ public class TreeNode<Double> {
         return h + 1;
     }
 
-    public void setAllQueens(ArrayList<Amazon> allQueens) {
+    /*public void setAllQueens(ArrayList<Amazon> allQueens) {
         this.ourQueens = allQueens;
-    }
+    }*/
 
     //calculating the score for the node
-    public double positioHheuristics() {
+    public void positioHheuristics() {
 
 
         for (Amazon queen : ourQueens) {
@@ -132,7 +146,7 @@ public class TreeNode<Double> {
             }
 
         }
-        return value;
+
     }
 
     private int territoryToInt(int[][] territory){
@@ -147,7 +161,7 @@ public class TreeNode<Double> {
         return count;
     }
 
-    public double shotsHeuristics() {
+    public void shotsHeuristics() {
 
         for (Amazon queen : ourQueens) {
 
@@ -177,7 +191,7 @@ public class TreeNode<Double> {
 
 
         }
-        return value;
+
     }
 
     // might be needed in the future
@@ -193,6 +207,5 @@ public class TreeNode<Double> {
     }
 
 
-    public void setBoard(Board2D board2DD) {
-    }
+
 }

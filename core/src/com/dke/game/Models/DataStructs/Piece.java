@@ -3,6 +3,8 @@ package com.dke.game.Models.DataStructs;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class Piece extends Actor {
+    /*
+    *@param cell occupied */
     public Piece(Cell cell) {
         this.location = cell.getBottomLeft();
         cell.occupy(this);

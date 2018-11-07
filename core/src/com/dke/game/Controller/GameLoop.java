@@ -32,7 +32,7 @@ public class GameLoop {
     }
     public GameLoop(ViewManager viewmanager) {
         this.viewManager = viewmanager;
-        arrow = new ArrayList<>();
+        arrow = new ArrayList<Arrow2D>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
         gameView.getStage().addActor(board2D);
