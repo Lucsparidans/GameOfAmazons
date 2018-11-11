@@ -9,6 +9,10 @@ import com.badlogic.gdx.utils.Align;
 import com.dke.game.Controller.MainLoop;
 import com.dke.game.Controller.ViewManager;
 
+/**
+ * View that shows the score
+ */
+
 public class ScoreView extends View {
 
     private Stage stage;

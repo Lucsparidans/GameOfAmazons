@@ -1,5 +1,8 @@
 package com.dke.game.Models.DataStructs;
 
+/**
+ * The cell class of which the array in the board class exists, this is basically a container for the datastructures we might need
+ */
 public class Cell {
     private Piece content;
     private boolean isAvailable = false;

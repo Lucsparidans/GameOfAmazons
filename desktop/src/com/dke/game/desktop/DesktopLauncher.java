@@ -9,7 +9,7 @@ import com.dke.game.Models.DataStructs.Cell;
 public class DesktopLauncher {
 
     private static LwjglApplicationConfiguration config;
-
+    //Platform specific launcher for PC
     public static void main(String[] args) {
         config = new LwjglApplicationConfiguration();
         config.title = "Game of Amazons";
@@ -22,6 +22,7 @@ public class DesktopLauncher {
 
 
     }
+    //Multiple display configurations you can choose from by changing the displayMode variable above
     private static void setDisplayMode(LwjglApplicationConfiguration config,DisplayMode displayMode){
         switch (displayMode) {
             case LOW_REZ:
@@ -38,11 +39,12 @@ public class DesktopLauncher {
                 Cell.CELL_SIZE = 60;
                 break;
             case HIGH_REZ:
-                config.fullscreen = true;
+                config.fullscreen = false;
                 config.width = 1920;
                 config.height = 1080;
                 Cell.CELL_SIZE = 90;
                 break;
+
         }
     }
 
