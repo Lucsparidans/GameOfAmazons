@@ -12,6 +12,9 @@ import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.MainLoop;
 import com.dke.game.Controller.ViewManager;
 
+/**
+ * Menu
+ */
 
 public class MenuView extends View {
 

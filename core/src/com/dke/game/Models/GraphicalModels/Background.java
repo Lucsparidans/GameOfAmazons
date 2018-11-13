@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Background extends Actor {
+    /**
+     * The background as an object to be able to dfraw it to the stage as an actor
+     */
     private Texture image;
     public Background() {
         image = new Texture(Gdx.files.internal("Images/Background-2.jpg"));

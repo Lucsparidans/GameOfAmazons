@@ -10,6 +10,9 @@ import com.dke.game.Models.DataStructs.Coordinate;
 import java.util.ArrayList;
 
 public class UIOverlaySquare extends Actor {
+    /**
+     * Graphical class to draw the path of were a piece can move after being selected
+     */
     private ArrayList<Cell> todo;
     private ShapeRenderer renderer;
     private Cell[][] boardCoordninates;

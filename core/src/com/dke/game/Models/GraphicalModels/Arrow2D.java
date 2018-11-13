@@ -7,6 +7,9 @@ import com.dke.game.Models.DataStructs.Arrow;
 import com.dke.game.Models.DataStructs.Cell;
 
 public class Arrow2D extends Arrow {
+    /**
+     * Graphical information of the arrows
+     */
     private Texture icon;
 
     public Arrow2D(Cell cell) {

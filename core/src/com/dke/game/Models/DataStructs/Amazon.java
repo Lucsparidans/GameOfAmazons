@@ -6,6 +6,9 @@ import com.dke.game.Models.GraphicalModels.Board2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * The amazon/queen piece and all its representational data
+ */
 public abstract class Amazon extends Piece{
     private final char side;    //B for black & W for white.
     private static String idString = "Amazon: ";

@@ -19,7 +19,9 @@ import com.dke.game.Models.GraphicalModels.*;
 import java.util.ArrayList;
 
 public class GameView extends View2D {
-
+    /**
+     * The view that is displayed during the game
+     */
 
     public static final ShapeRenderer shapeRenderer = new ShapeRenderer();
     private GameLoop gameLoop;
@@ -70,9 +72,9 @@ public class GameView extends View2D {
         stage.getViewport().update(width, height, true);
     }
 
-    @Override
+    @Override //Method from libGdX which renders anything you put in there on a loop
     public void render() {
-synchronized (this) {
+synchronized (this) {//<-thread stuff
     float delta = Gdx.graphics.getDeltaTime();
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     printArrows();
@@ -92,6 +94,7 @@ synchronized (this) {
 }
 
     }
+    //Way to calculate the amount of territory a player has left
     private int getTerritory(Amazon2D[] colour){
         int[][] territory = new int[10][10];
         for(int i = 0; i<colour.length; i++) {
@@ -130,6 +133,7 @@ synchronized (this) {
         stage.dispose();
     }
 
+    //Print the arrows played to the screen by putting them in the stage-actors array
     private void printArrows(){
         for (Arrow2D arrow:arrow2DS) {
             if(!stage.getActors().contains(arrow,false)){
@@ -138,7 +142,7 @@ synchronized (this) {
         }
     }
 
-    @Override
+    @Override //Returns the cell the player clicked on according to the coordinates they selected with the mouse
     protected Cell getSelectedCell() {
 
         int x = Gdx.input.getX();
@@ -148,7 +152,7 @@ synchronized (this) {
 
     }
 
-    @Override
+    @Override //Use  input to do somethings like moving the pieces
     protected void handleInput() {
         super.handleInput();
 

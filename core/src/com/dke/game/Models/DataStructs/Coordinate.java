@@ -1,5 +1,8 @@
 package com.dke.game.Models.DataStructs;
 
+/**
+ * Container to group a x and y coordinate in one object
+ */
 public class Coordinate {
     private int xPos;
     private int yPos;

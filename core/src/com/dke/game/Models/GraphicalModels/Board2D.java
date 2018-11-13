@@ -15,6 +15,9 @@ import com.dke.game.Models.DataStructs.Piece;
 
 
 public class Board2D extends Board {
+    /**
+     * The graphical information of the board class, this class also contain all the information about the board there is.
+     */
 
     private static ShapeRenderer shapeRenderer;
     private final int X_POS_BOARD = (Gdx.graphics.getWidth() / 2) - (this.calcBoardWidth() / 2);

@@ -7,6 +7,9 @@ import com.dke.game.Controller.ViewManager;
 
 
 public abstract class View extends InputAdapter implements ApplicationListener {
+    /**
+     * Class that represents what you see on the screen
+     */
     protected ViewManager viewManager;
 
     protected View(ViewManager viewManager) {

@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 
+/**
+ * Graphical information of the amazon/queen
+ */
 public class Amazon2D extends Amazon {
     private Sprite icon;
 

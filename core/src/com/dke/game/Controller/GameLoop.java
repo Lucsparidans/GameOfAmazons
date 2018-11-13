@@ -1,4 +1,7 @@
 package com.dke.game.Controller;
+/**
+ * Class that represents the controller from the model view controller architecture
+ */
 
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -43,12 +46,12 @@ public class GameLoop {
 
 
     }
-
+    //Thread stuff
     public boolean isRunning() {
         return running;
     }
 
-
+    //Tread stuff
     private void update() {
         if(this.checkEnd() && this.getPhase() == 1){
             running = false;
@@ -57,14 +60,14 @@ public class GameLoop {
 
     }
 
-
+    //initial setup of the game
     private void initialiseGame() {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
 
     }
-
+    //Place the amazons on the board
     private void placePieces() {
         amazons[0] = new Amazon2D('W', boardCoordinates[0][3]);
         amazons[1] = new Amazon2D('W', boardCoordinates[9][3]);
@@ -80,6 +83,7 @@ public class GameLoop {
         }
 
     }
+    //Push new view and some thread stuff
     public void endGame(int wScore, int bScore){
         ScoreView scoreTime = new ScoreView(viewManager, wScore, bScore);
         this.viewManager.push(scoreTime);
@@ -90,7 +94,7 @@ public class GameLoop {
         }
 
     }
-
+    //Check if the game has reached an end condition
     public boolean checkEnd(){
        int checkCount = 0;
 
@@ -153,7 +157,7 @@ public class GameLoop {
     public void setCurrentSide(char currentSide) {
         this.currentSide = currentSide;
     }
-
+    //Thread class
     class GameThread extends Thread {
 
         @Override
