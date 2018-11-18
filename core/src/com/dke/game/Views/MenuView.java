@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -31,14 +32,28 @@ public class MenuView extends View {
         Table table = new Table();
 
         Label title = new Label("Game of Amazons", MainLoop.skin,"title");
-        table.add(title).center().fillX();
-        table.row().fillX();
+        table.add(title).top().fillX();
+        table.row();
 
         textButton = new TextButton("Click me", MainLoop.skin);
-        table.add(textButton).center();
-        table.row().fillX();
+        table.add(textButton).center().fillX();
+        table.row();
+
+        String[] content = {"Human", "AI"};
+        SelectBox<String> player1 = new SelectBox<String>(MainLoop.skin);
+        player1.setItems(content);
+        SelectBox<String> player2 = new SelectBox<String>(MainLoop.skin);
+        player2.setItems(content);
+        Table players = new Table();
+        players.add(new Label("Player 1", MainLoop.skin));
+        players.add(new Label("Player 2", MainLoop.skin));
+        players.row();
+        players.add(player1).fillX();
+        players.add(player2).fillX();
+        table.add(players).center().fillX();
+        table.row();
         createListeners();
-        //table.debugAll();
+        table.debugAll();
         table.setFillParent(true);
 
 

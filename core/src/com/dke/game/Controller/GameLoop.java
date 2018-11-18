@@ -1,5 +1,6 @@
 package com.dke.game.Controller;
 
+import com.dke.game.Controller.Player.Human;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
@@ -27,7 +28,7 @@ public class GameLoop {
         this.viewManager = viewmanager;
         arrow = new ArrayList<>();
         initialiseGame();
-        gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
+        gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this, new Human('W'), new Human('B'));
         gameView.getStage().addActor(board2D);
         placePieces();
         this.viewManager.push(gameView);

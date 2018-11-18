@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dke.game.Controller.GameLoop;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
@@ -35,11 +36,13 @@ public class GameView extends View2D {
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow2DS;
     private boolean repeat = false;
+    private Player player1;
+    private Player player2;
 
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
 
 
-    public GameView(ViewManager viewManager, Board2D board2D, Cell[][] boardCoordinates, Amazon2D[] amazons, ArrayList<Arrow2D> arrow2Ds, GameLoop gameLoop) {
+    public GameView(ViewManager viewManager, Board2D board2D, Cell[][] boardCoordinates, Amazon2D[] amazons, ArrayList<Arrow2D> arrow2Ds, GameLoop gameLoop, Player player1, Player player2) {
         super(viewManager);
         this.gameLoop = gameLoop;
         this.arrow2DS = arrow2Ds;
@@ -54,6 +57,8 @@ public class GameView extends View2D {
         displayUI = false;
         this.actors = new ArrayList<>();
         this.arrow2DS = arrow2Ds;
+        this.player1 = player1;
+        this.player2 = player2;
 
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
