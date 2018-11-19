@@ -35,16 +35,18 @@ public class UIOverlaySquare extends Actor {
     public void addObject(Cell c){
         todo.add(c);
     }
-
-    @Override
+     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
 
         renderer.setColor(Color.BLACK);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Cell c:todo) {
-            Coordinate center = getCellCenter(c);
-            renderer.circle(center.getX(),center.getY(),Cell.CELL_SIZE/20);
+        if(!todo.isEmpty()) {
+            for (Cell c : todo) {
+
+                Coordinate center = getCellCenter(c);
+                renderer.circle(center.getX(), center.getY(), Cell.CELL_SIZE / 20);
+            }
         }
         renderer.end();
         batch.begin();

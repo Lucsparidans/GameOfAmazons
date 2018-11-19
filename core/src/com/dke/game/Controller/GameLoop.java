@@ -35,7 +35,7 @@ public class GameLoop {
     }
     public GameLoop(ViewManager viewmanager) {
         this.viewManager = viewmanager;
-        arrow = new ArrayList<Arrow2D>();
+        arrow = new ArrayList<>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
         gameView.getStage().addActor(board2D);
@@ -47,6 +47,8 @@ public class GameLoop {
 
     }
     //Thread stuff
+
+
     public boolean isRunning() {
         return running;
     }
@@ -170,6 +172,7 @@ public class GameLoop {
 
         }
     }
+}
     /*
     public void turnOrder(){
         int isolCount = 0;
@@ -218,7 +221,7 @@ public class GameLoop {
                 }
             }
 
-        */}
+        */
         //then black turn, change endMe to a loop to check all amazons
 
 

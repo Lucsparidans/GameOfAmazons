@@ -96,6 +96,7 @@ synchronized (this) {//<-thread stuff
     }
     //Way to calculate the amount of territory a player has left
     private int getTerritory(Amazon2D[] colour){
+        //Only used at the end of the game, basically using countTerritory it gives the 2 territory totals on end screen
         int[][] territory = new int[10][10];
         for(int i = 0; i<colour.length; i++) {
             int terSize = (colour[i].countTerritory(boardCoordinates))[0].length;
@@ -154,26 +155,28 @@ synchronized (this) {//<-thread stuff
 
     @Override //Use  input to do somethings like moving the pieces
     protected void handleInput() {
-        super.handleInput();
+        synchronized (this) {
+            super.handleInput();
 
-        if (Gdx.input.justTouched() || repeat) {
-            repeat = false;
-            if (gameLoop.getPhase() == 1) {
-                phaseOne();
-            } else if (gameLoop.getPhase() == 2) {
-                phaseTwo();
-            } else if (gameLoop.getPhase() == 3) {
-                phaseThree();
+            if (Gdx.input.justTouched() || repeat) {
+                repeat = false;
+                if (gameLoop.getPhase() == 1) {
+                    phaseOne();
+                } else if (gameLoop.getPhase() == 2) {
+                    phaseTwo();
+                } else if (gameLoop.getPhase() == 3) {
+                    phaseThree();
 
-                if(gameLoop.getCurrentSide() == 'W'){
-                    gameLoop.setCurrentSide('B');
-                }else if(gameLoop.getCurrentSide() == 'B'){
-                    gameLoop.setCurrentSide('W');
-                }else{
-                    Gdx.app.error("Unknown side", "Unknown/unexpected side");
+                    if (gameLoop.getCurrentSide() == 'W') {
+                        gameLoop.setCurrentSide('B');
+                    } else if (gameLoop.getCurrentSide() == 'B') {
+                        gameLoop.setCurrentSide('W');
+                    } else {
+                        Gdx.app.error("Unknown side", "Unknown/unexpected side");
+                    }
+                } else {
+                    Gdx.app.error("Unknown Phase", "Unknown/unexpected phase");
                 }
-            } else {
-                Gdx.app.error("Unknown Phase", "Unknown/unexpected phase");
             }
         }
     }
