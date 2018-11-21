@@ -43,9 +43,10 @@ public class UIOverlaySquare extends Actor {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         if(!todo.isEmpty()) {
             for (Cell c : todo) {
-
-                Coordinate center = getCellCenter(c);
-                renderer.circle(center.getX(), center.getY(), Cell.CELL_SIZE / 20);
+                if(c!=null) {
+                    Coordinate center = getCellCenter(c);
+                    renderer.circle(center.getX(), center.getY(), Cell.CELL_SIZE / 20);
+                }
             }
         }
         renderer.end();
