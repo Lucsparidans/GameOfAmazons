@@ -1,4 +1,4 @@
-package com.dke.game.Models.AI;
+package com.dke.game.Models.AI.Sara;
 
 public class MinMax {
     public TreeNode<Double> node;

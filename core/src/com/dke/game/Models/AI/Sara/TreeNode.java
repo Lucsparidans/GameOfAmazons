@@ -1,4 +1,4 @@
-package com.dke.game.Models.AI;
+package com.dke.game.Models.AI.Sara;
 
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;

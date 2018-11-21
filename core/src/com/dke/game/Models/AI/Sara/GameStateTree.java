@@ -1,11 +1,10 @@
-package com.dke.game.Models.AI;
+package com.dke.game.Models.AI.Sara;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Board2D;
-import  com.dke.game.Controller.GameLoop.*;
 
 import java.util.ArrayList;
 import java.util.List;

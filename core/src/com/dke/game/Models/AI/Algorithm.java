@@ -1,5 +1,7 @@
 package com.dke.game.Models.AI;
 
-public abstract class Algorithm {
+import com.dke.game.Models.DataStructs.Move;
 
+public interface Algorithm {
+    Move getBestMove();
 }
