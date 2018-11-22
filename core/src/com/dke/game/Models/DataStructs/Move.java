@@ -6,13 +6,12 @@ public class Move {
     private Cell queenTo;
     private Cell arrowTo;
     private Amazon2D queen;
-    private double score;
 
-    public Move(Cell newQueen, Cell arrowTo, Amazon2D queen, double score) {
+
+    public Move(Amazon2D queen, Cell newQueen, Cell arrowTo) {
         this.queenTo = newQueen;
         this.arrowTo = arrowTo;
         this.queen = queen;
-        this.score = score;
     }
 
     public Cell getQueenTo() {
@@ -27,7 +26,5 @@ public class Move {
         return queen;
     }
 
-    public double getScore() {
-        return score;
-    }
+
 }

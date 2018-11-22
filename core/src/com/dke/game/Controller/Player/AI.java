@@ -1,6 +1,7 @@
 package com.dke.game.Controller.Player;
 
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MiniMax;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;

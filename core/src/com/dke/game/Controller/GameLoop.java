@@ -3,6 +3,11 @@ package com.dke.game.Controller;
  * Class that represents the controller from the model view controller architecture
  */
 
+import com.dke.game.Controller.Player.AI;
+import com.dke.game.Controller.Player.Human;
+import com.dke.game.Controller.Player.Player;
+import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MiniMax;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Pieces;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -24,7 +29,10 @@ public class GameLoop {
     private volatile Thread thread;
     private ViewManager viewManager;
     private int phase = 1;
-    private char currentSide = 'W';
+    private Player white;
+    private Player black;
+    private Algorithm algo = new MiniMax();
+
 
 
     // get current board
@@ -32,21 +40,40 @@ public class GameLoop {
         return board2D;
     }
     // another constructor to avoid static fields
-    public GameLoop(){
-        //it shouldn't sabotage anything in the project
-    }
-    public GameLoop(ViewManager viewmanager) {
-        this.viewManager = viewmanager;
+    public GameLoop(ViewManager viewManager, String white_Type, String black_Type){
+        this.viewManager = viewManager;
         arrow = new ArrayList<>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
         gameView.getStage().addActor(board2D);
         placePieces();
         this.viewManager.push(gameView);
+
+        if(white_Type == "Human"){
+            if(black_Type=="AI"){
+                white = new Human('W');
+                black = new AI('B',algo,board2D);
+            }
+            else if(black_Type=="Human"){
+                white = new Human('W');
+                black = new Human('B');
+            }
+        }
+        else if(white_Type == "AI"){
+            if(black_Type=="AI"){
+                white = new AI('W',algo,board2D);
+                black = new AI('B',algo,board2D);
+            }
+            else if(black_Type=="Human"){
+                white = new AI('B',algo,board2D);
+                black = new Human('B');
+            }
+        }
         thread = new GameThread();
         thread.start();
-
-
+    }
+    public GameLoop(ViewManager viewmanager) {
+       this(viewmanager,"Human","Human");
     }
     //Thread stuff
 
@@ -155,13 +182,6 @@ public class GameLoop {
 
 
 
-    public char getCurrentSide() {
-        return currentSide;
-    }
-
-    public void setCurrentSide(char currentSide) {
-        this.currentSide = currentSide;
-    }
     //Thread class
     class GameThread extends Thread {
 

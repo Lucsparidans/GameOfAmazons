@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.MainLoop;
+import com.dke.game.Controller.Player.AI;
+import com.dke.game.Controller.Player.Human;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 
 /**
@@ -21,6 +24,10 @@ public class MenuView extends View {
 
     private Stage stage;
     private TextButton textButton;
+    private SelectBox<String> player1;
+    private SelectBox<String> player2;
+    private Player w;
+    private Player b;
 
 
     public MenuView(ViewManager viewManager) {
@@ -43,9 +50,9 @@ public class MenuView extends View {
         table.row();
 
         String[] content = {"Human", "AI"};
-        SelectBox<String> player1 = new SelectBox<String>(MainLoop.skin);
+        player1 = new SelectBox<String>(MainLoop.skin);
         player1.setItems(content);
-        SelectBox<String> player2 = new SelectBox<String>(MainLoop.skin);
+        player2 = new SelectBox<String>(MainLoop.skin);
         player2.setItems(content);
         Table players = new Table();
         players.add(new Label("White", MainLoop.skin));
@@ -68,9 +75,10 @@ public class MenuView extends View {
         textButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                new GameLoop(viewManager);
+                new GameLoop(viewManager,player1.getSelected(),player2.getSelected());
             }
         });
+
     }
 
     @Override
