@@ -4,6 +4,7 @@ package com.dke.game.Controller;
  */
 
 import com.dke.game.Models.DataStructs.Cell;
+import com.dke.game.Models.DataStructs.Pieces;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -24,6 +25,7 @@ public class GameLoop {
     private ViewManager viewManager;
     private int phase = 1;
     private char currentSide = 'W';
+
 
     // get current board
     public Board2D getBoard2D() {
@@ -67,6 +69,7 @@ public class GameLoop {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
+
 
     }
     //Place the amazons on the board

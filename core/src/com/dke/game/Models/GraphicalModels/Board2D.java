@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.dke.game.Models.DataStructs.Board;
-import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Coordinate;
-import com.dke.game.Models.DataStructs.Piece;
+import com.dke.game.Models.DataStructs.*;
 
 
 public class Board2D extends Board {
@@ -25,6 +22,7 @@ public class Board2D extends Board {
     //private final int MARGAIN_BACKGROUND = Cell.CELL_SIZE;
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
     private Cell[][] boardCoordinates;
+
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
 //draw
@@ -133,6 +131,7 @@ public class Board2D extends Board {
     private int calcBoardHeight() {
         return super.height * Cell.CELL_SIZE;
     }
+
 
     private void initialiseBoard() {
         for (int i = X_POS_BOARD; i < (super.height * Cell.CELL_SIZE + X_POS_BOARD); i += Cell.CELL_SIZE) {
