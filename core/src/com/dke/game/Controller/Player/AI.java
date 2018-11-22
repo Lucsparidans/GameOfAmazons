@@ -10,7 +10,8 @@ public class AI extends Player {
     private Algorithm algorithm;
     private Board2D board2D;
 
-    public AI(Algorithm algorithm, Board2D board2D) {
+    public AI(char side, Algorithm algorithm, Board2D board2D) {
+        super(side);
         this.algorithm = algorithm;
         this.board2D = board2D;
     }

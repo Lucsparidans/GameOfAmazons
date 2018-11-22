@@ -12,6 +12,7 @@ public class Arrow2D extends Arrow {
      */
     private Texture icon;
 
+
     public Arrow2D(Cell cell) {
         super(cell);
         this.icon = new Texture(Gdx.files.internal("Icons/Arrow.png"));
@@ -21,4 +22,8 @@ public class Arrow2D extends Arrow {
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(icon, location.getX(), location.getY(), Cell.CELL_SIZE,Cell.CELL_SIZE);
     }
+    public Cell getCell(){
+        return super.cell;
+    }
+
 }

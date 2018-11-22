@@ -374,7 +374,7 @@ protected void updateCell(Cell c){
     * @param board2d
     * what does this do????
     * */
-    public void possibleMoves(Board2D board2D)
+    public ArrayList<Cell> possibleMoves(Board2D board2D)
     {
         Cell[][] boardCoordinates = board2D.getBoardCoordinates();
         possibleMoves = new ArrayList<>();
@@ -518,6 +518,7 @@ protected void updateCell(Cell c){
                 }
             }
         }
+        return possibleMoves;
     }
 /*
 * @return possibleMoves list
