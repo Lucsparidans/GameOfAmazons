@@ -18,4 +18,18 @@ public class Arrow2D extends Arrow {
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(icon, location.getX(), location.getY(), Cell.CELL_SIZE,Cell.CELL_SIZE);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Arrow2D) {
+            if (this.getID().equals(((Arrow2D) obj).getID())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
 }

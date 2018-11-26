@@ -1,6 +1,7 @@
 package com.dke.game.Views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,6 +19,7 @@ import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.*;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class GameView extends View2D {
 
@@ -38,7 +40,7 @@ public class GameView extends View2D {
     private boolean repeat = false;
     private Player player1;
     private Player player2;
-
+    private Stack<Amazon2D> lastMoved = new Stack<>();
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
 
 
@@ -59,6 +61,7 @@ public class GameView extends View2D {
         this.arrow2DS = arrow2Ds;
         this.player1 = player1;
         this.player2 = player2;
+
 
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
@@ -137,9 +140,13 @@ synchronized (this) {
 
     private void printArrows(){
         for (Arrow2D arrow:arrow2DS) {
-            if(!stage.getActors().contains(arrow,false)){
+            if(!arrow.isAlive()){
+                stage.getActors().removeValue(arrow,false);
+            }
+            if(!stage.getActors().contains(arrow,false)&&arrow.isAlive()){
                 stage.addActor(arrow);
             }
+
         }
     }
 
@@ -176,6 +183,9 @@ synchronized (this) {
             } else {
                 Gdx.app.error("Unknown Phase", "Unknown/unexpected phase");
             }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
+            lastMoved.pop().undoLastShot();
         }
     }
 
@@ -310,6 +320,7 @@ synchronized (this) {
                 for (Cell test : pm) {
                     if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
                         selectedAmazon.move(test);
+                        lastMoved.add(selectedAmazon);
                         ui.clear();
                         selectedAmazon.possibleMoves(board2D);
                         uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
@@ -329,7 +340,7 @@ synchronized (this) {
                 ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
                 for (Cell test : pm) {
                     if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
-                        arrow2DS.add(selectedAmazon.shoot(board2D,test));
+                        arrow2DS.add(selectedAmazon.shoot(test));
                         ui.clear();
                         gameLoop.setPhase(1);
                     }

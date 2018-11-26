@@ -6,15 +6,26 @@ import com.dke.game.Models.GraphicalModels.Board2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * The amazon/queen piece and all its representational data
+ */
 public abstract class Amazon extends Piece{
     private final char side;    //B for black & W for white.
     private static String idString = "Amazon: ";
     private static int ID = 0;
-    private Integer idNumber;
+    private Integer idNumber; // what is this exactly??
     private Cell cell;
     private ArrayList<Cell> possibleMoves;
 
+    private Stack<Cell> previousMoves = new Stack<>();
+    private Stack<Cell> previousShots = new Stack<>();
 
+
+    /* constructor
+     * @param side color of amazon
+     * @param cell position of amazon
+     * position of amazon saved
+     * color and number of amazon are saved*/
 
     public Amazon(char side, Cell cell){
         super(cell);
@@ -24,7 +35,7 @@ public abstract class Amazon extends Piece{
 
 
     }
-
+    //returns id num(1-4) and color)
     @Override
     protected String getID() {
         return idString.concat(idNumber.toString() + side);
@@ -33,28 +44,51 @@ public abstract class Amazon extends Piece{
         return side;
     }
 
-
-protected void updateCell(Cell c){
+    /*@param c change of cell position*/
+    protected void updateCell(Cell c){
         this.cell = c;
         updateLocation(c.getBottomLeft());
-}
+    }
+    /* where is location????
+     * @param c for coordinate
+     * */
     protected void updateLocation(Coordinate c){
         this.location = c;
     }
-    
+    /*@param cell
+     * moves a piece to the given cell, frees the previous one */
     public void move(Cell cell){
+        previousMoves.add(this.cell);
         this.cell.unOccupy();
         updateCell(cell);
         cell.occupy(this);
-
-
     }
-
-    public Arrow2D shoot(Board2D board2D, Cell cell){
+    public void undoLastMove(){
+        Cell lastMove = previousMoves.pop();
+        move(lastMove);
+    }
+    /*
+     * @param board2D current board state
+     * @param cell self explanatory
+     * places an arrow in the given cell,
+     * marks the cell occupied in the board
+     * and gives back the arrow
+     * */
+    public Arrow2D shoot(Cell cell){
+        previousShots.add(cell);
         Arrow2D arrow = new Arrow2D(cell);
-        board2D.occupy(arrow, cell);
+        cell.occupy(arrow);
         return arrow;
     }
+    public void undoLastShot(){
+        Cell lastShot = previousShots.pop();
+        Arrow s = (Arrow)lastShot.getContent();
+        lastShot.unOccupy();
+        s.kill();
+    }
+
+    /* omg this is long not gonna read
+     *counts the territorry around a queen*/
 
     public int[][] countTerritory(Cell[][] board){
         int xPos = this.cell.getI();
@@ -197,7 +231,8 @@ protected void updateCell(Cell c){
 
 
 
-
+    /*@param board[][]
+     * counts how many cells are weaway from winning or losing???*/
     public boolean endMe(Cell[][] board){
         boolean isolated = false;
         int xPos = this.cell.getI();
@@ -322,10 +357,10 @@ protected void updateCell(Cell c){
 
             //console representation
             if(!stop) {
-               // System.out.println(xStack.peek() + "," + yStack.peek());
+                // System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                    //    System.out.print(checkArray[j][i] + " ");
+                        //    System.out.print(checkArray[j][i] + " ");
                     }
                     //System.out.println();
                 }
@@ -333,7 +368,8 @@ protected void updateCell(Cell c){
         }
         return isolated;
     }
-
+    /*
+     * @param board[][] what, how??????????*/
     public Cell[][] clearPossibleMoves(Cell[][] board)
     {
         for(int i=0; i<9; i++)
@@ -347,7 +383,11 @@ protected void updateCell(Cell c){
         return board;
     }
 
-    public void possibleMoves(Board2D board2D)
+    /*
+     * @param board2d
+     * what does this do????
+     * */
+    public ArrayList<Cell> possibleMoves(Board2D board2D)
     {
         Cell[][] boardCoordinates = board2D.getBoardCoordinates();
         possibleMoves = new ArrayList<>();
@@ -372,7 +412,7 @@ protected void updateCell(Cell c){
             if(negative){
                 if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()].isOccupied() ) {
                     possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()]);
-                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ()].setAvailable("true");
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ()].setAvailable("true");
                 }
                 else {
                     negative = false;
@@ -444,7 +484,7 @@ protected void updateCell(Cell c){
             if(negative){
                 if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()-i].isOccupied()) {
                     possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()-i]);
-                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].setAvailable("true");
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].setAvailable("true");
                 }
                 else {
                     negative = false;
@@ -474,7 +514,7 @@ protected void updateCell(Cell c){
             if(positive){
                 if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()+i].isOccupied()) {
                     possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()+i]);
-                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].setAvailable("true");
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].setAvailable("true");
                 }
                 else {
                     positive = false;
@@ -491,12 +531,16 @@ protected void updateCell(Cell c){
                 }
             }
         }
+        return possibleMoves;
     }
-
+    /*
+     * @return possibleMoves list
+     * */
     public ArrayList<Cell> getPossibleMoves() {
         return possibleMoves;
     }
-
+    /*
+     * @return cell a specific cell */
     public Cell getCell() {
         return this.cell;
     }
