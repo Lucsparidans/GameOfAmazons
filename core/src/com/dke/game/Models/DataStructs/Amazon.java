@@ -16,6 +16,10 @@ public abstract class Amazon extends Piece{
     private Integer idNumber; // what is this exactly??
     private Cell cell;
     private ArrayList<Cell> possibleMoves;
+    private ArrayList<Arrow2D> arrowShots = new ArrayList<>();
+    private Stack<Cell> lastMove = new Stack<>();
+    private Stack<Cell> lastShot = new Stack<>();
+
 
 
     /* constructor
@@ -55,23 +59,40 @@ protected void updateCell(Cell c){
     /*@param cell
     * moves a piece to the given cell, frees the previous one */
     public void move(Cell cell){
+        lastMove.add(cell);
         this.cell.unOccupy();
         updateCell(cell);
         cell.occupy(this);
 
 
     }
-/*
+
+    public ArrayList<Arrow2D> getArrowShots() {
+        return arrowShots;
+    }
+
+    /*
 * @param board2D current board state
 * @param cell self explanatory
 * places an arrow in the given cell,
 * marks the cell occupied in the board
 * and gives back the arrow
 * */
-    public Arrow2D shoot(Board2D board2D, Cell cell){
+    public void shoot(Cell cell){
         Arrow2D arrow = new Arrow2D(cell);
-        board2D.occupy(arrow, cell);
-        return arrow;
+        cell.occupy(arrow);
+        arrowShots.add(arrow);
+        lastShot.add(cell);
+    }
+    public void undoShot(){
+        Cell lastShot = this.lastShot.pop();
+        Arrow s = (Arrow)lastShot.getContent();
+        lastShot.unOccupy();
+        s.kill();
+    }
+    public void undoMove(){
+        Cell lastMove = this.lastMove.pop();
+        move(lastMove);
     }
 
     /* omg this is long not gonna read

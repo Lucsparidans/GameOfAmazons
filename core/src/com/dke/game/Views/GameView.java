@@ -136,9 +136,14 @@ synchronized (this) {//<-thread stuff
 
     //Print the arrows played to the screen by putting them in the stage-actors array
     private void printArrows(){
-        for (Arrow2D arrow:arrow2DS) {
-            if(!stage.getActors().contains(arrow,false)){
-                stage.addActor(arrow);
+        for (Amazon2D amazon:amazons) {
+            for (Arrow2D arrow:amazon.getArrowShots()) {
+                if(!arrow.isAlive()){
+                    stage.getActors().removeValue(arrow,false);
+                }
+                if(!stage.getActors().contains(arrow,false)&&arrow.isAlive()){
+                    stage.addActor(arrow);
+                }
             }
         }
     }
@@ -331,7 +336,7 @@ synchronized (this) {//<-thread stuff
                 ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
                 for (Cell test : pm) {
                     if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
-                        arrow2DS.add(selectedAmazon.shoot(board2D,test));
+                        selectedAmazon.shoot(test);
                         ui.clear();
                         gameLoop.setPhase(1);
                     }
