@@ -185,6 +185,9 @@ synchronized (this) {//<-thread stuff
 //
 //                    }
                     white.performTurn();
+                    if(!repeat){
+                        turnCounter++;
+                    }
                 }
                 else{
 //                    repeat = false;
@@ -197,12 +200,13 @@ synchronized (this) {//<-thread stuff
 //
 //                    }
                     black.performTurn();
+                    if(!repeat){
+                        turnCounter++;
+                    }
                 }
 
             }
-            if(!repeat){
-                turnCounter++;
-            }
+
         }
     }
 

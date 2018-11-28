@@ -15,7 +15,7 @@ public class DesktopLauncher {
         config.title = "Game of Amazons";
 
         config.resizable = false;
-        DisplayMode displayMode = DisplayMode.LOW_REZ;
+        DisplayMode displayMode = DisplayMode.HIGH_REZ;
         setDisplayMode(config,displayMode);
 
         new LwjglApplication(new MainLoop(), config);
@@ -39,7 +39,7 @@ public class DesktopLauncher {
                 Cell.CELL_SIZE = 60;
                 break;
             case HIGH_REZ:
-                config.fullscreen = false;
+                config.fullscreen = true;
                 config.width = 1920;
                 config.height = 1080;
                 Cell.CELL_SIZE = 90;
