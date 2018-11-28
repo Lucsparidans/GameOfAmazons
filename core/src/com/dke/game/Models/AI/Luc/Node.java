@@ -1,7 +1,5 @@
 package com.dke.game.Models.AI.Luc;
 
-import com.dke.game.Models.DataStructs.GameState;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,7 @@ public class Node<T> {
 
     private Node<T> parent = null;
 
-    public Node(T data) {
+    public Node(T data, Node<T> parent) {
         this.data = data;
     }
 

@@ -1,6 +1,5 @@
 package com.dke.game.Models.AI.Luc;
 
-import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.GameState;
 import com.dke.game.Models.DataStructs.Move;
@@ -23,7 +22,7 @@ public class Tree {
     public Tree(Board2D board2D, Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS) {
         initialState = new GameState(amazon2DS,arrow2DS,null);
 
-        rootNode = new Node<>(initialState);
+        rootNode = new Node<>(initialState, null);
         expandNode(rootNode);
     }
     public void expandNode(Node<GameState> current){
@@ -32,7 +31,7 @@ public class Tree {
         }
         ArrayList<GameState> possibleMoves = getPossibleStates(current);
         for (GameState g:possibleMoves) {
-            current.addChild(new Node<>(g));
+            current.addChild(new Node<>(g,current));
         }
         for (Node<GameState> node:current.getChildren()) {
             expandNode(node);
