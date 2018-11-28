@@ -40,7 +40,7 @@ public class Human extends Player {
                         phaseTwo();
                     } else if (phase == 3) {
                         phaseThree();
-
+                        view.setTurnCounter(view.getTurnCounter()+1);
                     }
     }
 
