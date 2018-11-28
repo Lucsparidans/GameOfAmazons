@@ -18,7 +18,9 @@ import com.dke.game.Models.DataStructs.Coordinate;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class GameView extends View2D {
@@ -162,6 +164,7 @@ synchronized (this) {
 
     @Override
     protected void handleInput() {
+
         super.handleInput();
 
         if (Gdx.input.justTouched() || repeat) {
@@ -184,8 +187,30 @@ synchronized (this) {
                 Gdx.app.error("Unknown Phase", "Unknown/unexpected phase");
             }
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
-            lastMoved.pop().undoLastShot();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F2)){
+            if(!lastMoved.isEmpty()) {
+                lastMoved.peek().undoLastShot();
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
+            if(!lastMoved.isEmpty()) {
+                lastMoved.peek().undoLastMove();
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F3)){
+            System.out.println("enter coords for lastMovedAmazon");
+            Scanner s = new Scanner(System.in);
+            int i=Integer.parseInt(s.next());
+            int j=Integer.parseInt(s.next());
+            if(!lastMoved.isEmpty()) {
+                lastMoved.peek().move(board2D.getBoardCoordinates()[i][j]);
+            }
+
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F4)){
+            if(!lastMoved.isEmpty()){
+                lastMoved.pop();
+            }
         }
     }
 
@@ -320,7 +345,9 @@ synchronized (this) {
                 for (Cell test : pm) {
                     if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
                         selectedAmazon.move(test);
-                        lastMoved.add(selectedAmazon);
+                        if(selectedAmazon.getSide()=='B') {
+                            lastMoved.add(selectedAmazon);
+                        }
                         ui.clear();
                         selectedAmazon.possibleMoves(board2D);
                         uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);

@@ -53,7 +53,7 @@ public class MenuView extends View {
         table.add(players).center().fillX();
         table.row();
         createListeners();
-        table.debugAll();
+       // table.debugAll();
         table.setFillParent(true);
 
 
