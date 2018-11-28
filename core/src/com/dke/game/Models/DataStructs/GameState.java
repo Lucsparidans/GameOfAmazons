@@ -12,8 +12,11 @@ public class GameState {
     private ArrayList<Arrow2D> arrow2DArrayList;
     private Move move;
 
-    public GameState(Board2D board2D, Amazon2D[] amazon2DArrayList, ArrayList<Arrow2D> arrow2DArrayList, Move move) {
-        this.board2D = board2D;
+
+
+    public GameState(Amazon2D[] amazon2DArrayList, ArrayList<Arrow2D> arrow2DArrayList, Move move) {
+        board2D = new Board2D();
+        board2D.placePieces(amazon2DArrayList,arrow2DArrayList);
         this.amazon2DArrayList = amazon2DArrayList;
         this.arrow2DArrayList = arrow2DArrayList;
         this.move = move;
@@ -33,5 +36,13 @@ public class GameState {
 
     public Move getMove() {
         return move;
+    }
+    public Board2D executeMove(){
+        Amazon2D amazon2D = move.getQueen();
+        Cell queenTo = move.getQueenTo();
+        Cell arrowTo = move.getArrowTo();
+        amazon2D.move(queenTo);
+        amazon2D.shoot(arrowTo);
+        return board2D;
     }
 }

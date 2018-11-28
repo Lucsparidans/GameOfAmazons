@@ -9,7 +9,7 @@ import java.util.Stack;
 /**
  * The amazon/queen piece and all its representational data
  */
-public abstract class Amazon extends Piece{
+public abstract class Amazon extends Piece {
     private final char side;    //B for black & W for white.
     private static String idString = "Amazon: ";
     private static int ID = 0;
@@ -24,11 +24,11 @@ public abstract class Amazon extends Piece{
 
     /* constructor
      * @param side color of amazon
-      * @param cell position of amazon
-      * position of amazon saved
-      * color and number of amazon are saved*/
+     * @param cell position of amazon
+     * position of amazon saved
+     * color and number of amazon are saved*/
 
-    public Amazon(char side, Cell cell){
+    public Amazon(char side, Cell cell) {
         super(cell);
         this.cell = cell;
         this.side = side;
@@ -36,29 +36,35 @@ public abstract class Amazon extends Piece{
 
 
     }
-//returns id num(1-4) and color)
+
+    //returns id num(1-4) and color)
     @Override
     protected String getID() {
         return idString.concat(idNumber.toString() + side);
     }
-    public char getSide(){
+
+    public char getSide() {
         return side;
     }
 
-/*@param c change of cell position*/
-protected void updateCell(Cell c){
+
+
+    /*@param c change of cell position*/
+    public void updateCell(Cell c) {
         this.cell = c;
         updateLocation(c.getBottomLeft());
-}
-/* where is location????
-* @param c for coordinate
-* */
-    protected void updateLocation(Coordinate c){
+    }
+
+    /* where is location????
+     * @param c for coordinate
+     * */
+    protected void updateLocation(Coordinate c) {
         this.location = c;
     }
+
     /*@param cell
-    * moves a piece to the given cell, frees the previous one */
-    public void move(Cell cell){
+     * moves a piece to the given cell, frees the previous one */
+    public void move(Cell cell) {
         lastMove.add(cell);
         this.cell.unOccupy();
         updateCell(cell);
@@ -72,41 +78,43 @@ protected void updateCell(Cell c){
     }
 
     /*
-* @param board2D current board state
-* @param cell self explanatory
-* places an arrow in the given cell,
-* marks the cell occupied in the board
-* and gives back the arrow
-* */
-    public void shoot(Cell cell){
+     * @param board2D current board state
+     * @param cell self explanatory
+     * places an arrow in the given cell,
+     * marks the cell occupied in the board
+     * and gives back the arrow
+     * */
+    public void shoot(Cell cell) {
         Arrow2D arrow = new Arrow2D(cell);
         cell.occupy(arrow);
         arrowShots.add(arrow);
         lastShot.add(cell);
     }
-    public void undoShot(){
+
+    public void undoShot() {
         Cell lastShot = this.lastShot.pop();
-        Arrow s = (Arrow)lastShot.getContent();
+        Arrow s = (Arrow) lastShot.getContent();
         lastShot.unOccupy();
         s.kill();
     }
-    public void undoMove(){
+
+    public void undoMove() {
         Cell lastMove = this.lastMove.pop();
         move(lastMove);
     }
 
     /* omg this is long not gonna read
-    *counts the territorry around a queen*/
+     *counts the territorry around a queen*/
 
-    public int[][] countTerritory(Cell[][] board){
+    public int[][] countTerritory(Cell[][] board) {
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
         int[][] checkArray = new int[10][10];
         boolean stop = false;
 
-        for (int i = 0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                if(board[i][j].getContentID().contains("Arrow") || board[i][j].getContentID().contains("Amazon")){
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (board[i][j].getContentID().contains("Arrow") || board[i][j].getContentID().contains("Amazon")) {
                     checkArray[i][j] = 3;
                 }
             }
@@ -115,33 +123,33 @@ protected void updateCell(Cell c){
         Stack yStack = new java.util.Stack();
         Stack xStore = new java.util.Stack();
         Stack yStore = new java.util.Stack();
-        while(!stop) {
+        while (!stop) {
             boolean moveMade = false;
             boolean taken = false;
 
             //Checking for free neighbouring tile
-            if(xPos !=9){
+            if (xPos != 9) {
                 if (checkArray[xPos + 1][yPos] == 0) {
 
                     xPos++;
                     moveMade = true;
                 }
-            } if (xPos!=9 && yPos != 9 && !moveMade){
-                if(checkArray[xPos + 1][yPos + 1] == 0) {
+            }
+            if (xPos != 9 && yPos != 9 && !moveMade) {
+                if (checkArray[xPos + 1][yPos + 1] == 0) {
 
                     xPos++;
                     yPos++;
                     moveMade = true;
                 }
             }
-            if(yPos!=9 && !moveMade) {
+            if (yPos != 9 && !moveMade) {
                 if (checkArray[xPos][yPos + 1] == 0) {
 
                     yPos++;
                     moveMade = true;
                 }
-            }
-            else if(yPos != 9 && xPos !=0 && !moveMade) {
+            } else if (yPos != 9 && xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos + 1] == 0) {
 
                     xPos--;
@@ -149,14 +157,14 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(xPos != 0 && !moveMade) {
+            if (xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos] == 0) {
 
                     xPos--;
                     moveMade = true;
                 }
             }
-            if(xPos != 0 && yPos != 0 && !moveMade) {
+            if (xPos != 0 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos - 1] == 0) {
 
                     xPos--;
@@ -164,14 +172,14 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(yPos != 0 && !moveMade) {
+            if (yPos != 0 && !moveMade) {
                 if (checkArray[xPos][yPos - 1] == 0) {
 
                     yPos--;
                     moveMade = true;
                 }
             }
-            if(xPos != 9 && yPos != 0 && !moveMade) {
+            if (xPos != 9 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos + 1][yPos - 1] == 0) {
 
                     xPos++;
@@ -180,12 +188,12 @@ protected void updateCell(Cell c){
                 }
             }
 
-            for(int i = 0; i<xStore.size(); i++) {
+            for (int i = 0; i < xStore.size(); i++) {
                 if (xStore.elementAt(i).equals(xPos) && yStore.elementAt(i).equals(yPos)) {
                     taken = true;
                 }
             }
-            if (checkArray[xPos][yPos] == 0 ) {
+            if (checkArray[xPos][yPos] == 0) {
                 xStack.push(xPos);
                 yStack.push(yPos);
                 checkArray[xPos][yPos] = 1;
@@ -195,26 +203,25 @@ protected void updateCell(Cell c){
 
                 }
             }
-            if(xStack.isEmpty()){
+            if (xStack.isEmpty()) {
                 //System.out.println("No amazon of opposite colour found");
                 stop = true;
             }
             //Recurs
-            if(!moveMade && !stop){
+            if (!moveMade && !stop) {
                 xStack.pop();
                 yStack.pop();
-                if(xStack.isEmpty()) {
+                if (xStack.isEmpty()) {
                     //System.out.println("No amazon of opposite colour found");
                     stop = true;
-                }
-                else{
+                } else {
                     xPos = (int) xStack.peek();
                     yPos = (int) yStack.peek();
                 }
             }
 
             //console representation
-            if(!stop) {
+            if (!stop) {
                 // System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
@@ -227,10 +234,10 @@ protected void updateCell(Cell c){
 
         int[][] count = new int[2][xStore.size()];
         int loopSize = xStore.size();
-        for(int i = 0; i<loopSize; i++){
-            count[0][i] = (int)xStore.pop();
+        for (int i = 0; i < loopSize; i++) {
+            count[0][i] = (int) xStore.pop();
             //System.out.println(count[0][i]);
-            count[1][i] = (int)yStore.pop();
+            count[1][i] = (int) yStore.pop();
             //System.out.print(count[1][i]);
 
         }
@@ -238,19 +245,18 @@ protected void updateCell(Cell c){
     }
 
 
-
-/*@param board[][]
-* counts how many cells are weaway from winning or losing???*/
-    public boolean endMe(Cell[][] board){
+    /*@param board[][]
+     * counts how many cells are weaway from winning or losing???*/
+    public boolean endMe(Cell[][] board) {
         boolean isolated = false;
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
 
         boolean stop = false;
         int[][] checkArray = new int[10][10];
-        for (int i = 0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                if(board[i][j].getContent() instanceof Arrow2D){
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (board[i][j].getContent() instanceof Arrow2D) {
                     checkArray[i][j] = 3;
                 }
             }
@@ -258,16 +264,16 @@ protected void updateCell(Cell c){
 
         Stack xStack = new java.util.Stack();
         Stack yStack = new java.util.Stack();
-        while(!stop) {
+        while (!stop) {
             boolean moveMade = false;
             checkArray[xPos][yPos] = 1;
-            if(this.side == 'W'){
+            if (this.side == 'W') {
                 if (board[xPos][yPos].getContentID().contains("Amazon: 4") || board[xPos][yPos].getContentID().contains("Amazon: 5") || board[xPos][yPos].getContentID().contains("Amazon: 6") || board[xPos][yPos].getContentID().contains("Amazon: 7")) {
                     //System.out.println("Found amazon of opposite colour");
                     break;
                 }
             }
-            if(this.side == 'B'){
+            if (this.side == 'B') {
                 if (board[xPos][yPos].getContentID().contains("Amazon: 0") || board[xPos][yPos].getContentID().contains("Amazon: 1") || board[xPos][yPos].getContentID().contains("Amazon: 2") || board[xPos][yPos].getContentID().contains("Amazon: 3")) {
                     //System.out.println("Found amazon of opposite colour");
                     break;
@@ -275,15 +281,16 @@ protected void updateCell(Cell c){
             }
 
             //Checking for free neighbouring tile
-            if(xPos !=9){
+            if (xPos != 9) {
                 if (checkArray[xPos + 1][yPos] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
                     xPos++;
                     moveMade = true;
                 }
-            } if (xPos!=9 && yPos != 9 && !moveMade){
-                if(checkArray[xPos + 1][yPos + 1] == 0) {
+            }
+            if (xPos != 9 && yPos != 9 && !moveMade) {
+                if (checkArray[xPos + 1][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
                     xPos++;
@@ -291,15 +298,14 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(yPos!=9 && !moveMade) {
+            if (yPos != 9 && !moveMade) {
                 if (checkArray[xPos][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
                     yPos++;
                     moveMade = true;
                 }
-            }
-            else if(yPos != 9 && xPos !=0 && !moveMade) {
+            } else if (yPos != 9 && xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -308,7 +314,7 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(xPos != 0 && !moveMade) {
+            if (xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -316,7 +322,7 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(xPos != 0 && yPos != 0 && !moveMade) {
+            if (xPos != 0 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos - 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -325,7 +331,7 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(yPos != 0 && !moveMade) {
+            if (yPos != 0 && !moveMade) {
                 if (checkArray[xPos][yPos - 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -333,7 +339,7 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(xPos != 9 && yPos != 0 && !moveMade) {
+            if (xPos != 9 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos + 1][yPos - 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -342,33 +348,32 @@ protected void updateCell(Cell c){
                     moveMade = true;
                 }
             }
-            if(xStack.isEmpty()){
+            if (xStack.isEmpty()) {
                 //System.out.println("No amazon of opposite colour found");
                 stop = true;
                 isolated = true;
 
             }
             //Recurs
-            if(!moveMade && !stop){
+            if (!moveMade && !stop) {
                 xStack.pop();
                 yStack.pop();
-                if(xStack.isEmpty()) {
+                if (xStack.isEmpty()) {
                     //System.out.println("No amazon of opposite colour found");
                     stop = true;
                     isolated = true;
-                }
-                else{
+                } else {
                     xPos = (int) xStack.peek();
                     yPos = (int) yStack.peek();
                 }
             }
 
             //console representation
-            if(!stop) {
-               // System.out.println(xStack.peek() + "," + yStack.peek());
+            if (!stop) {
+                // System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                    //    System.out.print(checkArray[j][i] + " ");
+                        //    System.out.print(checkArray[j][i] + " ");
                     }
                     //System.out.println();
                 }
@@ -376,14 +381,12 @@ protected void updateCell(Cell c){
         }
         return isolated;
     }
-/*
-* @param board[][] what, how??????????*/
-    public Cell[][] clearPossibleMoves(Cell[][] board)
-    {
-        for(int i=0; i<9; i++)
-        {
-            for(int j=0; j<9; j++)
-            {
+
+    /*
+     * @param board[][] what, how??????????*/
+    public Cell[][] clearPossibleMoves(Cell[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
                 board[i][j].setAvailable("false");
             }
         }
@@ -392,37 +395,34 @@ protected void updateCell(Cell c){
     }
 
     /*
-    * @param board2d
-    * what does this do????
-    * */
-    public ArrayList<Cell> possibleMoves(Board2D board2D)
-    {
+     * @param board2d
+     * what does this do????
+     * */
+    public ArrayList<Cell> possibleMoves(Board2D board2D) {
         Cell[][] boardCoordinates = board2D.getBoardCoordinates();
         possibleMoves = new ArrayList<>();
         boolean positive = true;
         boolean negative = true;
-        for(int i=1; i<10 ; i++){
-            if(this.cell.getI()+i >= board2D.width) {
+        for (int i = 1; i < 10; i++) {
+            if (this.cell.getI() + i >= board2D.width) {
                 positive = false;
             }
-            if(this.cell.getI()-i < 0) {
+            if (this.cell.getI() - i < 0) {
                 negative = false;
             }
-            if(positive){
-                if(!boardCoordinates[this.cell.getI()+i][this.cell.getJ()].isOccupied()) {
+            if (positive) {
+                if (!boardCoordinates[this.cell.getI() + i][this.cell.getJ()].isOccupied()) {
                     possibleMoves.add(boardCoordinates[this.cell.getI() + i][this.cell.getJ()]);
                     //boardCoordinates[this.cell.getI() + i][this.cell.getJ()].setAvailable("true");
-                }
-                else{
+                } else {
                     positive = false;
                 }
             }
-            if(negative){
-                if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()].isOccupied() ) {
-                    possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()]);
-                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ()].setAvailable("true");
-                }
-                else {
+            if (negative) {
+                if (!boardCoordinates[this.cell.getI() - i][this.cell.getJ()].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI() - i][this.cell.getJ()]);
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ()].setAvailable("true");
+                } else {
                     negative = false;
                 }
             }
@@ -431,30 +431,28 @@ protected void updateCell(Cell c){
         positive = true;
         negative = true;
 
-        for(int i=1; i<10 ; i++){
-            if(this.cell.getJ()+i >= board2D.height) {
+        for (int i = 1; i < 10; i++) {
+            if (this.cell.getJ() + i >= board2D.height) {
                 positive = false;
             }
-            if(this.cell.getJ()-i < 0) {
+            if (this.cell.getJ() - i < 0) {
                 negative = false;
             }
 
-            if(positive){
-                if(!boardCoordinates[this.cell.getI()][this.cell.getJ()+i].isOccupied()) {
-                    possibleMoves.add(boardCoordinates[this.cell.getI()][this.cell.getJ()+i]);
+            if (positive) {
+                if (!boardCoordinates[this.cell.getI()][this.cell.getJ() + i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()][this.cell.getJ() + i]);
                     //boardCoordinates[this.cell.getI()][this.cell.getJ() + i].setAvailable("true");
-                }
-                else {
+                } else {
                     positive = false;
                 }
             }
 
-            if(negative){
-                if(!boardCoordinates[this.cell.getI()][this.cell.getJ()-i].isOccupied()) {
-                    possibleMoves.add(boardCoordinates[this.cell.getI()][this.cell.getJ()-i]);
+            if (negative) {
+                if (!boardCoordinates[this.cell.getI()][this.cell.getJ() - i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI()][this.cell.getJ() - i]);
                     //boardCoordinates[this.cell.getI()][this.cell.getJ() - i].setAvailable("true");
-                }
-                else {
+                } else {
                     negative = false;
                 }
             }
@@ -465,36 +463,34 @@ protected void updateCell(Cell c){
         positive = true;
         negative = true;
 
-        for(int i=1; i<10 ; i++){
+        for (int i = 1; i < 10; i++) {
 
-            if(this.cell.getI()+i >= board2D.width) {
+            if (this.cell.getI() + i >= board2D.width) {
                 positive = false;
             }
-            if(this.cell.getI()-i < 0) {
+            if (this.cell.getI() - i < 0) {
                 negative = false;
             }
-            if(this.cell.getJ()+i >= board2D.width) {
+            if (this.cell.getJ() + i >= board2D.width) {
                 positive = false;
             }
-            if(this.cell.getJ()-i < 0) {
+            if (this.cell.getJ() - i < 0) {
                 negative = false;
             }
 
-            if(positive){
-                if(!boardCoordinates[this.cell.getI()+i][this.cell.getJ()+i].isOccupied()) {
-                    possibleMoves.add(boardCoordinates[this.cell.getI()+i][this.cell.getJ()+i]);
+            if (positive) {
+                if (!boardCoordinates[this.cell.getI() + i][this.cell.getJ() + i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI() + i][this.cell.getJ() + i]);
                     //boardCoordinates[this.cell.getI() + i][this.cell.getJ() + i].setAvailable("true");
-                }
-                else {
+                } else {
                     positive = false;
                 }
             }
-            if(negative){
-                if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()-i].isOccupied()) {
-                    possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()-i]);
-                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].setAvailable("true");
-                }
-                else {
+            if (negative) {
+                if (!boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i]);
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].setAvailable("true");
+                } else {
                     negative = false;
                 }
             }
@@ -505,50 +501,50 @@ protected void updateCell(Cell c){
         positive = true;
         negative = true;
 
-        for(int i=1; i<10 ; i++){
-            if(this.cell.getI()-i < 0) {
+        for (int i = 1; i < 10; i++) {
+            if (this.cell.getI() - i < 0) {
                 positive = false;
             }
-            if(this.cell.getJ()+i >= board2D.height) {
+            if (this.cell.getJ() + i >= board2D.height) {
                 positive = false;
             }
-            if(this.cell.getJ()-i < 0) {
+            if (this.cell.getJ() - i < 0) {
                 negative = false;
             }
-            if(this.cell.getI()+i >= board2D.width) {
+            if (this.cell.getI() + i >= board2D.width) {
                 negative = false;
             }
 
-            if(positive){
-                if(!boardCoordinates[this.cell.getI()-i][this.cell.getJ()+i].isOccupied()) {
-                    possibleMoves.add(boardCoordinates[this.cell.getI()-i][this.cell.getJ()+i]);
-                   // boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].setAvailable("true");
-                }
-                else {
+            if (positive) {
+                if (!boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i]);
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].setAvailable("true");
+                } else {
                     positive = false;
                 }
             }
 
-            if(negative){
-                if(!boardCoordinates[this.cell.getI()+i][this.cell.getJ()-i].isOccupied()) {
-                    possibleMoves.add(boardCoordinates[this.cell.getI()+i][this.cell.getJ()-i]);
+            if (negative) {
+                if (!boardCoordinates[this.cell.getI() + i][this.cell.getJ() - i].isOccupied()) {
+                    possibleMoves.add(boardCoordinates[this.cell.getI() + i][this.cell.getJ() - i]);
                     //boardCoordinates[this.cell.getI() + i][this.cell.getJ() - i].setAvailable("true");
-                }
-                else {
+                } else {
                     negative = false;
                 }
             }
         }
         return possibleMoves;
     }
-/*
-* @return possibleMoves list
-* */
+
+    /*
+     * @return possibleMoves list
+     * */
     public ArrayList<Cell> getPossibleMoves() {
         return possibleMoves;
     }
-/*
-* @return cell a specific cell */
+
+    /*
+     * @return cell a specific cell */
     public Cell getCell() {
         return this.cell;
     }

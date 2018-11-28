@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dke.game.Models.DataStructs.*;
 
+import java.util.ArrayList;
+
 
 public class Board2D extends Board {
     /**
@@ -25,11 +27,12 @@ public class Board2D extends Board {
 
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
-//draw
+    //draw
     public Board2D() {
         this(new ShapeRenderer());
     }
-//draw
+
+    //draw
     public Board2D(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
         font.setColor(Color.BLACK);
@@ -39,12 +42,13 @@ public class Board2D extends Board {
         initialiseBoard();
     }
 
-//mark as occupied?????
-    public Piece occupy(Piece piece, Cell cell){
+    //mark as occupied?????
+    public Piece occupy(Piece piece, Cell cell) {
         this.boardCoordinates[cell.getI()][cell.getJ()].occupy(piece);
         return piece;
     }
-//draw
+
+    //draw
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
@@ -114,6 +118,17 @@ public class Board2D extends Board {
 
     }
 
+    public void placePieces(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS) {
+        for (Amazon2D a : amazon2DS) {
+            this.occupy(a, boardCoordinates[a.getCell().getI()][a.getCell().getJ()]);
+            a.updateCell(boardCoordinates[a.getCell().getI()][a.getCell().getJ()]);
+        }
+        for (Arrow2D a : arrow2DS) {
+            this.occupy(a, boardCoordinates[a.getCell().getI()][a.getCell().getJ()]);
+            a.updateCell(boardCoordinates[a.getCell().getI()][a.getCell().getJ()]);
+        }
+    }
+
     public Cell[][] getBoardCoordinates() {
         return boardCoordinates.clone();
     }
@@ -123,7 +138,7 @@ public class Board2D extends Board {
     }
 
     /*@return a matrix with locations of pieces
-    * occupied or not*/
+     * occupied or not*/
     public Cell[][] getBoard() {
         return super.board.clone();
     }

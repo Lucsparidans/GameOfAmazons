@@ -28,4 +28,7 @@ public abstract class Arrow extends Piece{
     public boolean isAlive() {
         return isAlive;
     }
+    public void updateCell(Cell cell){
+        this.cell = cell;
+    }
 }

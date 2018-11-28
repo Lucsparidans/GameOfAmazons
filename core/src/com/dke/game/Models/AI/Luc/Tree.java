@@ -21,7 +21,7 @@ public class Tree {
 
 
     public Tree(Board2D board2D, Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS) {
-        initialState = new GameState(board2D,amazon2DS,arrow2DS,null);
+        initialState = new GameState(amazon2DS,arrow2DS,null);
 
         rootNode = new Node<>(initialState);
         expandNode(rootNode);
@@ -50,12 +50,7 @@ public class Tree {
         ArrayList<Arrow2D> testArrows = (ArrayList<Arrow2D>) arrow2DS.clone();
         ArrayList<Move> moves = new ArrayList<>();
         Board2D testBoard = new Board2D();
-        for (Amazon2D a:testQueens) {
-            testBoard.occupy(a,a.getCell());
-        }
-        for (Arrow2D a:testArrows) {
-            testBoard.occupy(a,a.getCell());
-        }
+        testBoard.placePieces(testQueens,testArrows);
 
         for (Amazon2D a:testQueens) {
             a.possibleMoves(testBoard);
@@ -70,10 +65,8 @@ public class Tree {
             }
         }
         for (Move m :moves) {
-            possibleStates.add(new GameState(new Board2D(),testQueens.clone(),(ArrayList<Arrow2D>)testArrows.clone(),m));
+            possibleStates.add(new GameState(testQueens.clone(),(ArrayList<Arrow2D>)testArrows.clone(),m));
         }
-
-
 
         return possibleStates;
     }
