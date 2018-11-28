@@ -11,5 +11,5 @@ public abstract class View2D extends View {
     public View2D(ViewManager viewManager) {
         super(viewManager);
     }
-    protected abstract Cell getSelectedCell();
+    public abstract Cell getSelectedCell();
 }

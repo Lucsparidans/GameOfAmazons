@@ -17,14 +17,20 @@ public class AI extends Player {
         this.board2D = board2D;
     }
 
-    public void move() {
+    private void move() {
         Move bestMove = algorithm.getBestMove();
         Cell moveQTo = bestMove.getQueenTo();
         Cell arrowTo = bestMove.getArrowTo();
         Amazon2D queen = bestMove.getQueen();
         queen.move(moveQTo);
-        queen.shoot(board2D,arrowTo);
+        queen.shoot(arrowTo);
     }
+
+    @Override
+    public void performTurn() {
+        move();
+    }
+
     public enum Phase{
         START_PHASE, MID_PHASE, END_PHASE
     }

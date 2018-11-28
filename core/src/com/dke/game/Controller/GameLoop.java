@@ -28,9 +28,9 @@ public class GameLoop {
     private ArrayList<Arrow2D> arrow;
     private volatile Thread thread;
     private ViewManager viewManager;
-    private int phase = 1;
     private Player white;
     private Player black;
+    private Player currentPlayer;
     private Algorithm algo = new MiniMax();
 
 
@@ -45,18 +45,29 @@ public class GameLoop {
         arrow = new ArrayList<>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
+        createPlayers(white_Type,black_Type,gameView);
+        gameView.setPlayers(white,black);
         gameView.getStage().addActor(board2D);
         placePieces();
         this.viewManager.push(gameView);
+        currentPlayer = white;
 
+        thread = new GameThread();
+        thread.start();
+    }
+    public GameLoop(ViewManager viewmanager) {
+       this(viewmanager,"Human","Human");
+    }
+    //Thread stuff
+    public void createPlayers(String white_Type,String black_Type,GameView gameView){
         if(white_Type == "Human"){
             if(black_Type=="AI"){
-                white = new Human('W');
+                white = new Human('W',gameView);
                 black = new AI('B',algo,board2D);
             }
             else if(black_Type=="Human"){
-                white = new Human('W');
-                black = new Human('B');
+                white = new Human('W',gameView);
+                black = new Human('B',gameView);
             }
         }
         else if(white_Type == "AI"){
@@ -66,17 +77,10 @@ public class GameLoop {
             }
             else if(black_Type=="Human"){
                 white = new AI('B',algo,board2D);
-                black = new Human('B');
+                black = new Human('B',gameView);
             }
         }
-        thread = new GameThread();
-        thread.start();
     }
-    public GameLoop(ViewManager viewmanager) {
-       this(viewmanager,"Human","Human");
-    }
-    //Thread stuff
-
 
     public boolean isRunning() {
         return running;
@@ -84,8 +88,22 @@ public class GameLoop {
 
     //Tread stuff
     private void update() {
-        if(this.checkEnd() && this.getPhase() == 1){
-            running = false;
+        if(gameView.getTurnCounter()%2==0){
+            currentPlayer=white;
+        }
+        else{
+            currentPlayer=black;
+        }
+        if(currentPlayer instanceof Human) {
+            Human p = (Human)currentPlayer;
+            if (this.checkEnd()&&p.getPhase()==1) {
+                running = false;
+            }
+        }
+        else{
+            if (this.checkEnd()) {
+                running = false;
+            }
         }
 
 
@@ -173,12 +191,7 @@ public class GameLoop {
     }
 
 
-    public int getPhase() {
-        return phase;
-    }
-    public void setPhase(int phase){
-        this.phase = phase;
-    }
+
 
 
 
