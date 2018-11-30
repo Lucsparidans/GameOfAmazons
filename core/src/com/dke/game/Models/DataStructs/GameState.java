@@ -13,7 +13,6 @@ public class GameState {
     private Move move;
 
 
-
     public GameState(Amazon2D[] amazon2DArrayList, ArrayList<Arrow2D> arrow2DArrayList, Move move) {
         board2D = new Board2D();
         board2D.placePieces(amazon2DArrayList,arrow2DArrayList);
