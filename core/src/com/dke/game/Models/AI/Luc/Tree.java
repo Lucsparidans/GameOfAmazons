@@ -1,11 +1,13 @@
 package com.dke.game.Models.AI.Luc;
 
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.GameState;
 import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
+import com.dke.game.Views.GameView;
 
 import java.util.ArrayList;
 
@@ -16,14 +18,22 @@ public class Tree {
    private final int maxDepth = 5;
    private Board2D bestEval;
    private Board2D worstEval;
+   private Player player;
 
 
 
-    public Tree(Board2D board2D, Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS) {
-        initialState = new GameState(amazon2DS,arrow2DS,null);
 
-        rootNode = new Node<>(initialState, null);
+    public Tree(Board2D board2D, Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, Player player) {
+        if(player.getSide()=='W') {
+            initialState = new GameState(amazon2DS, arrow2DS, null, false, player);
+        }
+        else{
+            initialState = new GameState(amazon2DS, arrow2DS, null, false, player);
+        }
+        this.player = player;
+        rootNode = new Node<>(initialState);
         expandNode(rootNode);
+
     }
     public void expandNode(Node<GameState> current){
         if(current.getDepth(rootNode) == 5 || current.getChildren() == null){
@@ -31,10 +41,20 @@ public class Tree {
         }
         ArrayList<GameState> possibleMoves = getPossibleStates(current);
         for (GameState g:possibleMoves) {
-            current.addChild(new Node<>(g,current));
+            Node<GameState> child = new Node<>(g);
+            child.setParent(current);
+            current.addChild(child);
+
+
+
         }
         for (Node<GameState> node:current.getChildren()) {
+            if(((GameState)current.getData()).isMaximizing()){
             expandNode(node);
+            }
+            else{
+                expandNode(node);
+            }
         }
 
 
@@ -44,7 +64,6 @@ public class Tree {
         GameState currentState = current.getData();
         Amazon2D[] amazon2DS = currentState.getAmazon2DArrayList();
         ArrayList<Arrow2D> arrow2DS = currentState.getArrow2DArrayList();
-        Board2D board2D = currentState.getBoard2D();
         Amazon2D[] testQueens = amazon2DS.clone();
         ArrayList<Arrow2D> testArrows = (ArrayList<Arrow2D>) arrow2DS.clone();
         ArrayList<Move> moves = new ArrayList<>();
@@ -63,12 +82,20 @@ public class Tree {
                 }
             }
         }
-        for (Move m :moves) {
-            possibleStates.add(new GameState(testQueens.clone(),(ArrayList<Arrow2D>)testArrows.clone(),m));
+        if((current.getData()).isMaximizing()) {
+            for (Move m : moves) {
+                possibleStates.add(new GameState(testQueens.clone(), (ArrayList<Arrow2D>) testArrows.clone(), m, false, player));
+            }
+        }
+        else{
+            for (Move m : moves) {
+                possibleStates.add(new GameState(testQueens.clone(), (ArrayList<Arrow2D>) testArrows.clone(), m, true, player));
+            }
         }
 
         return possibleStates;
     }
+
 
 }
 
