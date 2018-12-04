@@ -14,7 +14,6 @@ import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
-import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.*;
 
 import java.util.ArrayList;

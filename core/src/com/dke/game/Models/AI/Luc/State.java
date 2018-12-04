@@ -1,4 +1,4 @@
-package com.dke.game.Models.AI.Sara;
+package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Board2D;

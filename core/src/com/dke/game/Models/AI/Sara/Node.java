@@ -1,5 +1,7 @@
 package com.dke.game.Models.AI.Sara;
 
+import com.dke.game.Models.AI.Luc.State;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

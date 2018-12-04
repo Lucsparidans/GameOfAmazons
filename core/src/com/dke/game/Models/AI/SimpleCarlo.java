@@ -1,6 +1,5 @@
 package com.dke.game.Models.AI;
 
-import com.badlogic.gdx.Game;
 import com.dke.game.Models.AI.Luc.Node;
 import com.dke.game.Models.AI.Luc.Tree;
 import com.dke.game.Models.DataStructs.GameState;
@@ -44,7 +43,15 @@ public class SimpleCarlo {
     }
 
     public double expand (Node<GameState> gamenode){
-        //TODO: if game is finished{ return 1 if black return 0 if white wins}
+
+        //Amazon2D[] white = {amazons[0], amazons[1], amazons[2], amazons[3]};
+        //Amazon2D[] black = {amazons[4], amazons[5], amazons[6], amazons[7]};
+        //System.out.println(getTerritory(white) + "   " + getTerritory(black));
+
+        //compareTerritory gives 0 if white wins, 1 if black wins
+        if((gamenode.getData()).checkEnd()){
+            int winner = (gamenode.getData()).compareTerritory();
+        }
         ArrayList<GameState> posmoves = tree.getPossibleStates(gamenode);
         Random rand = new Random();
         GameState randomNextState = posmoves.get(rand.nextInt(posmoves.size()));
