@@ -1,12 +1,10 @@
 package com.dke.game.Controller.Player;
 
-import com.badlogic.gdx.Game;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MiniMax;
 import com.dke.game.Models.AI.Luc.Tree;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Move;
+import com.dke.game.Models.AI.Luc.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 

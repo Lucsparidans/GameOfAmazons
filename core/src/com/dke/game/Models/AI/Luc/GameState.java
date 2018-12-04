@@ -1,6 +1,8 @@
-package com.dke.game.Models.DataStructs;
+package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Controller.Player.Player;
+import com.dke.game.Models.DataStructs.Amazon;
+import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -57,12 +59,23 @@ this.maximizing = maximizing;
         return board2D;
     }
 
+    public double evaluateState(){
+        if(this.maximizing){
+            return shotsHeuristics(player.getMyAmazons(),player.getEnemyAmazons())
+                    + positioHheuristics(player.getMyAmazons(),player.getEnemyAmazons());
+        }else{
+            return shotsHeuristics(player.getEnemyAmazons(),player.getMyAmazons())
+                    + positioHheuristics(player.getEnemyAmazons(),player.getMyAmazons());
+        }
+    }
 
+
+    //<editor-fold desc="Heuristics">
     //calculating the score for the node
-    public double positioHheuristics() {
+    private double positioHheuristics(Amazon2D[] ourQueens,Amazon2D[] enemyQueens) {
         double value = 0;
 
-        for (Amazon queen : player.getMyAmazons()) {
+        for (Amazon queen : ourQueens) {
 
             //score: in range
 
@@ -73,7 +86,7 @@ this.maximizing = maximizing;
                     for (int i = arrowCell.getI() - 1; i <= arrowCell.getI() + 1; i++) {
                         for (int j = arrowCell.getJ() - 1; j <= arrowCell.getJ() + 1; j++) { // going around  and over the potential arrow placement
                             if (i != arrowCell.getI() && j != arrowCell.getJ()) { //avoiding the cell in questioning
-                                for (Amazon enemyQueen : player.getEnemyAmazons()) {
+                                for (Amazon enemyQueen : enemyQueens) {
                                     //need list of enemy queens
 
                                     if (i == enemyQueen.getX() && j == enemyQueen.getY()) {
@@ -88,7 +101,7 @@ this.maximizing = maximizing;
                 }
             }//Score "in range" ends
             //
-            for (Amazon ourQueen : player.getMyAmazons()) {
+            for (Amazon ourQueen : ourQueens) {
                 //score: territory
                 Cell ourQueenCell = queen.getCell();
                 int i = ourQueenCell.getI();
@@ -116,9 +129,9 @@ this.maximizing = maximizing;
         return count;
     }
 
-    public double shotsHeuristics() {
+    private double shotsHeuristics(Amazon2D[] ourQueens,Amazon2D[] enemyQueens) {
         double value = 0;
-        for (Amazon queen : player.getMyAmazons()) {
+        for (Amazon queen : ourQueens) {
 
             //score: in range
 
@@ -129,7 +142,7 @@ this.maximizing = maximizing;
                     for (int i = arrowCell.getI() - 1; i <= arrowCell.getI() + 1; i++) {
                         for (int j = arrowCell.getJ() - 1; j <= arrowCell.getJ() + 1; j++) { // going around  and over the potential arrow placement
 
-                            for (Amazon enemyQueen : player.getEnemyAmazons()) {
+                            for (Amazon enemyQueen : enemyQueens) {
                                 //need list of enemy queens
 
                                 if (i == enemyQueen.getX() && j == enemyQueen.getY()) {
@@ -149,4 +162,6 @@ this.maximizing = maximizing;
         return value;
 
     }
+    //</editor-fold>
+
 }

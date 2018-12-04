@@ -2,8 +2,6 @@ package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.GameState;
-import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;

@@ -1,5 +1,6 @@
-package com.dke.game.Models.DataStructs;
+package com.dke.game.Models.AI.Luc;
 
+import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 
 public class Move {
