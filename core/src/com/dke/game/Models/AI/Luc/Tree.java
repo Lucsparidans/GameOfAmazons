@@ -7,7 +7,6 @@ import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
-import com.dke.game.Views.GameView;
 
 import java.util.ArrayList;
 
@@ -42,14 +41,14 @@ public class Tree {
         ArrayList<GameState> possibleMoves = getPossibleStates(current);
         for (GameState g:possibleMoves) {
             Node<GameState> child = new Node<>(g);
-            child.setParent(current);
+//            child.setParent(current);
             current.addChild(child);
 
 
 
         }
         for (Node<GameState> node:current.getChildren()) {
-            if(((GameState)current.getData()).isMaximizing()){
+            if((current.getData()).isMaximizing()){
             expandNode(node);
             }
             else{

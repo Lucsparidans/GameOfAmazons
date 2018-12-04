@@ -32,12 +32,16 @@ public class Node<T> {
     public Node<T> addChild(Node<T> child) {
         // Finish this method
         this.children.add(child);
+        child.setParent(this);
         return child;
     }
 
     public void addChildren(List<Node<T>> children) {
         // Finish this method
         this.children.addAll(children);
+        for (Node child:children) {
+            child.setParent(this);
+        }
     }
 
     public List<Node<T>> getChildren() {
@@ -55,7 +59,7 @@ public class Node<T> {
         this.data = data;
     }
 
-    public void setParent(Node<T> parent) {
+    private void setParent(Node<T> parent) {
         // Finish this method
         this.parent = parent;
     }
