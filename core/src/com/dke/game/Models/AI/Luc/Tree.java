@@ -47,9 +47,11 @@ public class Tree {
         }
         for (Node<GameState> node:current.getChildren()) {
             if((current.getData()).isMaximizing()){
+                node.getData().executeMove();
             expandNode(node);
             }
             else{
+                node.getData().executeMove();
                 expandNode(node);
             }
         }
