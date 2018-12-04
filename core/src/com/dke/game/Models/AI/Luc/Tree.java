@@ -1,5 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
+import com.badlogic.gdx.Game;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -20,7 +21,8 @@ public class Tree {
 
 
 
-    public Tree(Board2D board2D, Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, Player player) {
+
+    public Tree(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, Player player) {
         if(player.getSide()=='W') {
             initialState = new GameState(amazon2DS, arrow2DS, null, false, player);
         }
@@ -33,7 +35,7 @@ public class Tree {
 
     }
     public void expandNode(Node<GameState> current){
-        if(current.getDepth(rootNode) == 5 || current.getChildren() == null){
+        if(current.getDepth(rootNode) == maxDepth || current.getChildren() == null){
             return;
         }
         ArrayList<GameState> possibleMoves = getPossibleStates(current);
@@ -95,7 +97,51 @@ public class Tree {
         return possibleStates;
     }
 
+    //<editor-fold desc="Getters and setters">
+    public Node<GameState> getRootNode() {
+        return rootNode;
+    }
 
+    public void setRootNode(Node<GameState> rootNode) {
+        this.rootNode = rootNode;
+    }
+
+    public GameState getInitialState() {
+        return initialState;
+    }
+
+    public void setInitialState(GameState initialState) {
+        this.initialState = initialState;
+    }
+
+    public int getMaxDepth() {
+        return maxDepth;
+    }
+
+    public Board2D getBestEval() {
+        return bestEval;
+    }
+
+    public void setBestEval(Board2D bestEval) {
+        this.bestEval = bestEval;
+    }
+
+    public Board2D getWorstEval() {
+        return worstEval;
+    }
+
+    public void setWorstEval(Board2D worstEval) {
+        this.worstEval = worstEval;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    //</editor-fold>
 }
 
 

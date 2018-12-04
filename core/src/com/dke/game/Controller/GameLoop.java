@@ -195,6 +195,7 @@ public class GameLoop {
 
 
 
+    //<editor-fold desc="Thread class">
     //Thread class
     class GameThread extends Thread {
 
@@ -208,6 +209,7 @@ public class GameLoop {
 
         }
     }
+    //</editor-fold>
 
     //<editor-fold desc="Getters and Setters">
     public GameView getGameView() {
@@ -299,6 +301,7 @@ public class GameLoop {
     }
     //</editor-fold>
 }
+//<editor-fold desc="Commented code">
     /*
     public void turnOrder(){
         int isolCount = 0;
@@ -407,5 +410,6 @@ public class GameLoop {
         }
         //then black turn, change endMe to a loop to check all amazons
         */
+//</editor-fold>
 
 

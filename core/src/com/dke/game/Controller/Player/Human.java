@@ -24,7 +24,7 @@ public class Human extends Player {
 
 
     public Human(char side, GameView view) {
-        super(side);
+        super(side, view.getGameLoop());
         this.shapeRenderer = new ShapeRenderer();
         this.view = view;
         this.board2D = view.getBoard2D();

@@ -2,6 +2,8 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.GameState;
+import com.dke.game.Models.AI.Luc.Node;
 import com.dke.game.Models.AI.Luc.Tree;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.AI.Luc.Move;
@@ -11,7 +13,7 @@ import com.dke.game.Models.GraphicalModels.Board2D;
 public class AI extends Player {
     private Algorithm algorithm;
     private Board2D board2D;
-
+    private Node<GameState> rootNode;
     private GameLoop gameLoop;
     private Tree tree;
 
@@ -20,32 +22,30 @@ public class AI extends Player {
         this.algorithm = algorithm;
         this.board2D = board2D;
         this.gameLoop=gameLoop;
-        //TODO fix
-        if(this.side=='W'){
-            this.tree = new Tree(board2D,gameLoop.getAmazons(),gameLoop.getArrow(),this);
-        }
-        else if(this.side=='B'){
-            this.tree = new Tree(board2D,gameLoop.getAmazons(),gameLoop.getArrow(),this);
-        }
-        else{
-            System.out.println("Something went wrong");
-        }
+        this.tree = new Tree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
+
+
 
 
 
     }
 
     private void move() {
-        Move bestMove = algorithm.getBestMove();
+        Move bestMove = algorithm.getBestMove(this,rootNode);
         Cell moveQTo = bestMove.getQueenTo();
         Cell arrowTo = bestMove.getArrowTo();
         Amazon2D queen = bestMove.getQueen();
         queen.move(moveQTo);
         queen.shoot(arrowTo);
     }
+    private void updateTree(){
+        this.tree=new Tree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
+        rootNode=tree.getRootNode();
+    }
 
     @Override
     public void performTurn() {
+        updateTree();
         move();
     }
 
