@@ -45,10 +45,10 @@ public class GameLoop {
         arrow = new ArrayList<>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
-        createPlayers(white_Type,black_Type,gameView);
-        gameView.setPlayers(white,black);
         gameView.getStage().addActor(board2D);
         placePieces();
+        createPlayers(white_Type,black_Type,gameView);
+        gameView.setPlayers(white,black);
         this.viewManager.push(gameView);
         currentPlayer = white;
 
@@ -114,11 +114,6 @@ public class GameLoop {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
-
-
-    }
-    //Place the amazons on the board
-    private void placePieces() {
         amazons[0] = new Amazon2D('W', boardCoordinates[0][3]);
         amazons[1] = new Amazon2D('W', boardCoordinates[9][3]);
         amazons[2] = new Amazon2D('W', boardCoordinates[3][0]);
@@ -127,9 +122,13 @@ public class GameLoop {
         amazons[5] = new Amazon2D('B', boardCoordinates[9][6]);
         amazons[6] = new Amazon2D('B', boardCoordinates[3][9]);
         amazons[7] = new Amazon2D('B', boardCoordinates[6][9]);
+
+    }
+    //Place the amazons on the board
+    private void placePieces() {
         for (Amazon2D a : amazons) {
             gameView.getStage().addActor(a);
-
+            board2D.occupy(a,a.getCell());
         }
 
     }

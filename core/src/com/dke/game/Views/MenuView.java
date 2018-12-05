@@ -50,10 +50,11 @@ public class MenuView extends View {
         table.row();
 
         String[] content = {"Human", "AI"};
+        String[] c2 = {"AI","Human"};
         player1 = new SelectBox<String>(MainLoop.skin);
         player1.setItems(content);
         player2 = new SelectBox<String>(MainLoop.skin);
-        player2.setItems(content);
+        player2.setItems(c2);
         Table players = new Table();
         players.add(new Label("White", MainLoop.skin));
         players.add(new Label("Black", MainLoop.skin));

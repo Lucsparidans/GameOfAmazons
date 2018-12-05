@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Tree {
    private Node<GameState> rootNode;
    private GameState initialState;
-   private final int maxDepth = 5;
+   private final int maxDepth = 2;
    private Board2D bestEval;
    private Board2D worstEval;
    private Player player;
@@ -24,7 +24,7 @@ public class Tree {
 
     public Tree(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, Player player) {
         if(player.getSide()=='W') {
-            initialState = new GameState(amazon2DS, arrow2DS, null, false, player);
+            initialState = new GameState(amazon2DS, arrow2DS, null, true, player);
         }
         else{
             initialState = new GameState(amazon2DS, arrow2DS, null, false, player);
@@ -35,17 +35,13 @@ public class Tree {
 
     }
     public void expandNode(Node<GameState> current){
-        if(current.getDepth(rootNode) == maxDepth || current.getChildren() == null){
-            return;
-        }
         ArrayList<GameState> possibleMoves = getPossibleStates(current);
         for (GameState g:possibleMoves) {
             Node<GameState> child = new Node<>(g);
-//            child.setParent(current);
             current.addChild(child);
-
-
-
+        }
+        if(current.getDepth() == maxDepth || current.getChildren().size()==0){
+            return;
         }
         for (Node<GameState> node:current.getChildren()) {
             if((current.getData()).isMaximizing()){
