@@ -16,19 +16,43 @@ public class AI extends Player {
     private Node<GameState> rootNode;
     private GameLoop gameLoop;
     private Tree tree;
+    private Amazon2D[] myAmazons;
+    private Amazon2D[] enemyAmazons;
 
     public AI(char side, Algorithm algorithm, Board2D board2D, GameLoop gameLoop) {
-        super(side, gameLoop);
+        super(side);
         this.algorithm = algorithm;
         this.board2D = board2D;
         this.gameLoop=gameLoop;
         this.tree = new Tree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
-
-
-
-
-
+        enemyAmazons = new Amazon2D[4];
+        myAmazons = new Amazon2D[4];
+        int counter = 0;
+        int cnt=0;
+        for (Amazon2D a:gameLoop.getAmazons()) {
+            if(this.side==a.getSide()) {
+                myAmazons[counter] = a;
+                counter++;
+            }
+            else{
+                enemyAmazons[cnt]=a;
+                cnt++;
+            }
+        }
     }
+
+    public Amazon2D[] getMyAmazons() {
+        return myAmazons;
+    }
+
+    public Amazon2D[] getEnemyAmazons() {
+        return enemyAmazons;
+    }
+
+
+
+
+
 
     private void move() {
         Move bestMove = algorithm.getBestMove(this,rootNode);

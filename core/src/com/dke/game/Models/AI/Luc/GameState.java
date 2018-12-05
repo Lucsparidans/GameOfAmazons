@@ -1,5 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
+import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
@@ -60,13 +61,17 @@ this.maximizing = maximizing;
     }
 
     public double evaluateState(){
-        if(this.maximizing){
-            return shotsHeuristics(player.getMyAmazons(),player.getEnemyAmazons())
-                    + positioHheuristics(player.getMyAmazons(),player.getEnemyAmazons());
-        }else{
-            return shotsHeuristics(player.getEnemyAmazons(),player.getMyAmazons())
-                    + positioHheuristics(player.getEnemyAmazons(),player.getMyAmazons());
+        if(player instanceof AI){
+            AI playerAI = (AI)player;
+            if(this.maximizing){
+                return shotsHeuristics(playerAI.getMyAmazons(),playerAI.getEnemyAmazons())
+                        + positioHheuristics(playerAI.getMyAmazons(),playerAI.getEnemyAmazons());
+            }else{
+                return shotsHeuristics(playerAI.getEnemyAmazons(),playerAI.getMyAmazons())
+                        + positioHheuristics(playerAI.getEnemyAmazons(),playerAI.getMyAmazons());
+            }
         }
+        return 0;
     }
 
 
