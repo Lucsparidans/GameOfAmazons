@@ -1,5 +1,6 @@
 package com.dke.game.Models.DataStructs;
 
+import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
@@ -394,17 +395,23 @@ public abstract class Amazon extends Piece {
         return board;
     }
 
+    public ArrayList<Cell> possibleMoves(Board2D board2D){
+        return possibleMoves(board2D.getBoardCoordinates());
+    }
+    public ArrayList<Cell> possibleMoves(TestBoard testBoard){
+        return possibleMoves(testBoard.getBoard());
+    }
     /*
      * @param board2d
      * what does this do????
      * */
-    public ArrayList<Cell> possibleMoves(Board2D board2D) {
-        Cell[][] boardCoordinates = board2D.getBoardCoordinates();
+    private ArrayList<Cell> possibleMoves(Cell[][] cells) {
+        Cell[][] boardCoordinates = cells;
         possibleMoves = new ArrayList<>();
         boolean positive = true;
         boolean negative = true;
         for (int i = 1; i < 10; i++) {
-            if (this.cell.getI() + i >= board2D.width) {
+            if (this.cell.getI() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getI() - i < 0) {
@@ -432,7 +439,7 @@ public abstract class Amazon extends Piece {
         negative = true;
 
         for (int i = 1; i < 10; i++) {
-            if (this.cell.getJ() + i >= board2D.height) {
+            if (this.cell.getJ() + i >= boardCoordinates.length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
@@ -465,13 +472,13 @@ public abstract class Amazon extends Piece {
 
         for (int i = 1; i < 10; i++) {
 
-            if (this.cell.getI() + i >= board2D.width) {
+            if (this.cell.getI() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getI() - i < 0) {
                 negative = false;
             }
-            if (this.cell.getJ() + i >= board2D.width) {
+            if (this.cell.getJ() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
@@ -505,13 +512,13 @@ public abstract class Amazon extends Piece {
             if (this.cell.getI() - i < 0) {
                 positive = false;
             }
-            if (this.cell.getJ() + i >= board2D.height) {
+            if (this.cell.getJ() + i >= boardCoordinates.length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
                 negative = false;
             }
-            if (this.cell.getI() + i >= board2D.width) {
+            if (this.cell.getI() + i >= boardCoordinates[0].length) {
                 negative = false;
             }
 

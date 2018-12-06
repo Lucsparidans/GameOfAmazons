@@ -3,8 +3,9 @@ package com.dke.game.Controller.Player;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.Luc.GameState;
+import com.dke.game.Models.AI.Luc.MyAlgo.OptimizedTree;
+import com.dke.game.Models.AI.Luc.MyAlgo.State;
 import com.dke.game.Models.AI.Luc.Node;
-import com.dke.game.Models.AI.Luc.Tree;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.AI.Luc.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -12,19 +13,17 @@ import com.dke.game.Models.GraphicalModels.Board2D;
 
 public class AI extends Player {
     private Algorithm algorithm;
-    private Board2D board2D;
-    private Node<GameState> rootNode;
+    private Node<State> rootNode;
     private GameLoop gameLoop;
-    private Tree tree;
+    private OptimizedTree tree;
     private Amazon2D[] myAmazons;
     private Amazon2D[] enemyAmazons;
 
     public AI(char side, Algorithm algorithm, Board2D board2D, GameLoop gameLoop) {
         super(side);
         this.algorithm = algorithm;
-        this.board2D = board2D;
         this.gameLoop=gameLoop;
-        this.tree = new Tree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
+        this.tree = new OptimizedTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
         enemyAmazons = new Amazon2D[4];
         myAmazons = new Amazon2D[4];
         int counter = 0;
@@ -63,7 +62,7 @@ public class AI extends Player {
         queen.shoot(arrowTo);
     }
     private void updateTree(){
-        this.tree=new Tree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
+        this.tree=new OptimizedTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
         rootNode=tree.getRootNode();
     }
 

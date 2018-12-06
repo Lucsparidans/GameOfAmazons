@@ -49,13 +49,13 @@ public class Cell {
         return bottomLeft;
     }
 
-    @Override
-    public String toString() {
-        return "bottomLeft : " + "(" + bottomLeft.getX() + "," + bottomLeft.getY() + ")" + "\n"
-                + "topLeft : " + "(" + topLeft.getX() + "," + topLeft.getY() + ")" + "\n"
-                + "topRight : " + "(" + topRight.getX() + "," + topRight.getY() + ")" + "\n"
-                + "bottomRight : " + "(" + bottomRight.getX() + "," + bottomRight.getY() + ")" + "\n";
-    }
+//    @Override
+//    public String toString() {
+//        return "bottomLeft : " + "(" + bottomLeft.getX() + "," + bottomLeft.getY() + ")" + "\n"
+//                + "topLeft : " + "(" + topLeft.getX() + "," + topLeft.getY() + ")" + "\n"
+//                + "topRight : " + "(" + topRight.getX() + "," + topRight.getY() + ")" + "\n"
+//                + "bottomRight : " + "(" + bottomRight.getX() + "," + bottomRight.getY() + ")" + "\n";
+//    }
 
     public String getContentID(){
         if(content != null){
@@ -87,7 +87,29 @@ public class Cell {
         return isAvailable;
     }
 
-    public boolean isValidChoice(int phase, boolean colour, Cell[][] board, int xPos, int yPos) {
+
+
+
+    public void occupy(Piece piece){
+        this.content = piece;
+    }
+    public void unOccupy() { this.content = null; }
+
+    public int getI() {
+        return i;
+    }
+
+    public int getJ() {
+        return j;
+    }
+
+    public Piece getContent() {
+        return content;
+    }
+}
+//<editor-fold desc="Old code">
+/*
+public boolean isValidChoice(int phase, boolean colour, Cell[][] board, int xPos, int yPos) {
 
         if (phase == 1) {
             if (this.getContentID().contains("Amazon")) {
@@ -188,22 +210,5 @@ public class Cell {
             return false;
 
     }
-
-
-    public void occupy(Piece piece){
-        this.content = piece;
-    }
-    public void unOccupy() { this.content = null; }
-
-    public int getI() {
-        return i;
-    }
-
-    public int getJ() {
-        return j;
-    }
-
-    public Piece getContent() {
-        return content;
-    }
-}
+ */
+//</editor-fold>

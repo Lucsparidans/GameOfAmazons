@@ -2,6 +2,7 @@ package com.dke.game.Models.AI.Luc.MyAlgo;
 
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
@@ -17,23 +18,33 @@ public class TestBoard {
 
     private static ShapeRenderer shapeRenderer;
     private Cell[][] boardCoordinates;
-    Amazon2D[] amazons;
-    ArrayList<Arrow2D> arrows;
+    private Amazon2D[] amazons = new Amazon2D[8];
+    private ArrayList<Arrow2D> arrows;
 
     public TestBoard(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {
         boardCoordinates = new Cell[Board.height][Board.width];
         this.arrows = new ArrayList<>();
+        initializeBoard();
         createTestPieces(amazons,arrows);
         placePieces(this.amazons,this.arrows);
     }
     private void createTestPieces(Amazon2D[] amazons,ArrayList<Arrow2D> arrows){
         int counter = 0;
         for (Amazon2D a:amazons) {
-            amazons[counter] = new Amazon2D(a.getSide(),boardCoordinates[a.getCell().getI()][a.getCell().getJ()],true);
+            this.amazons[counter] = new Amazon2D(a.getSide(),boardCoordinates[a.getCell().getI()][a.getCell().getJ()],true);
+            counter++;
         }
 
         for (Arrow2D a:arrows) {
             this.arrows.add(new Arrow2D(boardCoordinates[a.getCell().getI()][a.getCell().getJ()],true));
+        }
+    }
+    private void initializeBoard(){
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            for (int j = 0; j < boardCoordinates[i].length; j++) {
+                boardCoordinates[i][j] = new Cell(null,null,null,null);
+            }
+
         }
     }
 
@@ -59,7 +70,11 @@ public class TestBoard {
         return this.boardCoordinates.clone();
     }
 
+    public Amazon2D[] getAmazons() {
+        return amazons;
+    }
 
-
-
+    public ArrayList<Arrow2D> getArrows() {
+        return arrows;
+    }
 }
