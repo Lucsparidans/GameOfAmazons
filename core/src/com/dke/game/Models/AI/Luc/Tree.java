@@ -33,7 +33,7 @@ public class Tree {
 
     }
     public void expandNode(Node<GameState> current){
-        if(current.getDepth(rootNode) == 5 || current.getChildren() == null){
+        if(current.getDepth(rootNode) == maxDepth || current.getChildren() == null){
             return;
         }
         ArrayList<GameState> possibleMoves = getPossibleStates(current);
@@ -78,7 +78,9 @@ public class Tree {
                 ArrayList<Cell> shootMoves = a.getPossibleMoves();
                 for (Cell cs:shootMoves) {
                     moves.add(new Move(a,c,cs));
+                    a.undoShot();
                 }
+                a.undoMove();
             }
         }
         if((current.getData()).isMaximizing()) {

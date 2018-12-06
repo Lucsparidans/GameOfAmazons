@@ -70,15 +70,27 @@ public class Node<T> {
     }
 
     public int getDepth(Node<T> root) {
-        if (root == null) {
-            return 0;
-        }
-        int h = 0;
+//        if (root == null) {
+//            return 0;
+//        }
+//        int h = 0;
+//
+//        for (Node<T> n : root.getChildren()) {
+//            h = Math.max(h, getDepth(n));
+//        }
+//        return h + 1;
+        int counter = 0;
+        Node<T> cur;
 
-        for (Node<T> n : root.getChildren()) {
-            h = Math.max(h, getDepth(n));
+        if(this.getParent() != null){
+            cur=this.getParent();
+            counter++;
+            while(cur.getParent()!=null){
+                counter++;
+                cur = cur.parent;
+            }
         }
-        return h + 1;
+        return 0;
     }
 
 

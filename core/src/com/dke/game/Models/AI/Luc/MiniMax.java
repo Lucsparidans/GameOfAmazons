@@ -1,13 +1,16 @@
 package com.dke.game.Models.AI.Luc;
 
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 
 public class MiniMax implements Algorithm {
     private Tree tree;
+
     @Override
-    public Move getBestMove() {
+    public Move getBestMove(Player player, Node<GameState> root) {
         return null;
     }
+
     public Node<GameState> node;
     boolean maxPlayer=true;
 

@@ -140,7 +140,7 @@ public class Board2D extends Board {
     /*@return a matrix with locations of pieces
      * occupied or not*/
     public Cell[][] getBoard() {
-        return super.board.clone();
+        return this.boardCoordinates.clone();
     }
 
     private int calcBoardHeight() {

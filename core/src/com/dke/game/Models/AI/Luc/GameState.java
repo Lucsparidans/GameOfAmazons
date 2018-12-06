@@ -1,5 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
+import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
@@ -26,7 +27,7 @@ public class GameState {
         this.arrow2DArrayList = arrow2DArrayList;
         this.move = move;
         this.player = player;
-this.maximizing = maximizing;
+        this.maximizing = maximizing;
         this.heuristicValue = 0;
     }
 
@@ -59,20 +60,24 @@ this.maximizing = maximizing;
         return board2D;
     }
 
-    public double evaluateState(){
-        if(this.maximizing){
-            return shotsHeuristics(player.getMyAmazons(),player.getEnemyAmazons())
-                    + positioHheuristics(player.getMyAmazons(),player.getEnemyAmazons());
-        }else{
-            return shotsHeuristics(player.getEnemyAmazons(),player.getMyAmazons())
-                    + positioHheuristics(player.getEnemyAmazons(),player.getMyAmazons());
+    public double evaluateState() {
+        if (player instanceof AI) {
+            AI playerAI = (AI) player;
+            if (this.maximizing) {
+                return shotsHeuristics(playerAI.getMyAmazons(), playerAI.getEnemyAmazons())
+                        + positioHheuristics(playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+            } else {
+                return shotsHeuristics(playerAI.getEnemyAmazons(), playerAI.getMyAmazons())
+                        + positioHheuristics(playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+            }
         }
+        return 0;
     }
 
 
     //<editor-fold desc="Heuristics">
     //calculating the score for the node
-    private double positioHheuristics(Amazon2D[] ourQueens,Amazon2D[] enemyQueens) {
+    private double positioHheuristics(Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
         double value = 0;
 
         for (Amazon queen : ourQueens) {
@@ -129,7 +134,7 @@ this.maximizing = maximizing;
         return count;
     }
 
-    private double shotsHeuristics(Amazon2D[] ourQueens,Amazon2D[] enemyQueens) {
+    private double shotsHeuristics(Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
         double value = 0;
         for (Amazon queen : ourQueens) {
 

@@ -119,14 +119,14 @@ public class GameLoop {
     }
     //Place the amazons on the board
     private void placePieces() {
-        amazons[0] = new Amazon2D('W', boardCoordinates[0][3]);
-        amazons[1] = new Amazon2D('W', boardCoordinates[9][3]);
-        amazons[2] = new Amazon2D('W', boardCoordinates[3][0]);
-        amazons[3] = new Amazon2D('W', boardCoordinates[6][0]);
-        amazons[4] = new Amazon2D('B', boardCoordinates[0][6]);
-        amazons[5] = new Amazon2D('B', boardCoordinates[9][6]);
-        amazons[6] = new Amazon2D('B', boardCoordinates[3][9]);
-        amazons[7] = new Amazon2D('B', boardCoordinates[6][9]);
+        amazons[0] = new Amazon2D('W', boardCoordinates[0][3],false);
+        amazons[1] = new Amazon2D('W', boardCoordinates[9][3],false);
+        amazons[2] = new Amazon2D('W', boardCoordinates[3][0],false);
+        amazons[3] = new Amazon2D('W', boardCoordinates[6][0],false);
+        amazons[4] = new Amazon2D('B', boardCoordinates[0][6],false);
+        amazons[5] = new Amazon2D('B', boardCoordinates[9][6],false);
+        amazons[6] = new Amazon2D('B', boardCoordinates[3][9],false);
+        amazons[7] = new Amazon2D('B', boardCoordinates[6][9],false);
         for (Amazon2D a : amazons) {
             gameView.getStage().addActor(a);
 
