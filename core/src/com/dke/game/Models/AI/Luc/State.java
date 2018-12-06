@@ -5,48 +5,25 @@ import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
-import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
 import java.util.ArrayList;
 
-public class GameState {
+public class State {
     private Board2D board2D;
-    private Amazon2D[] amazon2DArrayList;
-    private ArrayList<Arrow2D> arrow2DArrayList;
     private Move move;
     private Player player;
     private double heuristicValue;
-    private boolean maximizing;
 
-
-    public GameState(Amazon2D[] amazon2DArrayList, ArrayList<Arrow2D> arrow2DArrayList, Move move, Boolean maximizing, Player player) {
-        board2D = new Board2D();
-        board2D.placePieces(amazon2DArrayList, arrow2DArrayList);
-        this.amazon2DArrayList = amazon2DArrayList;
-        this.arrow2DArrayList = arrow2DArrayList;
+    public State(Move move, Player player, Board2D board2D) {
+        this.board2D = board2D;
         this.move = move;
         this.player = player;
-        this.maximizing = maximizing;
         this.heuristicValue = 0;
     }
-
     public Board2D getBoard2D() {
         return board2D;
     }
-
-    public Amazon2D[] getAmazon2DArrayList() {
-        return amazon2DArrayList;
-    }
-
-    public ArrayList<Arrow2D> getArrow2DArrayList() {
-        return arrow2DArrayList;
-    }
-
-    public boolean isMaximizing() {
-        return maximizing;
-    }
-
     public Move getMove() {
         return move;
     }
@@ -54,7 +31,7 @@ public class GameState {
     public boolean checkEnd(){
         int checkCount = 0;
 
-        for(int i = 0; i<amazon2DArrayList.length; i++){
+        for(int i = 0; i<board2D.amazon2DArrayList.length; i++){
 
             if(amazon2DArrayList[i].endMe(board2D.getBoardCoordinates())){
                 checkCount++;
@@ -248,4 +225,5 @@ public class GameState {
     }
     //</editor-fold>
 
+}
 }
