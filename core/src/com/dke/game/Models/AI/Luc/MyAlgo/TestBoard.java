@@ -10,7 +10,7 @@ import com.dke.game.Models.GraphicalModels.Arrow2D;
 
 import java.util.ArrayList;
 
-public class testBoard {
+public class TestBoard {
     /**
      * The graphical information of the board class, this class also contain all the information about the board there is.
      */
@@ -20,11 +20,11 @@ public class testBoard {
     Amazon2D[] amazons;
     ArrayList<Arrow2D> arrows;
 
-    public testBoard(Amazon2D[] amazons,ArrayList<Arrow2D> arrows) {
+    public TestBoard(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {
         boardCoordinates = new Cell[Board.height][Board.width];
-        arrows = new ArrayList<>();
-
-        placePieces(amazons,arrows);
+        this.arrows = new ArrayList<>();
+        createTestPieces(amazons,arrows);
+        placePieces(this.amazons,this.arrows);
     }
     private void createTestPieces(Amazon2D[] amazons,ArrayList<Arrow2D> arrows){
         int counter = 0;
