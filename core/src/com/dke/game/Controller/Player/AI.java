@@ -2,6 +2,8 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.GameState;
+import com.dke.game.Models.AI.Luc.Node;
 import com.dke.game.Models.AI.Luc.Tree;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.AI.Luc.Move;
@@ -11,41 +13,63 @@ import com.dke.game.Models.GraphicalModels.Board2D;
 public class AI extends Player {
     private Algorithm algorithm;
     private Board2D board2D;
-
+    private Node<GameState> rootNode;
     private GameLoop gameLoop;
     private Tree tree;
+    private Amazon2D[] myAmazons;
+    private Amazon2D[] enemyAmazons;
 
     public AI(char side, Algorithm algorithm, Board2D board2D, GameLoop gameLoop) {
-        super(side, gameLoop);
+        super(side);
         this.algorithm = algorithm;
         this.board2D = board2D;
         this.gameLoop=gameLoop;
-        //TODO fix
-        if(this.side=='W'){
-            this.tree = new Tree(board2D,gameLoop.getAmazons(),gameLoop.getArrow(),this);
+        this.tree = new Tree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
+        enemyAmazons = new Amazon2D[4];
+        myAmazons = new Amazon2D[4];
+        int counter = 0;
+        int cnt=0;
+        for (Amazon2D a:gameLoop.getAmazons()) {
+            if(this.side==a.getSide()) {
+                myAmazons[counter] = a;
+                counter++;
+            }
+            else{
+                enemyAmazons[cnt]=a;
+                cnt++;
+            }
         }
-        else if(this.side=='B'){
-            this.tree = new Tree(board2D,gameLoop.getAmazons(),gameLoop.getArrow(),this);
-        }
-        else{
-            System.out.println("Something went wrong");
-        }
-
-
-
     }
 
+    public Amazon2D[] getMyAmazons() {
+        return myAmazons;
+    }
+
+    public Amazon2D[] getEnemyAmazons() {
+        return enemyAmazons;
+    }
+
+
+
+
+
+
     private void move() {
-        Move bestMove = algorithm.getBestMove();
+        Move bestMove = algorithm.getBestMove(this,rootNode);
         Cell moveQTo = bestMove.getQueenTo();
         Cell arrowTo = bestMove.getArrowTo();
         Amazon2D queen = bestMove.getQueen();
         queen.move(moveQTo);
         queen.shoot(arrowTo);
     }
+    private void updateTree(){
+        this.tree=new Tree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
+        rootNode=tree.getRootNode();
+    }
 
     @Override
     public void performTurn() {
+        updateTree();
         move();
     }
 
