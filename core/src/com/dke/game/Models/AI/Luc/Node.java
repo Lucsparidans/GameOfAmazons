@@ -1,7 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +12,13 @@ public class Node<T> {
     private List<Node<T>> children = new ArrayList<>();
 
     private Node<T> parent = null;
+    private final int DEPTH;
 
 
-    public Node(T data) {
+    public Node(T data, Node<T> parent) {
+        this.parent = parent;
         this.data = data;
-
+        this.DEPTH = this.getDepth();
     }
 
     public Node getRoot() {
@@ -39,7 +40,7 @@ public class Node<T> {
     public void addChildren(List<Node<T>> children) {
         // Finish this method
         this.children.addAll(children);
-        for (Node child:children) {
+        for (Node child : children) {
             child.setParent(this);
         }
     }
@@ -69,7 +70,7 @@ public class Node<T> {
         return this.parent;
     }
 
-    public int getDepth(Node<T> root) {
+    private int getDepth() {
 //        if (root == null) {
 //            return 0;
 //        }
@@ -82,17 +83,18 @@ public class Node<T> {
         int counter = 0;
         Node<T> cur;
 
-        if(this.getParent() != null){
-            cur=this.getParent();
+        if (this.getParent() != null) {
+            cur = this.getParent();
             counter++;
-            while(cur.getParent()!=null){
+            while (cur.getParent() != null) {
                 counter++;
                 cur = cur.parent;
             }
         }
-        return 0;
+        return counter;
     }
 
-
-
+    public int getDEPTH() {
+        return DEPTH;
+    }
 }

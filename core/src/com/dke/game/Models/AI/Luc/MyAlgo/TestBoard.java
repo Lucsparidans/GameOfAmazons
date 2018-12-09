@@ -42,7 +42,7 @@ public class TestBoard {
     private void initializeBoard(){
         for (int i = 0; i < boardCoordinates.length; i++) {
             for (int j = 0; j < boardCoordinates[i].length; j++) {
-                boardCoordinates[i][j] = new Cell(null,null,null,null);
+                boardCoordinates[i][j] = new Cell(null,null,null,null,i,j);
             }
 
         }

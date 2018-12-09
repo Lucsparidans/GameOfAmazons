@@ -12,7 +12,7 @@ public class OptimizedTree {
 
     private Node<State> rootNode;
     private State initialState;
-    private final int maxDepth = 5;
+    private final int maxDepth = 1;
     private Player player;
 
 
@@ -20,22 +20,22 @@ public class OptimizedTree {
         initialState = new State(new TestBoard(amazon2DS, arrow2DS), null, player);
 
         this.player = player;
-        rootNode = new Node<>(initialState);
+        rootNode = new Node<>(initialState,null);
         expandNode(rootNode);
 
     }
 
     public void expandNode(Node<State> current) {
-        if (current.getDepth(rootNode) == maxDepth || current.getChildren() == null) {
-            return;
-        }
+        if(current.getDEPTH()<maxDepth){
         ArrayList<State> possibleMoves = getPossibleStates(current);
         for (State g : possibleMoves) {
-            Node<State> child = new Node<>(g);
+            Node<State> child = new Node<>(g, current);
 //            child.setParent(current);
             current.addChild(child);
-
-
+        }
+        }
+        if (current.getDEPTH() == maxDepth || current.getChildren().size()==0) {
+            return;
         }
         for (Node<State> node : current.getChildren()) {
             node.getData().executeMove();
@@ -63,7 +63,7 @@ public class OptimizedTree {
                 ArrayList<Cell> shootMoves = a.getPossibleMoves();
                 for (Cell cs : shootMoves) {
                     moves.add(new Move(a, c, cs));
-                    a.undoShot();
+
                 }
                 a.undoMove();
             }

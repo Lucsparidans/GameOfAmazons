@@ -10,9 +10,7 @@ public class Cell {
     private Coordinate topLeft, topRight, bottomRight, bottomLeft;
     private int i,j;
 
-    public Cell(Coordinate topLeft, Coordinate topRight, Coordinate bottomRight, Coordinate bottomLeft) {
-        this(topLeft,topRight,bottomRight,bottomLeft,-1,-1);
-    }
+
 
     public Cell(Piece content, Coordinate topLeft, Coordinate topRight, Coordinate bottomRight, Coordinate bottomLeft, int i, int j) {
         this.content = content;

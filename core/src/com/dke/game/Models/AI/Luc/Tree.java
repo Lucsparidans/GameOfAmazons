@@ -28,17 +28,17 @@ public class Tree {
             initialState = new GameState(amazon2DS, arrow2DS, null, false, player);
         }
         this.player = player;
-        rootNode = new Node<>(initialState);
+        rootNode = new Node<>(initialState, null);
         expandNode(rootNode);
 
     }
     public void expandNode(Node<GameState> current){
-        if(current.getDepth(rootNode) == maxDepth || current.getChildren() == null){
+        if(current.getDEPTH() == maxDepth || current.getChildren() == null){
             return;
         }
         ArrayList<GameState> possibleMoves = getPossibleStates(current);
         for (GameState g:possibleMoves) {
-            Node<GameState> child = new Node<>(g);
+            Node<GameState> child = new Node<>(g, current);
 //            child.setParent(current);
             current.addChild(child);
 
