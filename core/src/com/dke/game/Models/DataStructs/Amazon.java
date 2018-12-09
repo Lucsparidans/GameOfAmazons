@@ -86,22 +86,26 @@ public abstract class Amazon extends Piece {
      * and gives back the arrow
      * */
     public void shoot(Cell cell) {
-        Arrow2D arrow = new Arrow2D(cell);
+        Arrow2D arrow = new Arrow2D(cell,true);
         cell.occupy(arrow);
         arrowShots.add(arrow);
         lastShot.add(cell);
     }
 
     public void undoShot() {
-        Cell lastShot = this.lastShot.pop();
-        Arrow s = (Arrow) lastShot.getContent();
-        lastShot.unOccupy();
-        s.kill();
+        if(!lastShot.empty()) {
+            Cell lastShot = this.lastShot.pop();
+            Arrow s = (Arrow) lastShot.getContent();
+            lastShot.unOccupy();
+            s.kill();
+        }
     }
 
     public void undoMove() {
-        Cell lastMove = this.lastMove.pop();
-        move(lastMove);
+        if(!lastMove.empty()) {
+            Cell lastMove = this.lastMove.pop();
+            move(lastMove);
+        }
     }
 
     /* omg this is long not gonna read

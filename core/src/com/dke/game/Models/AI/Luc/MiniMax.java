@@ -2,15 +2,14 @@ package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MyAlgo.OptimizedTree;
 import com.dke.game.Models.AI.Luc.MyAlgo.State;
 
 public class MiniMax implements Algorithm {
-    private OptimizedTree optimizedTree;
+    private MovesTree movesTree;
 
     @Override
-    public Move getBestMove(Player player, Node<State> root) {
-        Node<State> bestEval = MiniMax(optimizedTree.getRootNode(),2,true,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+    public Move getBestMove(Player player, Node<Move> root) {
+        Node<State> bestEval = MiniMax(movesTree.getRootNode(),2,true,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
         while(bestEval.getParent()!=null){
             bestEval = bestEval.getParent();
         }
@@ -21,9 +20,9 @@ public class MiniMax implements Algorithm {
     boolean maxPlayer=true;
 
     //returns the best score of all possible Board Status
-    public static Node<State> MiniMax(Node<State> aNode, int depth, boolean maxPlayer, double alpha, double beta){
+    public static Node<Move> MiniMax(Node<Move> aNode, int depth, boolean maxPlayer, double alpha, double beta){
 
-        Node<State> chNodeVal;
+        Node<Move> chNodeVal;
         if(depth==0|| aNode.getChildren().isEmpty()){
             return aNode;
         }

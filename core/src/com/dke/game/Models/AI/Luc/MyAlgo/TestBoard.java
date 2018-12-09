@@ -2,6 +2,7 @@ package com.dke.game.Models.AI.Luc.MyAlgo;
 
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.dke.game.Models.AI.Luc.Move;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
@@ -10,16 +11,18 @@ import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class TestBoard {
     /**
      * The graphical information of the board class, this class also contain all the information about the board there is.
      */
 
-    private static ShapeRenderer shapeRenderer;
     private Cell[][] boardCoordinates;
     private Amazon2D[] amazons = new Amazon2D[8];
     private ArrayList<Arrow2D> arrows;
+    private Stack<Move> executedMoves = new Stack<>();
+
 
     public TestBoard(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {
         boardCoordinates = new Cell[Board.height][Board.width];
@@ -62,6 +65,19 @@ public class TestBoard {
         for (Arrow2D a : arrow2DS) {
             this.occupy(a, boardCoordinates[a.getCell().getI()][a.getCell().getJ()]);
             a.updateCell(boardCoordinates[a.getCell().getI()][a.getCell().getJ()]);
+        }
+    }
+    public void executeMove(Move move){
+        Amazon2D a = move.getQueen();
+        a.move(move.getQueenTo());
+        a.shoot(move.getArrowTo());
+        executedMoves.push(move);
+    }
+    public void resetMoves(){
+        while (!executedMoves.empty()){
+            Move m = executedMoves.pop();
+            m.getQueen().undoShot();
+            m.getQueen().undoMove();
         }
     }
 

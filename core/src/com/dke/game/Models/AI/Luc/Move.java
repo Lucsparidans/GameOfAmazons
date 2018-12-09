@@ -10,14 +10,16 @@ import java.util.ArrayList;
 public class Move {
     private Cell queenTo;
     private Cell arrowTo;
+    private Cell queenFrom;
     private Amazon2D queen;
-    private ArrayList<Piece> currentPieces;
+
 
 
     public Move(Amazon2D queen, Cell newQueen, Cell arrowTo) {
         this.queenTo = newQueen;
         this.arrowTo = arrowTo;
         this.queen = queen;
+        this.queenFrom = queen.getCell();
     }
 
     public Cell getQueenTo() {

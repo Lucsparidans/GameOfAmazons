@@ -8,6 +8,5 @@ import com.dke.game.Models.AI.Luc.Node;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
 public interface Algorithm {
-    Board2D testBoard = new Board2D();
-    Move getBestMove(Player player, Node<State>root);
+   Move getBestMove(Player player, Node<Move>root);
 }
