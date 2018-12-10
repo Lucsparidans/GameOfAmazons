@@ -92,10 +92,10 @@ public class MoveNode {
 
     private double evaluateState(AI playerAI, TestBoard testBoard) {
         if (this.getData().isPlayerMaximizing(playerAI)) {
-            return shotsHeuristics(playerAI.getMyAmazons(), playerAI.getEnemyAmazons())
+            return shotsHeuristics(playerAI.getMyAmazons(), playerAI.getEnemyAmazons(),testBoard)
                     + positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
         } else {
-            return shotsHeuristics(playerAI.getEnemyAmazons(), playerAI.getMyAmazons())
+            return shotsHeuristics(playerAI.getEnemyAmazons(), playerAI.getMyAmazons(),testBoard)
                     + positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
         }
     }
@@ -160,12 +160,12 @@ public class MoveNode {
         return count;
     }
 
-    private double shotsHeuristics(Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
+    private double shotsHeuristics(Amazon2D[] ourQueens, Amazon2D[] enemyQueens, TestBoard testBoard) {
         double value = 0;
         for (Amazon queen : ourQueens) {
 
             //score: in range
-
+            queen.possibleMoves(testBoard);
             ArrayList<Cell> possibleShots = queen.getPossibleMoves();// evaluate all possible shots of that cell(as moves are the same as shots we use moves)
             //all possible shots questioned
             for (Cell arrowCell : possibleShots) {

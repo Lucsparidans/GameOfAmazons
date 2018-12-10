@@ -22,7 +22,6 @@ public class AI extends Player {
         super(side);
         this.algorithm = algorithm;
         this.gameLoop=gameLoop;
-        this.tree = new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
         enemyAmazons = new Amazon2D[4];
         myAmazons = new Amazon2D[4];
         int counter = 0;
@@ -37,6 +36,7 @@ public class AI extends Player {
                 cnt++;
             }
         }
+        this.tree = new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
     }
 
     public Amazon2D[] getMyAmazons() {
