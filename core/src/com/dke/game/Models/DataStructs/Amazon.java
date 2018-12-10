@@ -12,7 +12,7 @@ import java.util.Stack;
  */
 public abstract class Amazon extends Piece {
     private final char side;    //B for black & W for white.
-    private static String idString = "Amazon: ";
+    private String idString = "Q";
     private static int ID = 0;
     private Integer idNumber; // what is this exactly??
     private Cell cell;
@@ -36,6 +36,12 @@ public abstract class Amazon extends Piece {
         this.idNumber = ID++;
 
 
+
+    }
+
+    @Override
+    protected String getType() {
+        return Character.toString(side);
     }
 
     //returns id num(1-4) and color)

@@ -1,4 +1,4 @@
-package com.dke.game.Models.AI.Luc;
+package com.dke.game.Models.AI.Luc.MyAlgo;
 
 
 import java.util.ArrayList;

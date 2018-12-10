@@ -60,7 +60,15 @@ public class Cell {
             return content.getID();
         }
         else{
-            return "This cell is empty";
+            return "E";
+        }
+    }
+    public String getContentType(){
+        if(content != null){
+            return content.getType();
+        }
+        else{
+            return " ";
         }
     }
 

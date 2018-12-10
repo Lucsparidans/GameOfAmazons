@@ -17,7 +17,7 @@ public class MovesTree {
 
     private MoveNode rootNode;
     private State initialState;
-    private final int maxDepth = 1;
+    private final int maxDepth = 2;
     private AI player;
 
 
@@ -41,9 +41,6 @@ public class MovesTree {
             }
         }
         if (current.getDEPTH() == maxDepth || current.getChildren().size() == 0) {
-            createCurrentState(current,initialState.getTestBoard());
-            current.evaluateNode(player,initialState.getTestBoard());
-            initialState.getTestBoard().resetMoves();
             return;
         }
         for (MoveNode node : current.getChildren()) {
@@ -88,9 +85,11 @@ public class MovesTree {
                 ArrayList<Cell> shootMoves = a.getPossibleMoves();
                 for (Cell cs : shootMoves) {
                     moves.add(new Move(a, c, cs));
-
+                    //testBoard.printBoard();
                 }
+                testBoard.printBoard();
                 a.undoMove();
+                testBoard.printBoard();
             }
         }
     }

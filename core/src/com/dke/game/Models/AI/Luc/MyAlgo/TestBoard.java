@@ -1,9 +1,7 @@
 package com.dke.game.Models.AI.Luc.MyAlgo;
 
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dke.game.Models.AI.Luc.Move;
-import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
@@ -81,6 +79,17 @@ public class TestBoard {
         }
     }
 
+
+    public void printBoard() {
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            System.out.print("|");
+            for (int j = 0; j < boardCoordinates[i].length; j++) {
+                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 
     public Cell[][] getBoard() {
         return this.boardCoordinates.clone();
