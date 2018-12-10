@@ -58,7 +58,7 @@ public class MoveNode {
     }
 
     public int getDEPTH() {
-        return this.getDEPTH();
+        return this.DEPTH;
     }
 
     private int getDepth() {

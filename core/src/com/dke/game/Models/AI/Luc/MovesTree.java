@@ -72,7 +72,9 @@ public class MovesTree {
             path.push(cur);
         }
         for (MoveNode n : path) {
-            testBoard.executeMove(n.getData());
+            if(n.getData()!=null) {
+                testBoard.executeMove(n.getData());
+            }
         }
     }
 

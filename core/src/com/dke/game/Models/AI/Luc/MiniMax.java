@@ -7,7 +7,7 @@ public class MiniMax implements Algorithm {
     private MovesTree movesTree;
 
     @Override
-    public Move getBestMove(Player player, Node<Move> root) {
+    public Move getBestMove(Player player, MoveNode root) {
         MoveNode bestEval = MiniMax(movesTree.getRootNode(), 2, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         while (bestEval.getParent() != null) {
             bestEval = bestEval.getParent();
@@ -36,11 +36,11 @@ public class MiniMax implements Algorithm {
                 if (bestValue == null) {
                     bestValue = aNode;
                 } else {
-                    if (bestValue.getData().evaluateState() < aNode.getData().evaluateState()) {
+                    if (bestValue.getValue() < aNode.getValue()) {
                         bestValue = aNode;
                     }
                 }
-                alpha = Math.max(alpha, bestValue.getData().evaluateState());
+                alpha = Math.max(alpha, bestValue.getValue());
                 if (beta <= alpha) break;
 
             }
@@ -54,11 +54,11 @@ public class MiniMax implements Algorithm {
                 if (bestValue == null) {
                     bestValue = aNode;
                 } else {
-                    if (bestValue.getData().evaluateState() > aNode.getData().evaluateState()) {
+                    if (bestValue.getValue() > aNode.getValue()) {
                         bestValue = aNode;
                     }
                 }
-                alpha = Math.min(beta, bestValue.getData().evaluateState());
+                alpha = Math.min(beta, bestValue.getValue());
                 if (beta <= alpha) break;
 
 
