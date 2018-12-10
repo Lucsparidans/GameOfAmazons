@@ -13,4 +13,12 @@ public abstract class Player {
     public char getSide() {
         return side;
     }
+
+    public char getOpposingSide() {
+        if (this.side == 'W') {
+            return 'B';
+        } else {
+            return 'W';
+        }
+    }
 }

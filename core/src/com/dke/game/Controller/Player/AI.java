@@ -35,7 +35,6 @@ public class AI extends Player {
                 cnt++;
             }
         }
-        this.tree = new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
     }
 
     public Amazon2D[] getMyAmazons() {

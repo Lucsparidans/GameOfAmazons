@@ -62,12 +62,12 @@ public class GameLoop {
     private void createPlayers(String white_Type,String black_Type,GameView gameView){
         if(white_Type.equals("Human")){
             if(black_Type.equals("AI")){
-                white = new Human('W',gameView);
+                white = new Human('W',gameView,this);
                 black = new AI('B',algo,board2D,this);
             }
             else if(black_Type.equals("Human")){
-                white = new Human('W',gameView);
-                black = new Human('B',gameView);
+                white = new Human('W',gameView,this);
+                black = new Human('B',gameView,this);
             }
         }
         else if(white_Type.equals("AI")){
@@ -77,7 +77,7 @@ public class GameLoop {
             }
             else if(black_Type.equals("Human")){
                 white = new AI('B',algo,board2D,this);
-                black = new Human('B',gameView);
+                black = new Human('B',gameView,this);
             }
         }
     }
@@ -96,6 +96,7 @@ public class GameLoop {
         }
         if(currentPlayer instanceof Human) {
             Human p = (Human)currentPlayer;
+            board2D.printBoard();
             if (this.checkEnd()&&p.getPhase()==1) {
                 running = false;
             }
@@ -179,7 +180,7 @@ public class GameLoop {
             }
         }
         //if all isolated
-        if(checkCount==amazons.length){
+        if(checkCount == amazons.length){
             return true;
         }
         //if all isolated or immobile

@@ -17,7 +17,7 @@ public class MovesTree {
 
     private MoveNode rootNode;
     private State initialState;
-    private final int maxDepth = 2;
+    private final int maxDepth = 1;
     private AI player;
 
 
@@ -54,8 +54,12 @@ public class MovesTree {
     public ArrayList<Move> getPossibleMoves(MoveNode current) {
         ArrayList<Move> moves = new ArrayList<>();
         TestBoard testBoard = initialState.getTestBoard();
-        createCurrentState(current,testBoard);
-        generateMoves(testBoard, moves);
+        createCurrentState(current, testBoard);
+        if (current.getDEPTH() % 2 == 0) {
+            generateMoves(testBoard, moves, player.getSide());
+        } else {
+            generateMoves(testBoard, moves, player.getOpposingSide());
+        }
         testBoard.resetMoves();
         return moves;
     }
@@ -69,27 +73,29 @@ public class MovesTree {
             path.push(cur);
         }
         for (MoveNode n : path) {
-            if(n.getData()!=null) {
+            if (n.getData() != null) {
                 testBoard.executeMove(n.getData());
             }
         }
     }
 
-    private void generateMoves(TestBoard testBoard, ArrayList<Move> moves) {
+    private void generateMoves(TestBoard testBoard, ArrayList<Move> moves, char side) {
         for (Amazon2D a : testBoard.getAmazons()) {
-            a.possibleMoves(testBoard);
-            ArrayList<Cell> possibleMoves = a.getPossibleMoves();
-            for (Cell c : possibleMoves) {
-                a.move(c);
+            if (a.getSide() == side) {
                 a.possibleMoves(testBoard);
-                ArrayList<Cell> shootMoves = a.getPossibleMoves();
-                for (Cell cs : shootMoves) {
-                    moves.add(new Move(a, c, cs));
+                ArrayList<Cell> possibleMoves = a.getPossibleMoves();
+                for (Cell c : possibleMoves) {
+                    a.move(c);
+                    a.possibleMoves(testBoard);
+                    ArrayList<Cell> shootMoves = a.getPossibleMoves();
+                    for (Cell cs : shootMoves) {
+                        moves.add(new Move(a, c, cs));
+                        //testBoard.printBoard();
+                    }
+                    testBoard.printBoard();
+                    a.undoMove();
                     //testBoard.printBoard();
                 }
-                testBoard.printBoard();
-                a.undoMove();
-                testBoard.printBoard();
             }
         }
     }

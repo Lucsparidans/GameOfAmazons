@@ -145,6 +145,16 @@ public class Board2D extends Board {
             m.getQueen().undoMove();
         }
     }
+    public void printBoard() {
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            System.out.print("|");
+            for (int j = 0; j < boardCoordinates[i].length; j++) {
+                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
     public Cell[][] getBoardCoordinates() {
         return boardCoordinates.clone();
     }

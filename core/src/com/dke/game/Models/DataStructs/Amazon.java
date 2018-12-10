@@ -72,7 +72,7 @@ public abstract class Amazon extends Piece {
     /*@param cell
      * moves a piece to the given cell, frees the previous one */
     public void move(Cell cell) {
-        lastMove.add(cell);
+        lastMove.add(this.cell);
         this.cell.unOccupy();
         updateCell(cell);
         cell.occupy(this);
