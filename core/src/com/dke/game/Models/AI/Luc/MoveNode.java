@@ -24,13 +24,18 @@ public class MoveNode {
     }
 
 
-    public Node addChild(MoveNode child) {
-        return this.addChild(child);
+    public MoveNode addChild(MoveNode child) {
+        this.children.add(child);
+        child.setParent(this);
+        return child;
     }
 
 
-    public void addChildren(List children) {
-        this.addChildren(children);
+    public void addChildren(List<MoveNode> children) {
+        this.children.addAll(children);
+        for (MoveNode child : children) {
+            child.setParent(this);
+        }
     }
 
 
@@ -48,6 +53,10 @@ public class MoveNode {
         this.data = data;
     }
 
+    private void setParent(MoveNode parent) {
+        // Finish this method
+        this.parent = parent;
+    }
 
     public MoveNode getParent() {
         return this.parent;
