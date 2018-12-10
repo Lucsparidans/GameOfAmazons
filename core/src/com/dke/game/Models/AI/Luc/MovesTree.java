@@ -1,5 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
+import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Luc.MyAlgo.State;
 import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
@@ -14,35 +15,38 @@ import java.util.Stack;
 public class MovesTree {
 
 
-    private Node<Move> rootNode;
+    private MoveNode rootNode;
     private State initialState;
     private final int maxDepth = 1;
-    private Player player;
+    private AI player;
 
 
-    public MovesTree(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, Player player) {
+    public MovesTree(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, AI player) {
         initialState = new State(new TestBoard(amazon2DS, arrow2DS), null, player);
         this.player = player;
-        rootNode = new Node<>(null, null);
+        rootNode = new MoveNode(null, null);
         long b = System.nanoTime();
         expandNode(rootNode);
         long e = System.nanoTime();
-        System.out.println("The elapsed time is: " + (e-b)*1e-9);
+        System.out.println("The elapsed time is: " + (e - b) * 1e-9);
     }
 
-    public void expandNode(Node<Move> current) {
+    public void expandNode(MoveNode current) {
         if (current.getDEPTH() < maxDepth) {
             ArrayList<Move> possibleMoves = getPossibleMoves(current);
             for (Move m : possibleMoves) {
-                Node<Move> child = new Node<>(m, current);
+                MoveNode child = new MoveNode(m, current);
                 /* child.setParent(current); */
                 current.addChild(child);
             }
         }
         if (current.getDEPTH() == maxDepth || current.getChildren().size() == 0) {
+            createCurrentState(current,initialState.getTestBoard());
+            current.evaluateNode(player,initialState.getTestBoard());
+            initialState.getTestBoard().resetMoves();
             return;
         }
-        for (Node<Move> node : current.getChildren()) {
+        for (MoveNode node : current.getChildren()) {
             //TODO execute move here
             expandNode(node);
         }
@@ -50,22 +54,26 @@ public class MovesTree {
 
     }
 
-    public ArrayList<Move> getPossibleMoves(Node<Move> current) {
-        Stack<Node> path = new Stack<>();
+    public ArrayList<Move> getPossibleMoves(MoveNode current) {
         ArrayList<Move> moves = new ArrayList<>();
         TestBoard testBoard = initialState.getTestBoard();
-        Node<Move> cur = current;
+        createCurrentState(current,testBoard);
+        generateMoves(testBoard, moves);
+        testBoard.resetMoves();
+        return moves;
+    }
+
+    public void createCurrentState(MoveNode current, TestBoard testBoard) {
+        MoveNode cur = current;
+        Stack<MoveNode> path = new Stack<>();
         path.push(cur);
         while (cur.getParent() != null) {
             cur = cur.getParent();
             path.push(cur);
         }
-        for (Node<Move> n : path) {
+        for (MoveNode n : path) {
             testBoard.executeMove(n.getData());
         }
-        generateMoves(testBoard,moves);
-        testBoard.resetMoves();
-        return moves;
     }
 
     private void generateMoves(TestBoard testBoard, ArrayList<Move> moves) {
@@ -85,7 +93,7 @@ public class MovesTree {
         }
     }
 
-    public Node<Move> getRootNode() {
+    public MoveNode getRootNode() {
         return rootNode;
     }
 }

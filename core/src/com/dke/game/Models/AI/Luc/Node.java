@@ -20,6 +20,9 @@ public class Node<T> {
         this.data = data;
         this.DEPTH = this.getDepth();
     }
+    public Node(Node<T> parent){
+        this(null,parent);
+    }
 
     public Node getRoot() {
         // Finish this method
@@ -71,27 +74,18 @@ public class Node<T> {
     }
 
     private int getDepth() {
-//        if (root == null) {
-//            return 0;
-//        }
-//        int h = 0;
-//
-//        for (Node<T> n : root.getChildren()) {
-//            h = Math.max(h, getDepth(n));
-//        }
-//        return h + 1;
-        int counter = 0;
-        Node<T> cur;
+        int count = 0;
+        Node<T> current;
 
         if (this.getParent() != null) {
-            cur = this.getParent();
-            counter++;
-            while (cur.getParent() != null) {
-                counter++;
-                cur = cur.parent;
+            current = this.getParent();
+            count++;
+            while (current.getParent() != null) {
+                current = current.parent;
+                count++;
             }
         }
-        return counter;
+        return count;
     }
 
     public int getDEPTH() {

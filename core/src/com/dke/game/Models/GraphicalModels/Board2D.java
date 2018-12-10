@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.dke.game.Models.AI.Luc.Move;
 import com.dke.game.Models.DataStructs.*;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class Board2D extends Board {
@@ -24,6 +26,7 @@ public class Board2D extends Board {
     //private final int MARGAIN_BACKGROUND = Cell.CELL_SIZE;
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
     private Cell[][] boardCoordinates;
+    private Stack<Move> executedMoves = new Stack<>();
 
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
@@ -129,6 +132,19 @@ public class Board2D extends Board {
         }
     }
 
+    public void executeMove(Move move){
+        Amazon2D a = move.getQueen();
+        a.move(move.getQueenTo());
+        a.shoot(move.getArrowTo());
+        executedMoves.push(move);
+    }
+    public void resetMoves(){
+        while (!executedMoves.empty()){
+            Move m = executedMoves.pop();
+            m.getQueen().undoShot();
+            m.getQueen().undoMove();
+        }
+    }
     public Cell[][] getBoardCoordinates() {
         return boardCoordinates.clone();
     }

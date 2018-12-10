@@ -2,6 +2,7 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MoveNode;
 import com.dke.game.Models.AI.Luc.MovesTree;
 import com.dke.game.Models.AI.Luc.Node;
 import com.dke.game.Models.DataStructs.Cell;
@@ -11,7 +12,7 @@ import com.dke.game.Models.GraphicalModels.Board2D;
 
 public class AI extends Player {
     private Algorithm algorithm;
-    private Node<Move> rootNode;
+    private MoveNode rootNode;
     private GameLoop gameLoop;
     private MovesTree tree;
     private Amazon2D[] myAmazons;
@@ -63,7 +64,7 @@ public class AI extends Player {
     private void updateTree(){
 
         this.tree=new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
-        rootNode=tree.getRootNode();
+        rootNode=this.tree.getRootNode();
     }
 
     @Override
