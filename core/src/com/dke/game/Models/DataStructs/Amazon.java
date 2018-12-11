@@ -283,13 +283,13 @@ public abstract class Amazon extends Piece {
             boolean moveMade = false;
             checkArray[xPos][yPos] = 1;
             if (this.side == 'W') {
-                if (board[xPos][yPos].getContentID().contains("Amazon: 4") || board[xPos][yPos].getContentID().contains("Amazon: 5") || board[xPos][yPos].getContentID().contains("Amazon: 6") || board[xPos][yPos].getContentID().contains("Amazon: 7")) {
+                if (board[xPos][yPos].getContent().getType().equals(Character.toString(this.side))) {
                     //System.out.println("Found amazon of opposite colour");
                     break;
                 }
             }
             if (this.side == 'B') {
-                if (board[xPos][yPos].getContentID().contains("Amazon: 0") || board[xPos][yPos].getContentID().contains("Amazon: 1") || board[xPos][yPos].getContentID().contains("Amazon: 2") || board[xPos][yPos].getContentID().contains("Amazon: 3")) {
+                if (board[xPos][yPos].getContent().getType().equals(Character.toString(this.side))) {
                     //System.out.println("Found amazon of opposite colour");
                     break;
                 }

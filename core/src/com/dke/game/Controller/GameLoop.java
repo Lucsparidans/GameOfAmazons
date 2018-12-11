@@ -147,6 +147,7 @@ public class GameLoop {
     }
     //Check if the game has reached an end condition
     private boolean checkEnd(){
+        this.board2D.printBoard();
         int checkCount = 0;
 
         for(int i = 0; i<amazons.length; i++){
@@ -180,7 +181,7 @@ public class GameLoop {
             }
         }
         //if all isolated
-        if(checkCount == amazons.length){
+        if(checkCount==amazons.length){
             return true;
         }
         //if all isolated or immobile
@@ -190,6 +191,7 @@ public class GameLoop {
 
         return false;
     }
+
 
 
 
