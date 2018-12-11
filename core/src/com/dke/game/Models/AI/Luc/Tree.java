@@ -1,8 +1,9 @@
 package com.dke.game.Models.AI.Luc;
 
-import com.badlogic.gdx.Game;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Cell;
+import com.dke.game.Models.DataStructs.GameState;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -13,59 +14,48 @@ import java.util.ArrayList;
 public class Tree {
    private Node<GameState> rootNode;
    private GameState initialState;
-   private final int maxDepth = 2;
+   private final int maxDepth = 5;
    private Board2D bestEval;
    private Board2D worstEval;
-   private Player player;
 
 
 
+    public Tree(Board2D board2D, Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS) {
+        initialState = new GameState(board2D,amazon2DS,arrow2DS);
 
-
-    public Tree(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, Player player) {
-        if(player.getSide()=='W') {
-            initialState = new GameState(amazon2DS, arrow2DS, null, true, player);
-        }
-        else{
-            initialState = new GameState(amazon2DS, arrow2DS, null, false, player);
-        }
-        this.player = player;
-        rootNode = new Node<>(initialState);
+        rootNode = new Node<GameState>(initialState);
         expandNode(rootNode);
-
     }
     public void expandNode(Node<GameState> current){
-        ArrayList<GameState> possibleMoves = getPossibleStates(current);
-        for (GameState g:possibleMoves) {
-            Node<GameState> child = new Node<>(g);
-            current.addChild(child);
-        }
-        if(current.getDepth() == maxDepth || current.getChildren().size()==0){
+        if(current.getDepth(rootNode) == 5 || current.getChildren() == null){
             return;
         }
+        ArrayList<GameState> possibleMoves = getPossibleStates(current);
+        for (GameState g:possibleMoves) {
+            current.addChild(new Node<GameState>(g));
+        }
         for (Node<GameState> node:current.getChildren()) {
-            if((current.getData()).isMaximizing()){
-                node.getData().executeMove();
             expandNode(node);
-            }
-            else{
-                node.getData().executeMove();
-                expandNode(node);
-            }
         }
 
 
     }
     public ArrayList<GameState> getPossibleStates(Node<GameState> current){
-        ArrayList<GameState> possibleStates = new ArrayList<>();
+        ArrayList<GameState> possibleStates = new ArrayList<GameState>();
         GameState currentState = current.getData();
         Amazon2D[] amazon2DS = currentState.getAmazon2DArrayList();
         ArrayList<Arrow2D> arrow2DS = currentState.getArrow2DArrayList();
+        Board2D board2D = currentState.getBoard2D();
         Amazon2D[] testQueens = amazon2DS.clone();
         ArrayList<Arrow2D> testArrows = (ArrayList<Arrow2D>) arrow2DS.clone();
-        ArrayList<Move> moves = new ArrayList<>();
+        ArrayList<Move> moves = new ArrayList<Move>();
         Board2D testBoard = new Board2D();
-        testBoard.placePieces(testQueens,testArrows);
+        for (Amazon2D a:testQueens) {
+            testBoard.occupy(a,a.getCell());
+        }
+        for (Arrow2D a:testArrows) {
+            testBoard.occupy(a,a.getCell());
+        }
 
         for (Amazon2D a:testQueens) {
             a.possibleMoves(testBoard);
@@ -79,65 +69,12 @@ public class Tree {
                 }
             }
         }
-        if((current.getData()).isMaximizing()) {
-            for (Move m : moves) {
-                possibleStates.add(new GameState(testQueens.clone(), (ArrayList<Arrow2D>) testArrows.clone(), m, false, player));
-            }
-        }
-        else{
-            for (Move m : moves) {
-                possibleStates.add(new GameState(testQueens.clone(), (ArrayList<Arrow2D>) testArrows.clone(), m, true, player));
-            }
-        }
 
-        return possibleStates;
+
+
+        return null;
     }
 
-    //<editor-fold desc="Getters and setters">
-    public Node<GameState> getRootNode() {
-        return rootNode;
-    }
-
-    public void setRootNode(Node<GameState> rootNode) {
-        this.rootNode = rootNode;
-    }
-
-    public GameState getInitialState() {
-        return initialState;
-    }
-
-    public void setInitialState(GameState initialState) {
-        this.initialState = initialState;
-    }
-
-    public int getMaxDepth() {
-        return maxDepth;
-    }
-
-    public Board2D getBestEval() {
-        return bestEval;
-    }
-
-    public void setBestEval(Board2D bestEval) {
-        this.bestEval = bestEval;
-    }
-
-    public Board2D getWorstEval() {
-        return worstEval;
-    }
-
-    public void setWorstEval(Board2D worstEval) {
-        this.worstEval = worstEval;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-    //</editor-fold>
 }
 
 

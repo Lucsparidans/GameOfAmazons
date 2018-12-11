@@ -42,7 +42,7 @@ public class GameLoop {
     // another constructor to avoid static fields
     public GameLoop(ViewManager viewManager, String white_Type, String black_Type){
         this.viewManager = viewManager;
-        arrow = new ArrayList<>();
+        arrow = new ArrayList<Arrow2D>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
         gameView.getStage().addActor(board2D);

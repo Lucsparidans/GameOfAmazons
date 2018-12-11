@@ -11,7 +11,7 @@ public class Node<T> {
     private T data = null;
 
 
-    private List<Node<T>> children = new ArrayList<>();
+    private List<Node<T>> children = new ArrayList<Node<T>>();
 
     private Node<T> parent = null;
 

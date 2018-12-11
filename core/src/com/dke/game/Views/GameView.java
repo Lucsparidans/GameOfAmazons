@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dke.game.Controller.GameLoop;
-import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Coordinate;
@@ -28,18 +27,16 @@ public class GameView extends View2D {
     private GameLoop gameLoop;
     private Stage stage;
     private Stage ui;
-    private Cell[][] boardCoordinates;
     private boolean displayUI;
     private UIOverlaySquare uiOverlaySquare;
+    private Cell[][] boardCoordinates;
     private boolean displayOverlay = false;
     private Amazon2D selectedAmazon = null;
     private ArrayList<Actor> actors;
     private Board2D board2D;
     private Amazon2D[] amazons;
+    private ArrayList<Arrow2D> arrow2DS;
     private boolean repeat = false;
-    private int turnCounter = 0;
-    private Player white;
-    private Player black;
 
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
 
@@ -47,6 +44,7 @@ public class GameView extends View2D {
     public GameView(ViewManager viewManager, Board2D board2D, Cell[][] boardCoordinates, Amazon2D[] amazons, ArrayList<Arrow2D> arrow2Ds, GameLoop gameLoop) {
         super(viewManager);
         this.gameLoop = gameLoop;
+        this.arrow2DS = arrow2Ds;
         this.boardCoordinates = boardCoordinates;
         this.board2D = board2D;
         this.amazons = amazons;
@@ -57,7 +55,7 @@ public class GameView extends View2D {
         Gdx.input.setInputProcessor(new InputMultiplexer(ui, stage));
         displayUI = false;
         this.actors = new ArrayList<>();
-
+        this.arrow2DS = arrow2Ds;
 
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
@@ -67,14 +65,6 @@ public class GameView extends View2D {
     @Override
     public void create() {
 
-    }
-
-    /*Weak spot in the code, couldn't think of a solution
-    TODO fix
-     */
-    public void setPlayers(Player white, Player black){
-        this.white = white;
-        this.black=black;
     }
 
     @Override
@@ -146,20 +136,15 @@ synchronized (this) {//<-thread stuff
 
     //Print the arrows played to the screen by putting them in the stage-actors array
     private void printArrows(){
-        for (Amazon2D amazon:amazons) {
-            for (Arrow2D arrow:amazon.getArrowShots()) {
-                if(!arrow.isAlive()){
-                    stage.getActors().removeValue(arrow,false);
-                }
-                if(!stage.getActors().contains(arrow,false)&&arrow.isAlive()){
-                    stage.addActor(arrow);
-                }
+        for (Arrow2D arrow:arrow2DS) {
+            if(!stage.getActors().contains(arrow,false)){
+                stage.addActor(arrow);
             }
         }
     }
 
     @Override //Returns the cell the player clicked on according to the coordinates they selected with the mouse
-    public Cell getSelectedCell() {
+    protected Cell getSelectedCell() {
 
         int x = Gdx.input.getX();
         int y = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -174,12 +159,25 @@ synchronized (this) {//<-thread stuff
             super.handleInput();
 
             if (Gdx.input.justTouched() || repeat) {
-                if(turnCounter%2==0){
-                    white.performTurn();
+                repeat = false;
+                if (gameLoop.getPhase() == 1) {
+                    phaseOne();
+                } else if (gameLoop.getPhase() == 2) {
+                    phaseTwo();
+                } else if (gameLoop.getPhase() == 3) {
+                    phaseThree();
+
+                    if (gameLoop.getCurrentSide() == 'W') {
+                        gameLoop.setCurrentSide('B');
+                    } else if (gameLoop.getCurrentSide() == 'B') {
+                        gameLoop.setCurrentSide('W');
+                    } else {
+                        Gdx.app.error("Unknown side", "Unknown/unexpected side");
+                    }
+                } else {
+                    Gdx.app.error("Unknown Phase", "Unknown/unexpected phase");
                 }
-                else{
-                    black.performTurn();
-                }
+
             }
         }
     }
@@ -258,6 +256,91 @@ synchronized (this) {//<-thread stuff
             //----------------------------------------------------------
             */
     //</editor-fold>
+//    private void phaseOne() {
+//
+//        Cell c = getSelectedCell();
+//        if (c != null) {
+//            if (c.isOccupied()) {
+//
+//                Piece content = c.getContent();
+//                if (content instanceof Amazon2D) {
+//                    if (((Amazon2D) content).getSide() == gameLoop.getCurrentSide()) {
+//                        if (selectedAmazon == null) {
+//                            selectedAmazon = (Amazon2D) content;        //Amazon is selected
+//                            displayOverlay = true;
+//                            gameLoop.setPhase(2);
+//                        } else if (selectedAmazon == content) {
+//                            ui.clear();                                 //Toggle visibility of certain amazon
+//                            //<editor-fold desc="Toggle displayOverlay">
+//                            if (displayOverlay) {
+//                                displayOverlay = false;
+//                                gameLoop.setPhase(1);
+//                            } else {
+//                                displayOverlay = true;
+//                                gameLoop.setPhase(2);
+//                            }
+//                            //</editor-fold>
+//                        } else {
+//                            ui.clear();
+//                            selectedAmazon = (Amazon2D) content; //Different amazon was selected
+//                            displayOverlay = true;
+//                            gameLoop.setPhase(2);
+//                        }
+//
+//                        selectedAmazon.possibleMoves(board2D);
+//                        uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+//                        if (displayOverlay) {
+//                            ui.addActor(uiOverlaySquare);
+//
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    private void phaseTwo() {
+        Cell c = this.getSelectedCell();
+        if (c != null) {
+
+            Piece content = c.getContent();
+            if (content != null) {
+                this.gameLoop.setPhase(1);
+                repeat = true;
+
+            } else {
+                ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
+                for (Cell test : pm) {
+                    if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
+                        selectedAmazon.move(test);
+                        ui.clear();
+                        selectedAmazon.possibleMoves(board2D);
+                        uiOverlaySquare = new UIOverlaySquare(selectedAmazon.getPossibleMoves(), board2D, shapeRenderer);
+                        ui.addActor(uiOverlaySquare);
+                        gameLoop.setPhase(3);
+                    }
+
+                }
+            }
+        }
+    }
+
+    private void phaseThree() {
+        Cell c = this.getSelectedCell();
+        if(c!=null){
+            if(!c.isOccupied()){
+                ArrayList<Cell> pm = selectedAmazon.getPossibleMoves();
+                for (Cell test : pm) {
+                    if (test.getI() == c.getI() && test.getJ() == c.getJ()) {
+                        arrow2DS.add(selectedAmazon.shoot(board2D,test));
+                        ui.clear();
+                        gameLoop.setPhase(1);
+                    }
+                }
+            }
+        }
+    }
+
     private Cell findCell(int x, int y) {
         //Return the center of the selected square.
         for (int i = 0; i < boardCoordinates.length; i++) {
@@ -278,148 +361,16 @@ synchronized (this) {//<-thread stuff
 
 
 
-//    private Coordinate getCellCenter(Cell cell) {
-//        Cell s = boardCoordinates[cell.getI()][cell.getJ()];
-//        return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
-//                s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
-//    }
-
-
+    private Coordinate getCellCenter(Cell cell) {
+        Cell s = boardCoordinates[cell.getI()][cell.getJ()];
+        return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
+                s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
+    }
 
 
     public Stage getStage() {
         return stage;
     }
-
-    //<editor-fold desc="Getters & Setters">
-    public static ShapeRenderer getShapeRenderer() {
-        return shapeRenderer;
-    }
-
-    public GameLoop getGameLoop() {
-        return gameLoop;
-    }
-
-    public void setGameLoop(GameLoop gameLoop) {
-        this.gameLoop = gameLoop;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Stage getUi() {
-        return ui;
-    }
-
-    public void setUi(Stage ui) {
-        this.ui = ui;
-    }
-
-    public Cell[][] getBoardCoordinates() {
-        return boardCoordinates;
-    }
-
-    public void setBoardCoordinates(Cell[][] boardCoordinates) {
-        this.boardCoordinates = boardCoordinates;
-    }
-
-    public boolean isDisplayUI() {
-        return displayUI;
-    }
-
-    public void setDisplayUI(boolean displayUI) {
-        this.displayUI = displayUI;
-    }
-
-    public UIOverlaySquare getUiOverlaySquare() {
-        return uiOverlaySquare;
-    }
-
-    public void setUiOverlaySquare(UIOverlaySquare uiOverlaySquare) {
-        this.uiOverlaySquare = uiOverlaySquare;
-    }
-
-    public boolean isDisplayOverlay() {
-        return displayOverlay;
-    }
-
-    public void setDisplayOverlay(boolean displayOverlay) {
-        this.displayOverlay = displayOverlay;
-    }
-
-    public Amazon2D getSelectedAmazon() {
-        return selectedAmazon;
-    }
-
-    public void setSelectedAmazon(Amazon2D selectedAmazon) {
-        this.selectedAmazon = selectedAmazon;
-    }
-
-    public ArrayList<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(ArrayList<Actor> actors) {
-        this.actors = actors;
-    }
-
-    public Board2D getBoard2D() {
-        return board2D;
-    }
-
-    public void setBoard2D(Board2D board2D) {
-        this.board2D = board2D;
-    }
-
-    public Amazon2D[] getAmazons() {
-        return amazons;
-    }
-
-    public void setAmazons(Amazon2D[] amazons) {
-        this.amazons = amazons;
-    }
-
-    public boolean isRepeat() {
-        return repeat;
-    }
-
-    public void setRepeat(boolean repeat) {
-        this.repeat = repeat;
-    }
-
-    public int getTurnCounter() {
-        return turnCounter;
-    }
-
-    public void setTurnCounter(int turnCounter) {
-        this.turnCounter = turnCounter;
-    }
-
-    public Player getWhite() {
-        return white;
-    }
-
-    public void setWhite(Player white) {
-        this.white = white;
-    }
-
-    public Player getBlack() {
-        return black;
-    }
-
-    public void setBlack(Player black) {
-        this.black = black;
-    }
-
-    public static BitmapFont getFont() {
-        return font;
-    }
-
-    public static void setFont(BitmapFont font) {
-        GameView.font = font;
-    }
-    //</editor-fold>
 }
 
 
