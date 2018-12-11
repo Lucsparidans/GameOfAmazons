@@ -266,11 +266,15 @@ public abstract class Amazon extends Piece {
         boolean stop = false;
         int[][] checkArray = new int[10][10];
         for (int i = 0; i < 10; i++) {
+            //System.out.print("|");
             for (int j = 0; j < 10; j++) {
                 if (board[i][j].getContent() instanceof Arrow2D) {
+                    //System.out.print(board[i][j].getContentType());
                     checkArray[i][j] = 3;
                 }
+               // System.out.print("|");
             }
+           // System.out.println();
         }
 
         Stack xStack = new java.util.Stack();
@@ -381,12 +385,12 @@ public abstract class Amazon extends Piece {
 
             //console representation
             if (!stop) {
-                // System.out.println(xStack.peek() + "," + yStack.peek());
+               //  System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                        //    System.out.print(checkArray[j][i] + " ");
+                      //     System.out.print(checkArray[j][i] + " ");
                     }
-                    //System.out.println();
+                   // System.out.println();
                 }
             }
         }
