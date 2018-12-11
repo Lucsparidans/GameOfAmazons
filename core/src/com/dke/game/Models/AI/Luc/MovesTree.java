@@ -17,7 +17,7 @@ public class MovesTree {
 
     private MoveNode rootNode;
     private State initialState;
-    private final int maxDepth = 2;
+    private final int maxDepth = 1;
     private AI player;
 
 

@@ -1,6 +1,7 @@
 package com.dke.game.Models.DataStructs;
 
 import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
+import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
@@ -36,7 +37,6 @@ public abstract class Amazon extends Piece {
         this.idNumber = ID++;
 
 
-
     }
 
     @Override
@@ -47,13 +47,12 @@ public abstract class Amazon extends Piece {
     //returns id num(1-4) and color)
     @Override
     protected String getID() {
-        return idString.concat(idNumber.toString() + side);
+        return idString;
     }
 
     public char getSide() {
         return side;
     }
-
 
 
     /*@param c change of cell position*/
@@ -92,14 +91,14 @@ public abstract class Amazon extends Piece {
      * and gives back the arrow
      * */
     public void shoot(Cell cell) {
-        Arrow2D arrow = new Arrow2D(cell,true);
+        Arrow2D arrow = new Arrow2D(cell, false);
         cell.occupy(arrow);
         arrowShots.add(arrow);
         lastShot.add(cell);
     }
 
     public void undoShot() {
-        if(!lastShot.empty()) {
+        if (!lastShot.empty()) {
             Cell lastShot = this.lastShot.pop();
             Arrow s = (Arrow) lastShot.getContent();
             lastShot.unOccupy();
@@ -108,7 +107,7 @@ public abstract class Amazon extends Piece {
     }
 
     public void undoMove() {
-        if(!lastMove.empty()) {
+        if (!lastMove.empty()) {
             Cell lastMove = this.lastMove.pop();
             move(lastMove);
         }
@@ -272,9 +271,9 @@ public abstract class Amazon extends Piece {
                     //System.out.print(board[i][j].getContentType());
                     checkArray[i][j] = 3;
                 }
-               // System.out.print("|");
+                // System.out.print("|");
             }
-           // System.out.println();
+            // System.out.println();
         }
 
         Stack xStack = new java.util.Stack();
@@ -283,15 +282,26 @@ public abstract class Amazon extends Piece {
             boolean moveMade = false;
             checkArray[xPos][yPos] = 1;
             if (this.side == 'W') {
-                if (board[xPos][yPos].getContent().getType().equals(Character.toString(this.side))) {
-                    //System.out.println("Found amazon of opposite colour");
-                    break;
+                if (board[xPos][yPos].isOccupied()) {
+                    if (board[xPos][yPos].getContent() instanceof Amazon2D) {
+                        Amazon2D queen = (Amazon2D)board[xPos][yPos].getContent();
+                        if (queen.getSide() == 'B') {
+                            //System.out.println("Found amazon of opposite colour");
+                            break;
+                        }
+                    }
                 }
+
             }
             if (this.side == 'B') {
-                if (board[xPos][yPos].getContent().getType().equals(Character.toString(this.side))) {
-                    //System.out.println("Found amazon of opposite colour");
-                    break;
+                if (board[xPos][yPos].isOccupied()) {
+                    if (board[xPos][yPos].getContent() instanceof Amazon2D) {
+                        Amazon2D queen = (Amazon2D)board[xPos][yPos].getContent();
+                        if (queen.getSide() == 'W') {
+                            //System.out.println("Found amazon of opposite colour");
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -385,12 +395,12 @@ public abstract class Amazon extends Piece {
 
             //console representation
             if (!stop) {
-               //  System.out.println(xStack.peek() + "," + yStack.peek());
+                //  System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                      //     System.out.print(checkArray[j][i] + " ");
+                        //     System.out.print(checkArray[j][i] + " ");
                     }
-                   // System.out.println();
+                    // System.out.println();
                 }
             }
         }
@@ -409,12 +419,14 @@ public abstract class Amazon extends Piece {
         return board;
     }
 
-    public ArrayList<Cell> possibleMoves(Board2D board2D){
+    public ArrayList<Cell> possibleMoves(Board2D board2D) {
         return possibleMoves(board2D.getBoardCoordinates());
     }
-    public ArrayList<Cell> possibleMoves(TestBoard testBoard){
+
+    public ArrayList<Cell> possibleMoves(TestBoard testBoard) {
         return possibleMoves(testBoard.getBoard());
     }
+
     /*
      * @param board2d
      * what does this do????
