@@ -119,14 +119,14 @@ public class GameLoop {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
-        amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false);
-        amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false);
-        amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false);
-        amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false);
-        amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false);
-        amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false);
-        amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false);
-        amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false);
+        amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false,0);
+        amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false,1);
+        amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false,2);
+        amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false,3);
+        amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false,4);
+        amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false,5);
+        amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false,6);
+        amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false,7);
 
     }
 

@@ -17,6 +17,7 @@ public abstract class Amazon extends Piece {
     private static int ID = 0;
     private Integer idNumber; // what is this exactly??
     private Cell cell;
+    private int index;
     private ArrayList<Cell> possibleMoves;
     private ArrayList<Arrow2D> arrowShots = new ArrayList<>();
     private Stack<Cell> lastMove = new Stack<>();
@@ -30,8 +31,9 @@ public abstract class Amazon extends Piece {
      * position of amazon saved
      * color and number of amazon are saved*/
 
-    public Amazon(char side, Cell cell) {
+    public Amazon(char side, Cell cell, int index) {
         super(cell);
+        this.index=index;
         this.cell = cell;
         this.side = side;
         this.idNumber = ID++;
@@ -586,6 +588,10 @@ public abstract class Amazon extends Piece {
      * @return cell a specific cell */
     public Cell getCell() {
         return this.cell;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }
 

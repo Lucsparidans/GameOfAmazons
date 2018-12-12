@@ -4,9 +4,13 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 
+import java.util.ArrayList;
+
 public class MiniMax implements Algorithm {
     private MovesTree movesTree;
     private int depth = 1;
+    private int cutOff = 10;
+    private ArrayList<MoveNode> highestEvalFreq = new ArrayList<>();
 
 
     @Override
@@ -42,7 +46,16 @@ public class MiniMax implements Algorithm {
                     bestValue = chNodeVal;
                 } else {
                     if (bestValue.getValue() < chNodeVal.getValue()) {
+                        highestEvalFreq = new ArrayList<>();
                         bestValue = chNodeVal;
+                        highestEvalFreq.add(chNodeVal);
+                    }
+                    else if(bestValue.getValue() == chNodeVal.getValue()){
+                        highestEvalFreq.add(chNodeVal);
+                        if(highestEvalFreq.size()==cutOff){
+                            double rnd = Math.random()*cutOff;
+                            return highestEvalFreq.get((int)rnd);
+                        }
                     }
                 }
                 alpha = Math.max(alpha, bestValue.getValue());

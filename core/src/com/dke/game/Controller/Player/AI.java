@@ -13,6 +13,7 @@ public class AI extends Player {
     private Algorithm algorithm;
     private MoveNode rootNode;
     private GameLoop gameLoop;
+    private Board2D board2D;
     private MovesTree tree;
     private Amazon2D[] myAmazons;
     private Amazon2D[] enemyAmazons;
@@ -21,6 +22,7 @@ public class AI extends Player {
         super(side);
         this.algorithm = algorithm;
         this.gameLoop = gameLoop;
+        this.board2D=gameLoop.getBoard2D();
         enemyAmazons = new Amazon2D[4];
         myAmazons = new Amazon2D[4];
         int counter = 0;
@@ -49,13 +51,18 @@ public class AI extends Player {
     }
 
     private void move() {
-       // Move bestMove = algorithm.getBestMove(this,rootNode);
+        Move bestMove = algorithm.getBestMove(this,rootNode);
 //        Cell moveQTo = bestMove.getQueenTo();
+        Cell moveQueenTo = board2D.getBoardCoordinates()[bestMove.getQueenTo().getI()][bestMove.getQueenTo().getJ()];
+        Cell arrowTo = board2D.getBoardCoordinates()[bestMove.getArrowTo().getI()][bestMove.getArrowTo().getJ()];
+        Amazon2D amazon2D = gameLoop.getAmazons()[bestMove.getQueen().getIndex()];
+        amazon2D.move(moveQueenTo);
+        amazon2D.shoot(arrowTo);
 //        Cell arrowTo = bestMove.getArrowTo();
 //        Amazon2D queen = bestMove.getQueen();
 //        queen.move(moveQTo);
 //        queen.shoot(arrowTo);
-       // System.out.println("The best move we found had value: " + bestMove.getValue());
+
     }
 
     private void updateTree() {

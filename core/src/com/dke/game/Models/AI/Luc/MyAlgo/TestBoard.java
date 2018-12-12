@@ -33,7 +33,7 @@ public class TestBoard {
     private void createTestPieces(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {
         int counter = 0;
         for (Amazon2D a : amazons) {
-            this.amazons[counter] = new Amazon2D(a.getSide(), boardCoordinates[a.getCell().getI()][a.getCell().getJ()], true);
+            this.amazons[counter] = new Amazon2D(a.getSide(), boardCoordinates[a.getCell().getI()][a.getCell().getJ()], true,counter);
             counter++;
         }
 
