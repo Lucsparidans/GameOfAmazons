@@ -1,12 +1,14 @@
 package com.dke.game.Models.AI;
 
+import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Luc.Move;
 import com.dke.game.Models.AI.Luc.MoveNode;
 import com.dke.game.Models.AI.Luc.MovesTree;
-import com.dke.game.Models.GraphicalModels.Amazon2D;
-import com.dke.game.Models.GraphicalModels.Arrow2D;
+
+import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,18 @@ import java.util.Random;
 
 public class NewSimpleCarlo implements Algorithm {
 
+    public NewSimpleCarlo(GameLoop gameLoop){
+        this.loop = gameLoop;
+    }
+
+    TestBoard beginb;
+    GameLoop loop;
     MovesTree tree;
     final int branchfac = 5;
     @Override
     public Move getBestMove(AI aiplayer, MoveNode root) {
+
+
         Move BestMove = null;
 
         // construct tree
@@ -49,9 +59,17 @@ public class NewSimpleCarlo implements Algorithm {
     }
 
     public double expandRandomly(MoveNode node){
-        //createcurrentstate -> checkend
-        //if endstate return 0/1
+        this.beginb = new TestBoard(loop.getAmazons(), loop.getArrows());
 
+        node.createCurrentState(node, beginb);
+
+        Boolean HasEnd = beginb.checkEnd();
+        if(HasEnd){
+            if(beginb.whiteWon()){
+                return 1;
+            }
+            else return 0;
+        }
 
         //get random child
         List<MoveNode> children = node.getChildren();

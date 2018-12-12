@@ -52,9 +52,6 @@ public class AI extends Player {
         queen.move(moveQTo);
         queen.shoot(arrowTo);
     }
-    private void updateTree(){
-        this.tree=new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
-        rootNode=this.tree.getRootNode();
 
     private void updateTree() {
         this.tree = new MovesTree(gameLoop.getAmazons(), gameLoop.getArrows(), this);
@@ -74,4 +71,5 @@ public class AI extends Player {
     public MovesTree getTree(){
         return tree;
     }
+
 }

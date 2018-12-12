@@ -117,4 +117,95 @@ public class TestBoard {
     public ArrayList<Arrow2D> getArrows() {
         return arrows;
     }
+
+    public boolean checkEnd() {
+        //this.board2D.printBoard();
+        int checkCount = 0;
+
+        for (int i = 0; i < amazons.length; i++) {
+
+            if (amazons[i].endMe(boardCoordinates)) {
+                checkCount++;
+            }
+        }
+        int current = 0;
+        for (int i = 0; i < amazons.length; i++) {
+
+            if (!(amazons[i].endMe(boardCoordinates))) {
+                amazons[i].possibleMoves(this);
+                if ((amazons[i].getPossibleMoves()).size() == 0) {
+                    current++;
+                }
+            }
+        }
+        int currentWhite = 0;
+        for (int j = 0; j < 4; j++) {
+            amazons[j].possibleMoves(this);
+            if (amazons[j].getPossibleMoves().size() == 0) {
+                currentWhite++;
+            }
+        }
+        int currentBlack = 0;
+        for (int j = 4; j < 8; j++) {
+            amazons[j].possibleMoves(this);
+            if (amazons[j].getPossibleMoves().size() == 0) {
+                currentBlack++;
+            }
+        }
+        //if all isolated
+        if (checkCount == amazons.length) {
+            return true;
+        }
+        //if all isolated or immobile
+        else if (current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean whiteWon(){
+        Amazon2D[] whiteAmazons = new Amazon2D[4];
+        Amazon2D[] blackAmazons = new Amazon2D[4];
+
+        for(int i = 0; i<amazons.length; i++){
+            if(i<4){
+                whiteAmazons[i] = amazons[i];
+            }
+            else{
+                blackAmazons[i-4] = amazons[i];
+            }
+        }
+
+        int terWhite = getTerritory(whiteAmazons);
+        int terBlack = getTerritory(blackAmazons);
+        if(terWhite>terBlack){
+            return true;
+        }
+        return false;
+    }
+
+    private int getTerritory(Amazon2D[] colour){
+        //Only used at the end of the game, basically using countTerritory it gives the 2 territory totals on end screen
+        int[][] territory = new int[10][10];
+        for(int i = 0; i<colour.length; i++) {
+            int terSize = (colour[i].countTerritory(boardCoordinates))[0].length;
+            for (int j = 0; j < terSize; j++) {
+                territory[colour[i].countTerritory(boardCoordinates)[0][j]][colour[i].countTerritory(boardCoordinates)[1][j]] = 1;
+            }
+        }
+        int oneCount = 0;
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                //System.out.print(territory[j][i]);
+                if(territory[j][i] == 1){
+                    oneCount++;
+                }
+            }
+            //System.out.println();
+        }
+        //System.out.println(oneCount);
+
+        return oneCount;
+    }
 }
