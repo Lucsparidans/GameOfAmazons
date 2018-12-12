@@ -52,9 +52,7 @@ public class GameLoop {
         placePieces();
         this.viewManager.push(gameView);
         currentPlayer = white;
-
-        thread = new GameThread();
-        thread.start();
+        running = true;
     }
 
     public GameLoop(ViewManager viewmanager) {
@@ -95,7 +93,8 @@ public class GameLoop {
     }
 
     //Tread stuff
-    private void update() {
+    public void update() {
+
         if (gameView.getTurnCounter() % 2 == 0) {
             currentPlayer = white;
         } else {
@@ -146,12 +145,6 @@ public class GameLoop {
     public void endGame(int wScore, int bScore) {
         ScoreView scoreTime = new ScoreView(viewManager, wScore, bScore);
         this.viewManager.push(scoreTime);
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
     }
 
     //Check if the game has reached an end condition
@@ -201,20 +194,6 @@ public class GameLoop {
         return false;
     }
 
-
-    //Thread class
-    class GameThread extends Thread {
-
-        @Override
-        public void run() {
-            running = true;
-            while (running) {
-                update();
-            }
-
-
-        }
-    }
 
     //<editor-fold desc="Getters and Setters">
     public GameView getGameView() {

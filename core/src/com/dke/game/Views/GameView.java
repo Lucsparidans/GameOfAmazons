@@ -172,7 +172,7 @@ synchronized (this) {//<-thread stuff
     protected void handleInput() {
         synchronized (this) {
             super.handleInput();
-
+            gameLoop.update();
             if (Gdx.input.justTouched() || repeat) {
                 if(turnCounter%2==0){
                     white.performTurn();

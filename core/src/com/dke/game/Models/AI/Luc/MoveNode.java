@@ -105,6 +105,7 @@ public class MoveNode {
     }
 
     public void createCurrentState(MoveNode node, TestBoard testBoard) {
+       testBoard.printBoard();
         MoveNode cur = node;
         Stack<MoveNode> path = new Stack<>();
         path.push(cur);
