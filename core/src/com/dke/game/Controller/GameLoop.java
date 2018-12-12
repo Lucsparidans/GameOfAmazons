@@ -5,6 +5,7 @@ import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.Luc.MiniMax;
+import com.dke.game.Models.AI.NewSimpleCarlo;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Pieces;
 import com.dke.game.Models.GraphicalModels.Amazon2D;

@@ -1,5 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
+import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 
@@ -7,12 +8,13 @@ public class MiniMax implements Algorithm {
     private MovesTree movesTree;
 
     @Override
-    public Move getBestMove(Player player, MoveNode root) {
+    public Move getBestMove(AI aiplayer, MoveNode root) {
 //        MoveNode bestEval = MiniMax(movesTree.getRootNode(), 1, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 //        while (bestEval.getParent() != null) {
 //            bestEval = bestEval.getParent();
 //        }
 //        return bestEval.getData();
+        System.out.println("Minmax active");
         return null;
     }
 
@@ -21,7 +23,7 @@ public class MiniMax implements Algorithm {
 
     //returns the best score of all possible Board Status
     public static MoveNode MiniMax(MoveNode aNode, int depth, boolean maxPlayer, double alpha, double beta) {
-
+        System.out.println("MoveNode active");
         MoveNode chNodeVal;
         if (depth == 0 || aNode.getChildren().isEmpty()) {
             return aNode;

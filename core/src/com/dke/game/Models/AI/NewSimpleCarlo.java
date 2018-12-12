@@ -17,6 +17,7 @@ import java.util.Random;
 public class NewSimpleCarlo implements Algorithm {
 
     public NewSimpleCarlo(GameLoop gameLoop){
+        System.out.println("MonteCarlo Constructed");
         this.loop = gameLoop;
     }
 
@@ -27,6 +28,7 @@ public class NewSimpleCarlo implements Algorithm {
     @Override
     public Move getBestMove(AI aiplayer, MoveNode root) {
 
+        System.out.println("MonteCarlo Started");
 
         Move BestMove = null;
 
@@ -59,12 +61,14 @@ public class NewSimpleCarlo implements Algorithm {
     }
 
     public double expandRandomly(MoveNode node){
+        System.out.println("Using expandRandomly");
         this.beginb = new TestBoard(loop.getAmazons(), loop.getArrows());
 
         node.createCurrentState(node, beginb);
 
         Boolean HasEnd = beginb.checkEnd();
         if(HasEnd){
+            System.out.println("Found an end");
             if(beginb.whiteWon()){
                 return 1;
             }
