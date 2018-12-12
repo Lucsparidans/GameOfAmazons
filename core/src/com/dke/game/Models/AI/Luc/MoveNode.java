@@ -1,6 +1,7 @@
 package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Controller.Player.AI;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
@@ -107,6 +108,13 @@ public class MoveNode {
     }
 
     public void createCurrentState(MoveNode node, TestBoard testBoard) {
+        if(this.getParent()==null){
+            System.out.println("Rootnode: ");
+            testBoard.printBoard();
+        }
+        else{
+            System.out.println("Node at depth: " + this.getDEPTH());
+        }
         MoveNode cur = node;
         Stack<MoveNode> path = new Stack<>();
         path.push(cur);
@@ -117,7 +125,7 @@ public class MoveNode {
         for (MoveNode n : path) {
             if (n.getData() != null) {
                 testBoard.executeMove(n.getData());
-                //testBoard.printBoard();
+                testBoard.printBoard();
             }
         }
     }

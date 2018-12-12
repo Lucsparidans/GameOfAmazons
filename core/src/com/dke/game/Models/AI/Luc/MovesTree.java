@@ -94,4 +94,8 @@ public class MovesTree {
     public MoveNode getRootNode() {
         return rootNode;
     }
+
+    public State getInitialState() {
+        return initialState;
+    }
 }

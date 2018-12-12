@@ -32,7 +32,7 @@ public class GameLoop {
     private Player white;
     private Player black;
     private Player currentPlayer;
-    private Algorithm algo = new MiniMax();
+    private Algorithm algo;
 
 
     // get current board
