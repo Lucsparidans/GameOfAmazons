@@ -14,6 +14,7 @@ import com.dke.game.Views.GameView;
 import com.dke.game.Views.ScoreView;
 
 import java.util.ArrayList;
+
 /**
  * Class that represents the controller from the model view controller architecture
  */
@@ -34,19 +35,19 @@ public class GameLoop {
     private Algorithm algo = new MiniMax();
 
 
-
     // get current board
     public Board2D getBoard2D() {
         return board2D;
     }
+
     // another constructor to avoid static fields
-    public GameLoop(ViewManager viewManager, String white_Type, String black_Type){
+    public GameLoop(ViewManager viewManager, String white_Type, String black_Type) {
         this.viewManager = viewManager;
         arrow = new ArrayList<>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
-        createPlayers(white_Type,black_Type,gameView);
-        gameView.setPlayers(white,black);
+        createPlayers(white_Type, black_Type, gameView);
+        gameView.setPlayers(white, black);
         gameView.getStage().addActor(board2D);
         placePieces();
         this.viewManager.push(gameView);
@@ -55,35 +56,35 @@ public class GameLoop {
         thread = new GameThread();
         thread.start();
     }
+
     public GameLoop(ViewManager viewmanager) {
-        this(viewmanager,"Human","Human");
+        this(viewmanager, "Human", "Human");
     }
+
     //Thread stuff
-    private void createPlayers(String white_Type,String black_Type,GameView gameView){
-        if(white_Type.equals("Human")){
-            if(black_Type.equals("AI")){
-                white = new Human('W',gameView,this);
-                black = new AI('B',algo,board2D,this);
+    private void createPlayers(String white_Type, String black_Type, GameView gameView) {
+        if (white_Type.equals("Human")) {
+            if (black_Type.equals("AI")) {
+                white = new Human('W', gameView, this);
+                black = new AI('B', algo, board2D, this);
+            } else if (black_Type.equals("Human")) {
+                white = new Human('W', gameView, this);
+                black = new Human('B', gameView, this);
             }
-            else if(black_Type.equals("Human")){
-                white = new Human('W',gameView,this);
-                black = new Human('B',gameView,this);
-            }
-        }
-        else if(white_Type.equals("AI")){
-            if(black_Type.equals("AI")){
-                white = new AI('W',algo,board2D,this);
-                black = new AI('B',algo,board2D,this);
-            }
-            else if(black_Type.equals("Human")){
-                white = new AI('B',algo,board2D,this);
-                black = new Human('B',gameView,this);
+        } else if (white_Type.equals("AI")) {
+            if (black_Type.equals("AI")) {
+                white = new AI('W', algo, board2D, this);
+                black = new AI('B', algo, board2D, this);
+            } else if (black_Type.equals("Human")) {
+                white = new AI('B', algo, board2D, this);
+                black = new Human('B', gameView, this);
             }
         }
     }
-    public ArrayList<Arrow2D> getArrows(){
+
+    public ArrayList<Arrow2D> getArrows() {
         ArrayList<Arrow2D> arrows = new ArrayList<>();
-        for (Amazon2D a :this.getAmazons()) {
+        for (Amazon2D a : this.getAmazons()) {
             arrows.addAll(a.getArrowShots());
         }
         return arrows;
@@ -95,20 +96,18 @@ public class GameLoop {
 
     //Tread stuff
     private void update() {
-        if(gameView.getTurnCounter()%2==0){
-            currentPlayer=white;
+        if (gameView.getTurnCounter() % 2 == 0) {
+            currentPlayer = white;
+        } else {
+            currentPlayer = black;
         }
-        else{
-            currentPlayer=black;
-        }
-        if(currentPlayer instanceof Human) {
-            Human p = (Human)currentPlayer;
+        if (currentPlayer instanceof Human) {
+            Human p = (Human) currentPlayer;
 
-            if (this.checkEnd()&&p.getPhase()==1) {
+            if (this.checkEnd() && p.getPhase() == 1) {
                 running = false;
             }
-        }
-        else{
+        } else {
             if (this.checkEnd()) {
                 running = false;
             }
@@ -122,16 +121,17 @@ public class GameLoop {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
-        amazons[0] = new Amazon2D('W', boardCoordinates[0][3],false);
-        amazons[1] = new Amazon2D('W', boardCoordinates[9][3],false);
-        amazons[2] = new Amazon2D('W', boardCoordinates[3][0],false);
-        amazons[3] = new Amazon2D('W', boardCoordinates[6][0],false);
-        amazons[4] = new Amazon2D('B', boardCoordinates[0][6],false);
-        amazons[5] = new Amazon2D('B', boardCoordinates[9][6],false);
-        amazons[6] = new Amazon2D('B', boardCoordinates[3][9],false);
-        amazons[7] = new Amazon2D('B', boardCoordinates[6][9],false);
+        amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false);
+        amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false);
+        amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false);
+        amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false);
+        amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false);
+        amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false);
+        amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false);
+        amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false);
 
     }
+
     //Place the amazons on the board
     private void placePieces() {
 
@@ -141,8 +141,9 @@ public class GameLoop {
         }
 
     }
+
     //Push new view and some thread stuff
-    public void endGame(int wScore, int bScore){
+    public void endGame(int wScore, int bScore) {
         ScoreView scoreTime = new ScoreView(viewManager, wScore, bScore);
         this.viewManager.push(scoreTime);
         try {
@@ -152,57 +153,53 @@ public class GameLoop {
         }
 
     }
+
     //Check if the game has reached an end condition
-    private boolean checkEnd(){
+    private boolean checkEnd() {
         //this.board2D.printBoard();
         int checkCount = 0;
 
-        for(int i = 0; i<amazons.length; i++){
+        for (int i = 0; i < amazons.length; i++) {
 
-            if(amazons[i].endMe(boardCoordinates)){
+            if (amazons[i].endMe(boardCoordinates)) {
                 checkCount++;
             }
         }
         int current = 0;
-        for(int i = 0; i<amazons.length; i++) {
+        for (int i = 0; i < amazons.length; i++) {
 
             if (!(amazons[i].endMe(boardCoordinates))) {
                 amazons[i].possibleMoves(board2D);
-                if((amazons[i].getPossibleMoves()).size() == 0) {
+                if ((amazons[i].getPossibleMoves()).size() == 0) {
                     current++;
                 }
             }
         }
         int currentWhite = 0;
-        for(int j = 0; j<4; j++){
+        for (int j = 0; j < 4; j++) {
             amazons[j].possibleMoves(board2D);
-            if(amazons[j].getPossibleMoves().size() == 0){
+            if (amazons[j].getPossibleMoves().size() == 0) {
                 currentWhite++;
             }
         }
         int currentBlack = 0;
-        for(int j = 4; j<8; j++){
+        for (int j = 4; j < 8; j++) {
             amazons[j].possibleMoves(board2D);
-            if(amazons[j].getPossibleMoves().size() == 0){
+            if (amazons[j].getPossibleMoves().size() == 0) {
                 currentBlack++;
             }
         }
         //if all isolated
-        if(checkCount==amazons.length){
+        if (checkCount == amazons.length) {
             return true;
         }
         //if all isolated or immobile
-        else if(current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4){
+        else if (current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4) {
             return true;
         }
 
         return false;
     }
-
-
-
-
-
 
 
     //Thread class
@@ -211,7 +208,7 @@ public class GameLoop {
         @Override
         public void run() {
             running = true;
-            while(running) {
+            while (running) {
                 update();
             }
 

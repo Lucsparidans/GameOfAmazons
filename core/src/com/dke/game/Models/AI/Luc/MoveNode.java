@@ -8,6 +8,7 @@ import com.dke.game.Models.GraphicalModels.Amazon2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class MoveNode {
 
@@ -87,7 +88,10 @@ public class MoveNode {
     }
 
     public void evaluateNode(AI player, TestBoard testBoard) {
+        this.createCurrentState(this,testBoard);
+        //testBoard.printBoard();
         this.value = evaluateState(player, testBoard);
+        testBoard.resetMoves();
     }
 
     private double evaluateState(AI playerAI, TestBoard testBoard) {
@@ -100,6 +104,21 @@ public class MoveNode {
         }
     }
 
+    public void createCurrentState(MoveNode node, TestBoard testBoard) {
+        MoveNode cur = node;
+        Stack<MoveNode> path = new Stack<>();
+        path.push(cur);
+        while (cur.getParent() != null) {
+            cur = cur.getParent();
+            path.push(cur);
+        }
+        for (MoveNode n : path) {
+            if (n.getData() != null) {
+                testBoard.executeMove(n.getData());
+                testBoard.printBoard();
+            }
+        }
+    }
 
     //<editor-fold desc="Heuristics">
     //calculating the score for the node

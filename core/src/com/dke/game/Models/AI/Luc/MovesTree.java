@@ -41,6 +41,7 @@ public class MovesTree {
             }
         }
         if (current.getDEPTH() == maxDepth || current.getChildren().size() == 0) {
+            //current.evaluateNode(player, initialState.getTestBoard());
             return;
         }
         for (MoveNode node : current.getChildren()) {
@@ -66,18 +67,7 @@ public class MovesTree {
     }
 
     public void createCurrentState(MoveNode current, TestBoard testBoard) {
-        MoveNode cur = current;
-        Stack<MoveNode> path = new Stack<>();
-        path.push(cur);
-        while (cur.getParent() != null) {
-            cur = cur.getParent();
-            path.push(cur);
-        }
-        for (MoveNode n : path) {
-            if (n.getData() != null) {
-                testBoard.executeMove(n.getData());
-            }
-        }
+        current.createCurrentState(current,testBoard);
     }
 
     private void generateMoves(TestBoard testBoard, ArrayList<Move> moves, char side) {

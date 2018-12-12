@@ -99,10 +99,16 @@ public abstract class Amazon extends Piece {
 
     public void undoShot() {
         if (!lastShot.empty()) {
-            Cell lastShot = this.lastShot.pop();
-            Arrow s = (Arrow) lastShot.getContent();
-            lastShot.unOccupy();
-            s.kill();
+//            try {
+                Cell lastShot = this.lastShot.pop();
+                if (lastShot.getContent() instanceof Arrow) {
+                    Arrow s = (Arrow) lastShot.getContent();
+                    lastShot.unOccupy();
+                    s.kill();
+                }
+//            }catch(Exception e){
+//                System.out.println(cell.getContentType());
+//            }
         }
     }
 
@@ -124,7 +130,7 @@ public abstract class Amazon extends Piece {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (board[i][j].getContentID().contains("Arrow") || board[i][j].getContentID().contains("Amazon")) {
+                if (board[i][j].getContent() instanceof Arrow2D || board[i][j].getContent() instanceof Amazon2D) {
                     checkArray[i][j] = 3;
                 }
             }
@@ -284,7 +290,7 @@ public abstract class Amazon extends Piece {
             if (this.side == 'W') {
                 if (board[xPos][yPos].isOccupied()) {
                     if (board[xPos][yPos].getContent() instanceof Amazon2D) {
-                        Amazon2D queen = (Amazon2D)board[xPos][yPos].getContent();
+                        Amazon2D queen = (Amazon2D) board[xPos][yPos].getContent();
                         if (queen.getSide() == 'B') {
                             //System.out.println("Found amazon of opposite colour");
                             break;
@@ -296,7 +302,7 @@ public abstract class Amazon extends Piece {
             if (this.side == 'B') {
                 if (board[xPos][yPos].isOccupied()) {
                     if (board[xPos][yPos].getContent() instanceof Amazon2D) {
-                        Amazon2D queen = (Amazon2D)board[xPos][yPos].getContent();
+                        Amazon2D queen = (Amazon2D) board[xPos][yPos].getContent();
                         if (queen.getSide() == 'W') {
                             //System.out.println("Found amazon of opposite colour");
                             break;
