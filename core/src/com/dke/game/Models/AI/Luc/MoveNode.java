@@ -97,15 +97,18 @@ public class MoveNode {
     }
 
     private double evaluateState(AI playerAI, TestBoard testBoard) {
-        if (this.getData().isPlayerMaximizing(playerAI)) {
-            double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
-            System.out.println(val);
-            return val;
-        } else {
-            double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
-            System.out.println(val);
-            return val;
+        if(this.data != null) {
+            if (this.getData().isPlayerMaximizing(playerAI)) {
+                double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+                //System.out.println(val);
+                return val;
+            } else {
+                double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+                //System.out.println(val);
+                return val;
+            }
         }
+        return  0;
     }
 
     public void createCurrentState(MoveNode node, TestBoard testBoard) {

@@ -25,10 +25,7 @@ public class MovesTree {
         initialState = new State(new TestBoard(amazon2DS, arrow2DS), null, player);
         this.player = player;
         rootNode = new MoveNode(null, null);
-        long b = System.nanoTime();
         expandNode(rootNode);
-        long e = System.nanoTime();
-        System.out.println("The elapsed time is: " + (e - b) * 1e-9);
     }
 
     public void expandNode(MoveNode current) {
