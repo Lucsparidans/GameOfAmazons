@@ -23,16 +23,15 @@ public class GameLoop {
 
     private GameView gameView;
     private Board2D board2D;
-    private boolean running = false;
+    private boolean running;
     private Cell[][] boardCoordinates;
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow;
-    private volatile Thread thread;
     private ViewManager viewManager;
     private Player white;
     private Player black;
     private Player currentPlayer;
-    private Algorithm algo;
+    private Algorithm algo = new MiniMax();
 
 
     // get current board
@@ -64,17 +63,17 @@ public class GameLoop {
         if (white_Type.equals("Human")) {
             if (black_Type.equals("AI")) {
                 white = new Human('W', gameView, this);
-                black = new AI('B', algo, board2D, this);
+                black = new AI('B', algo, this);
             } else if (black_Type.equals("Human")) {
                 white = new Human('W', gameView, this);
                 black = new Human('B', gameView, this);
             }
         } else if (white_Type.equals("AI")) {
             if (black_Type.equals("AI")) {
-                white = new AI('W', algo, board2D, this);
-                black = new AI('B', algo, board2D, this);
+                white = new AI('W', algo, this);
+                black = new AI('B', algo, this);
             } else if (black_Type.equals("Human")) {
-                white = new AI('B', algo, board2D, this);
+                white = new AI('B', algo, this);
                 black = new Human('B', gameView, this);
             }
         }
@@ -230,14 +229,6 @@ public class GameLoop {
 
     public void setArrow(ArrayList<Arrow2D> arrow) {
         this.arrow = arrow;
-    }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public void setThread(Thread thread) {
-        this.thread = thread;
     }
 
     public ViewManager getViewManager() {

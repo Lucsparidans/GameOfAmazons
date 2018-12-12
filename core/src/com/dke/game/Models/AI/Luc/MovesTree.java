@@ -41,7 +41,6 @@ public class MovesTree {
             }
         }
         if (current.getDEPTH() == maxDepth || current.getChildren().size() == 0) {
-            current.evaluateNode(player, initialState.getTestBoard());
             return;
         }
         for (MoveNode node : current.getChildren()) {

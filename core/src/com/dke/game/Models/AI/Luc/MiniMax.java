@@ -6,14 +6,13 @@ import com.dke.game.Models.AI.Algorithm;
 
 public class MiniMax implements Algorithm {
     private MovesTree movesTree;
+    private int depth = 1;
 
-    public MiniMax(MovesTree movesTree) {
-        this.movesTree = movesTree;
-    }
 
     @Override
     public Move getBestMove(AI player, MoveNode root) {
-        MoveNode bestEval = MiniMax(movesTree.getRootNode(), 1, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, player);
+        this.movesTree = player.getTree();
+        MoveNode bestEval = MiniMax(movesTree.getRootNode(), depth, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, player);
         while (bestEval.getParent().getParent() != null) {
             bestEval = bestEval.getParent();
         }
@@ -21,15 +20,13 @@ public class MiniMax implements Algorithm {
 
     }
 
-    public MoveNode node;
-    boolean maxPlayer = true;
-
     //returns the best score of all possible Board Status
     public MoveNode MiniMax(MoveNode aNode, int depth, boolean maxPlayer, double alpha, double beta, AI player) {
 
         MoveNode chNodeVal;
         if (depth == 0 || aNode.getChildren().isEmpty()) {
 
+            aNode.evaluateNode(player,movesTree.getInitialState().getTestBoard());
             return aNode;
         }
         //no
@@ -42,17 +39,14 @@ public class MiniMax implements Algorithm {
 
 //                bestValue =Math.max( bestValue,chNodeVal);
                 if (bestValue == null) {
-                    aNode.evaluateNode(player, movesTree.getInitialState().getTestBoard());
-                    bestValue = aNode;
+                    bestValue = chNodeVal;
                 } else {
-                    aNode.evaluateNode(player, movesTree.getInitialState().getTestBoard());
-                    if (bestValue.getValue() < aNode.getValue()) {
-                        bestValue = aNode;
+                    if (bestValue.getValue() < chNodeVal.getValue()) {
+                        bestValue = chNodeVal;
                     }
                 }
                 alpha = Math.max(alpha, bestValue.getValue());
                 if (beta <= alpha) break;
-
             }
             return bestValue;
         } else {
@@ -62,22 +56,16 @@ public class MiniMax implements Algorithm {
 //                bestValue =Math.min( bestValue, chNodeVal);
 //                beta= Math.min(beta,bestValue);
                 if (bestValue == null) {
-                    aNode.evaluateNode(player, movesTree.getInitialState().getTestBoard());
-                    bestValue = aNode;
+                    bestValue = chNodeVal;
                 } else {
-                    aNode.evaluateNode(player, movesTree.getInitialState().getTestBoard());
-                    if (bestValue.getValue() > aNode.getValue()) {
-                        bestValue = aNode;
+                    if (bestValue.getValue() > chNodeVal.getValue()) {
+                        bestValue = chNodeVal;
                     }
                 }
                 alpha = Math.min(beta, bestValue.getValue());
                 if (beta <= alpha) break;
-
-
             }
             return bestValue;
-
         }
-
     }
 }
