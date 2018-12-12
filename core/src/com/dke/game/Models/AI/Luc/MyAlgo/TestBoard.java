@@ -26,24 +26,26 @@ public class TestBoard {
         boardCoordinates = new Cell[Board.height][Board.width];
         this.arrows = new ArrayList<>();
         initializeBoard();
-        createTestPieces(amazons,arrows);
-        placePieces(this.amazons,this.arrows);
+        createTestPieces(amazons, arrows);
+        placePieces(this.amazons, this.arrows);
     }
-    private void createTestPieces(Amazon2D[] amazons,ArrayList<Arrow2D> arrows){
+
+    private void createTestPieces(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {
         int counter = 0;
-        for (Amazon2D a:amazons) {
-            this.amazons[counter] = new Amazon2D(a.getSide(),boardCoordinates[a.getCell().getI()][a.getCell().getJ()],true);
+        for (Amazon2D a : amazons) {
+            this.amazons[counter] = new Amazon2D(a.getSide(), boardCoordinates[a.getCell().getI()][a.getCell().getJ()], true);
             counter++;
         }
 
-        for (Arrow2D a:arrows) {
-            this.arrows.add(new Arrow2D(boardCoordinates[a.getCell().getI()][a.getCell().getJ()],true));
+        for (Arrow2D a : arrows) {
+            this.arrows.add(new Arrow2D(boardCoordinates[a.getCell().getI()][a.getCell().getJ()], true));
         }
     }
-    private void initializeBoard(){
+
+    private void initializeBoard() {
         for (int i = 0; i < boardCoordinates.length; i++) {
             for (int j = 0; j < boardCoordinates[i].length; j++) {
-                boardCoordinates[i][j] = new Cell(null,null,null,null,i,j);
+                boardCoordinates[i][j] = new Cell(null, null, null, null, i, j);
             }
 
         }
@@ -65,14 +67,16 @@ public class TestBoard {
             a.updateCell(boardCoordinates[a.getCell().getI()][a.getCell().getJ()]);
         }
     }
-    public void executeMove(Move move){
+
+    public void executeMove(Move move) {
         Amazon2D a = move.getQueen();
         a.move(move.getQueenTo());
         a.shoot(move.getArrowTo());
         executedMoves.push(move);
     }
-    public void resetMoves(){
-        while (!executedMoves.empty()){
+
+    public void resetMoves() {
+        while (!executedMoves.empty()) {
             Move m = executedMoves.pop();
             m.getQueen().undoShot();
             m.getQueen().undoMove();
@@ -81,9 +85,20 @@ public class TestBoard {
 
 
     public void printBoard() {
-        for (int i = 0; i < boardCoordinates.length; i++) {
+//        for (int i = 0; i < boardCoordinates.length; i++) {
+//            System.out.print("|");
+//            for (int j = 0; j < boardCoordinates[i].length; j++) {
+//                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
+//                if (this.boardCoordinates[i][j].getContentID().equals("A")) {
+//                    System.out.println("ARRROOWWWW");
+//                }
+//            }
+//            System.out.println();
+//        }
+//        System.out.println();
+        for (int j = boardCoordinates.length-1; j >= 0 ; j--) {
             System.out.print("|");
-            for (int j = 0; j < boardCoordinates[i].length; j++) {
+            for (int i = 0; i < boardCoordinates[j].length; i++) {
                 System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
             }
             System.out.println();

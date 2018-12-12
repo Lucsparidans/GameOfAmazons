@@ -17,7 +17,7 @@ public class MovesTree {
 
     private MoveNode rootNode;
     private State initialState;
-    private final int maxDepth = 1;
+    private final int maxDepth = 2;
     private AI player;
 
 
@@ -41,6 +41,7 @@ public class MovesTree {
             }
         }
         if (current.getDEPTH() == maxDepth || current.getChildren().size() == 0) {
+            current.evaluateNode(player, initialState.getTestBoard());
             return;
         }
         for (MoveNode node : current.getChildren()) {
@@ -61,22 +62,12 @@ public class MovesTree {
             generateMoves(testBoard, moves, player.getOpposingSide());
         }
         testBoard.resetMoves();
+        //testBoard.printBoard();
         return moves;
     }
 
     public void createCurrentState(MoveNode current, TestBoard testBoard) {
-        MoveNode cur = current;
-        Stack<MoveNode> path = new Stack<>();
-        path.push(cur);
-        while (cur.getParent() != null) {
-            cur = cur.getParent();
-            path.push(cur);
-        }
-        for (MoveNode n : path) {
-            if (n.getData() != null) {
-                testBoard.executeMove(n.getData());
-            }
-        }
+        current.createCurrentState(current,testBoard);
     }
 
     private void generateMoves(TestBoard testBoard, ArrayList<Move> moves, char side) {
@@ -92,7 +83,7 @@ public class MovesTree {
                         moves.add(new Move(a, c, cs));
                         //testBoard.printBoard();
                     }
-                    testBoard.printBoard();
+                    //testBoard.printBoard();
                     a.undoMove();
                     //testBoard.printBoard();
                 }

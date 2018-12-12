@@ -146,9 +146,9 @@ public class Board2D extends Board {
         }
     }
     public void printBoard() {
-        for (int i = 0; i < boardCoordinates.length; i++) {
+        for (int j = boardCoordinates.length-1; j >= 0 ; j--) {
             System.out.print("|");
-            for (int j = 0; j < boardCoordinates[i].length; j++) {
+            for (int i = 0; i < boardCoordinates[j].length; i++) {
                 System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
             }
             System.out.println();

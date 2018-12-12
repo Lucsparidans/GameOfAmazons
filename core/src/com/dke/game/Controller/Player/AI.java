@@ -20,18 +20,17 @@ public class AI extends Player {
     public AI(char side, Algorithm algorithm, Board2D board2D, GameLoop gameLoop) {
         super(side);
         this.algorithm = algorithm;
-        this.gameLoop=gameLoop;
+        this.gameLoop = gameLoop;
         enemyAmazons = new Amazon2D[4];
         myAmazons = new Amazon2D[4];
         int counter = 0;
-        int cnt=0;
-        for (Amazon2D a:gameLoop.getAmazons()) {
-            if(this.side==a.getSide()) {
+        int cnt = 0;
+        for (Amazon2D a : gameLoop.getAmazons()) {
+            if (this.side == a.getSide()) {
                 myAmazons[counter] = a;
                 counter++;
-            }
-            else{
-                enemyAmazons[cnt]=a;
+            } else {
+                enemyAmazons[cnt] = a;
                 cnt++;
             }
         }
@@ -56,6 +55,10 @@ public class AI extends Player {
     private void updateTree(){
         this.tree=new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
         rootNode=this.tree.getRootNode();
+
+    private void updateTree() {
+        this.tree = new MovesTree(gameLoop.getAmazons(), gameLoop.getArrows(), this);
+        rootNode = this.tree.getRootNode();
     }
 
     @Override
@@ -64,7 +67,7 @@ public class AI extends Player {
         move();
     }
 
-    public enum Phase{
+    public enum Phase {
         START_PHASE, MID_PHASE, END_PHASE
     }
 

@@ -8,11 +8,12 @@ public class MiniMax implements Algorithm {
 
     @Override
     public Move getBestMove(Player player, MoveNode root) {
-        MoveNode bestEval = MiniMax(movesTree.getRootNode(), 1, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-        while (bestEval.getParent() != null) {
-            bestEval = bestEval.getParent();
-        }
-        return bestEval.getData();
+//        MoveNode bestEval = MiniMax(movesTree.getRootNode(), 1, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+//        while (bestEval.getParent() != null) {
+//            bestEval = bestEval.getParent();
+//        }
+//        return bestEval.getData();
+        return null;
     }
 
     public MoveNode node;
