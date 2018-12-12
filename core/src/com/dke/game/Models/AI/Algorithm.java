@@ -1,7 +1,10 @@
 package com.dke.game.Models.AI;
 
-import com.dke.game.Models.DataStructs.Move;
+import com.dke.game.Controller.Player.Player;
+import com.dke.game.Models.AI.Luc.Move;
+import com.dke.game.Models.AI.Luc.MoveNode;
+
 
 public interface Algorithm {
-    Move getBestMove();
+   Move getBestMove(Player player, MoveNode root);
 }

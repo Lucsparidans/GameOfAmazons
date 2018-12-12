@@ -174,38 +174,12 @@ synchronized (this) {//<-thread stuff
 
             if (Gdx.input.justTouched() || repeat) {
                 if(turnCounter%2==0){
-//                    repeat = false;
-//                    if (gameLoop.getPhase() == 1) {
-//                        phaseOne();
-//                    } else if (gameLoop.getPhase() == 2) {
-//                        phaseTwo();
-//                    } else if (gameLoop.getPhase() == 3) {
-//                        phaseThree();
-//
-//                    }
                     white.performTurn();
-//                    if(!repeat){
-//                        turnCounter++;
-//                    }
                 }
                 else{
-//                    repeat = false;
-//                    if (gameLoop.getPhase() == 1) {
-//                        phaseOne();
-//                    } else if (gameLoop.getPhase() == 2) {
-//                        phaseTwo();
-//                    } else if (gameLoop.getPhase() == 3) {
-//                        phaseThree();
-//
-//                    }
                     black.performTurn();
-//                    if(!repeat){
-//                        turnCounter++;
-//                    }
                 }
-
             }
-
         }
     }
 
@@ -303,11 +277,11 @@ synchronized (this) {//<-thread stuff
 
 
 
-    private Coordinate getCellCenter(Cell cell) {
-        Cell s = boardCoordinates[cell.getI()][cell.getJ()];
-        return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
-                s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
-    }
+//    private Coordinate getCellCenter(Cell cell) {
+//        Cell s = boardCoordinates[cell.getI()][cell.getJ()];
+//        return new Coordinate(s.getBottomLeft().getX() + ((s.getBottomRight().getX() - s.getBottomLeft().getX()) / 2),
+//                s.getBottomLeft().getY() + ((s.getTopLeft().getY() - s.getBottomLeft().getY()) / 2));
+//    }
 
 
 

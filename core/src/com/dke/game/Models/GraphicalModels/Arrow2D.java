@@ -7,20 +7,26 @@ import com.dke.game.Models.DataStructs.Arrow;
 import com.dke.game.Models.DataStructs.Cell;
 
 public class Arrow2D extends Arrow {
+    private boolean test;
     /**
      * Graphical information of the arrows
      */
     private Texture icon;
 
 
-    public Arrow2D(Cell cell) {
+    public Arrow2D(Cell cell,boolean test) {
         super(cell);
-        this.icon = new Texture(Gdx.files.internal("Icons/Arrow.png"));
+        this.test = test;
+        if(!test) {
+            this.icon = new Texture(Gdx.files.internal("Icons/Arrow.png"));
+        }
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(icon, location.getX(), location.getY(), Cell.CELL_SIZE,Cell.CELL_SIZE);
+        if(!test) {
+            batch.draw(icon, location.getX(), location.getY(), Cell.CELL_SIZE, Cell.CELL_SIZE);
+        }
     }
     public Cell getCell(){
         return super.cell;

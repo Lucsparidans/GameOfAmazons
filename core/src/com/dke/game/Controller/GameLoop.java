@@ -1,7 +1,4 @@
 package com.dke.game.Controller;
-/**
- * Class that represents the controller from the model view controller architecture
- */
 
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Human;
@@ -17,6 +14,9 @@ import com.dke.game.Views.GameView;
 import com.dke.game.Views.ScoreView;
 
 import java.util.ArrayList;
+/**
+ * Class that represents the controller from the model view controller architecture
+ */
 
 public class GameLoop {
 
@@ -56,28 +56,28 @@ public class GameLoop {
         thread.start();
     }
     public GameLoop(ViewManager viewmanager) {
-       this(viewmanager,"Human","Human");
+        this(viewmanager,"Human","Human");
     }
     //Thread stuff
-    public void createPlayers(String white_Type,String black_Type,GameView gameView){
-        if(white_Type == "Human"){
-            if(black_Type=="AI"){
-                white = new Human('W',gameView);
-                black = new AI('B',algo,board2D);
+    private void createPlayers(String white_Type,String black_Type,GameView gameView){
+        if(white_Type.equals("Human")){
+            if(black_Type.equals("AI")){
+                white = new Human('W',gameView,this);
+                black = new AI('B',algo,board2D,this);
             }
-            else if(black_Type=="Human"){
-                white = new Human('W',gameView);
-                black = new Human('B',gameView);
+            else if(black_Type.equals("Human")){
+                white = new Human('W',gameView,this);
+                black = new Human('B',gameView,this);
             }
         }
-        else if(white_Type == "AI"){
-            if(black_Type=="AI"){
-                white = new AI('W',algo,board2D);
-                black = new AI('B',algo,board2D);
+        else if(white_Type.equals("AI")){
+            if(black_Type.equals("AI")){
+                white = new AI('W',algo,board2D,this);
+                black = new AI('B',algo,board2D,this);
             }
-            else if(black_Type=="Human"){
-                white = new AI('B',algo,board2D);
-                black = new Human('B',gameView);
+            else if(black_Type.equals("Human")){
+                white = new AI('B',algo,board2D,this);
+                black = new Human('B',gameView,this);
             }
         }
     }
@@ -96,6 +96,7 @@ public class GameLoop {
         }
         if(currentPlayer instanceof Human) {
             Human p = (Human)currentPlayer;
+
             if (this.checkEnd()&&p.getPhase()==1) {
                 running = false;
             }
@@ -114,19 +115,19 @@ public class GameLoop {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
-
+        amazons[0] = new Amazon2D('W', boardCoordinates[0][3],false);
+        amazons[1] = new Amazon2D('W', boardCoordinates[9][3],false);
+        amazons[2] = new Amazon2D('W', boardCoordinates[3][0],false);
+        amazons[3] = new Amazon2D('W', boardCoordinates[6][0],false);
+        amazons[4] = new Amazon2D('B', boardCoordinates[0][6],false);
+        amazons[5] = new Amazon2D('B', boardCoordinates[9][6],false);
+        amazons[6] = new Amazon2D('B', boardCoordinates[3][9],false);
+        amazons[7] = new Amazon2D('B', boardCoordinates[6][9],false);
 
     }
     //Place the amazons on the board
     private void placePieces() {
-        amazons[0] = new Amazon2D('W', boardCoordinates[0][3]);
-        amazons[1] = new Amazon2D('W', boardCoordinates[9][3]);
-        amazons[2] = new Amazon2D('W', boardCoordinates[3][0]);
-        amazons[3] = new Amazon2D('W', boardCoordinates[6][0]);
-        amazons[4] = new Amazon2D('B', boardCoordinates[0][6]);
-        amazons[5] = new Amazon2D('B', boardCoordinates[9][6]);
-        amazons[6] = new Amazon2D('B', boardCoordinates[3][9]);
-        amazons[7] = new Amazon2D('B', boardCoordinates[6][9]);
+
         for (Amazon2D a : amazons) {
             gameView.getStage().addActor(a);
 
@@ -145,15 +146,16 @@ public class GameLoop {
 
     }
     //Check if the game has reached an end condition
-    public boolean checkEnd(){
-       int checkCount = 0;
+    private boolean checkEnd(){
+        //this.board2D.printBoard();
+        int checkCount = 0;
 
-       for(int i = 0; i<amazons.length; i++){
+        for(int i = 0; i<amazons.length; i++){
 
-           if(amazons[i].endMe(boardCoordinates)){
-               checkCount++;
-           }
-       }
+            if(amazons[i].endMe(boardCoordinates)){
+                checkCount++;
+            }
+        }
         int current = 0;
         for(int i = 0; i<amazons.length; i++) {
 
@@ -169,7 +171,7 @@ public class GameLoop {
             amazons[j].possibleMoves(board2D);
             if(amazons[j].getPossibleMoves().size() == 0){
                 currentWhite++;
-        }
+            }
         }
         int currentBlack = 0;
         for(int j = 4; j<8; j++){
@@ -179,16 +181,17 @@ public class GameLoop {
             }
         }
         //if all isolated
-       if(checkCount==amazons.length){
-           return true;
-       }
-       //if all isolated or immobile
-       else if(current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4){
-           return true;
-       }
+        if(checkCount==amazons.length){
+            return true;
+        }
+        //if all isolated or immobile
+        else if(current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4){
+            return true;
+        }
 
-       return false;
+        return false;
     }
+
 
 
 
@@ -208,6 +211,96 @@ public class GameLoop {
 
         }
     }
+
+    //<editor-fold desc="Getters and Setters">
+    public GameView getGameView() {
+        return gameView;
+    }
+
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
+    }
+
+    public void setBoard2D(Board2D board2D) {
+        this.board2D = board2D;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public Cell[][] getBoardCoordinates() {
+        return boardCoordinates;
+    }
+
+    public void setBoardCoordinates(Cell[][] boardCoordinates) {
+        this.boardCoordinates = boardCoordinates;
+    }
+
+    public Amazon2D[] getAmazons() {
+        return amazons;
+    }
+
+    public void setAmazons(Amazon2D[] amazons) {
+        this.amazons = amazons;
+    }
+
+    public ArrayList<Arrow2D> getArrow() {
+        return arrow;
+    }
+
+    public void setArrow(ArrayList<Arrow2D> arrow) {
+        this.arrow = arrow;
+    }
+
+    public Thread getThread() {
+        return thread;
+    }
+
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
+
+    public ViewManager getViewManager() {
+        return viewManager;
+    }
+
+    public void setViewManager(ViewManager viewManager) {
+        this.viewManager = viewManager;
+    }
+
+    public Player getWhite() {
+        return white;
+    }
+
+    public void setWhite(Player white) {
+        this.white = white;
+    }
+
+    public Player getBlack() {
+        return black;
+    }
+
+    public void setBlack(Player black) {
+        this.black = black;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Algorithm getAlgo() {
+        return algo;
+    }
+
+    public void setAlgo(Algorithm algo) {
+        this.algo = algo;
+    }
+    //</editor-fold>
 }
     /*
     public void turnOrder(){
@@ -258,8 +351,8 @@ public class GameLoop {
             }
 
         */
-        //then black turn, change endMe to a loop to check all amazons
 
+//then black turn, change endMe to a loop to check all amazons
 
 
 

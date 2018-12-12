@@ -1,5 +1,7 @@
 package com.dke.game.Models.DataStructs;
 
+import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
+import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
@@ -11,7 +13,7 @@ import java.util.Stack;
  */
 public abstract class Amazon extends Piece {
     private final char side;    //B for black & W for white.
-    private static String idString = "Amazon: ";
+    private String idString = "Q";
     private static int ID = 0;
     private Integer idNumber; // what is this exactly??
     private Cell cell;
@@ -37,16 +39,20 @@ public abstract class Amazon extends Piece {
 
     }
 
+    @Override
+    protected String getType() {
+        return Character.toString(side);
+    }
+
     //returns id num(1-4) and color)
     @Override
     protected String getID() {
-        return idString.concat(idNumber.toString() + side);
+        return idString;
     }
 
     public char getSide() {
         return side;
     }
-
 
 
     /*@param c change of cell position*/
@@ -65,7 +71,7 @@ public abstract class Amazon extends Piece {
     /*@param cell
      * moves a piece to the given cell, frees the previous one */
     public void move(Cell cell) {
-        lastMove.add(cell);
+        lastMove.add(this.cell);
         this.cell.unOccupy();
         updateCell(cell);
         cell.occupy(this);
@@ -85,22 +91,26 @@ public abstract class Amazon extends Piece {
      * and gives back the arrow
      * */
     public void shoot(Cell cell) {
-        Arrow2D arrow = new Arrow2D(cell);
+        Arrow2D arrow = new Arrow2D(cell, false);
         cell.occupy(arrow);
         arrowShots.add(arrow);
         lastShot.add(cell);
     }
 
     public void undoShot() {
-        Cell lastShot = this.lastShot.pop();
-        Arrow s = (Arrow) lastShot.getContent();
-        lastShot.unOccupy();
-        s.kill();
+        if (!lastShot.empty()) {
+            Cell lastShot = this.lastShot.pop();
+            Arrow s = (Arrow) lastShot.getContent();
+            lastShot.unOccupy();
+            s.kill();
+        }
     }
 
     public void undoMove() {
-        Cell lastMove = this.lastMove.pop();
-        move(lastMove);
+        if (!lastMove.empty()) {
+            Cell lastMove = this.lastMove.pop();
+            move(lastMove);
+        }
     }
 
     /* omg this is long not gonna read
@@ -255,11 +265,15 @@ public abstract class Amazon extends Piece {
         boolean stop = false;
         int[][] checkArray = new int[10][10];
         for (int i = 0; i < 10; i++) {
+            //System.out.print("|");
             for (int j = 0; j < 10; j++) {
                 if (board[i][j].getContent() instanceof Arrow2D) {
+                    //System.out.print(board[i][j].getContentType());
                     checkArray[i][j] = 3;
                 }
+                // System.out.print("|");
             }
+            // System.out.println();
         }
 
         Stack xStack = new java.util.Stack();
@@ -268,15 +282,26 @@ public abstract class Amazon extends Piece {
             boolean moveMade = false;
             checkArray[xPos][yPos] = 1;
             if (this.side == 'W') {
-                if (board[xPos][yPos].getContentID().contains("Amazon: 4") || board[xPos][yPos].getContentID().contains("Amazon: 5") || board[xPos][yPos].getContentID().contains("Amazon: 6") || board[xPos][yPos].getContentID().contains("Amazon: 7")) {
-                    //System.out.println("Found amazon of opposite colour");
-                    break;
+                if (board[xPos][yPos].isOccupied()) {
+                    if (board[xPos][yPos].getContent() instanceof Amazon2D) {
+                        Amazon2D queen = (Amazon2D)board[xPos][yPos].getContent();
+                        if (queen.getSide() == 'B') {
+                            //System.out.println("Found amazon of opposite colour");
+                            break;
+                        }
+                    }
                 }
+
             }
             if (this.side == 'B') {
-                if (board[xPos][yPos].getContentID().contains("Amazon: 0") || board[xPos][yPos].getContentID().contains("Amazon: 1") || board[xPos][yPos].getContentID().contains("Amazon: 2") || board[xPos][yPos].getContentID().contains("Amazon: 3")) {
-                    //System.out.println("Found amazon of opposite colour");
-                    break;
+                if (board[xPos][yPos].isOccupied()) {
+                    if (board[xPos][yPos].getContent() instanceof Amazon2D) {
+                        Amazon2D queen = (Amazon2D)board[xPos][yPos].getContent();
+                        if (queen.getSide() == 'W') {
+                            //System.out.println("Found amazon of opposite colour");
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -370,12 +395,12 @@ public abstract class Amazon extends Piece {
 
             //console representation
             if (!stop) {
-                // System.out.println(xStack.peek() + "," + yStack.peek());
+                //  System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                        //    System.out.print(checkArray[j][i] + " ");
+                        //     System.out.print(checkArray[j][i] + " ");
                     }
-                    //System.out.println();
+                    // System.out.println();
                 }
             }
         }
@@ -394,17 +419,25 @@ public abstract class Amazon extends Piece {
         return board;
     }
 
+    public ArrayList<Cell> possibleMoves(Board2D board2D) {
+        return possibleMoves(board2D.getBoardCoordinates());
+    }
+
+    public ArrayList<Cell> possibleMoves(TestBoard testBoard) {
+        return possibleMoves(testBoard.getBoard());
+    }
+
     /*
      * @param board2d
      * what does this do????
      * */
-    public ArrayList<Cell> possibleMoves(Board2D board2D) {
-        Cell[][] boardCoordinates = board2D.getBoardCoordinates();
+    private ArrayList<Cell> possibleMoves(Cell[][] cells) {
+        Cell[][] boardCoordinates = cells;
         possibleMoves = new ArrayList<>();
         boolean positive = true;
         boolean negative = true;
         for (int i = 1; i < 10; i++) {
-            if (this.cell.getI() + i >= board2D.width) {
+            if (this.cell.getI() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getI() - i < 0) {
@@ -432,7 +465,7 @@ public abstract class Amazon extends Piece {
         negative = true;
 
         for (int i = 1; i < 10; i++) {
-            if (this.cell.getJ() + i >= board2D.height) {
+            if (this.cell.getJ() + i >= boardCoordinates.length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
@@ -465,13 +498,13 @@ public abstract class Amazon extends Piece {
 
         for (int i = 1; i < 10; i++) {
 
-            if (this.cell.getI() + i >= board2D.width) {
+            if (this.cell.getI() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getI() - i < 0) {
                 negative = false;
             }
-            if (this.cell.getJ() + i >= board2D.width) {
+            if (this.cell.getJ() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
@@ -505,13 +538,13 @@ public abstract class Amazon extends Piece {
             if (this.cell.getI() - i < 0) {
                 positive = false;
             }
-            if (this.cell.getJ() + i >= board2D.height) {
+            if (this.cell.getJ() + i >= boardCoordinates.length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
                 negative = false;
             }
-            if (this.cell.getI() + i >= board2D.width) {
+            if (this.cell.getI() + i >= boardCoordinates[0].length) {
                 negative = false;
             }
 

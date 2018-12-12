@@ -6,7 +6,7 @@ public abstract class Arrow extends Piece{
      */
     private static int ID = 0;
     private Integer idNumber;
-    private static String idString = "Arrow: ";
+    private String idString = "A";
     protected Cell cell;
     private boolean isAlive;
 
@@ -23,6 +23,11 @@ public abstract class Arrow extends Piece{
     }
     public void kill(){
         this.isAlive=false;
+    }
+
+    @Override
+    protected String getType() {
+        return idString;
     }
 
     public boolean isAlive() {

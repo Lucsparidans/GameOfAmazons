@@ -14,5 +14,6 @@ public abstract class Piece extends Actor {
     }
 
     protected abstract String getID();
+    protected abstract String getType();
     protected Coordinate location;
 }

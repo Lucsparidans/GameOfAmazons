@@ -3,6 +3,7 @@ package com.dke.game.Controller.Player;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -23,7 +24,7 @@ public class Human extends Player {
     private ShapeRenderer shapeRenderer;
 
 
-    public Human(char side, GameView view) {
+    public Human(char side, GameView view, GameLoop gameLoop) {
         super(side);
         this.shapeRenderer = new ShapeRenderer();
         this.view = view;
@@ -123,6 +124,7 @@ public class Human extends Player {
                         selectedAmazon.shoot(test);
                         Ui.clear();
                         phase = 1;
+                        selectedAmazon = null;
                     }
                 }
             }
