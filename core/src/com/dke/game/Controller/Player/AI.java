@@ -45,13 +45,7 @@ public class AI extends Player {
         return enemyAmazons;
     }
 
-
-
-
-
-
     private void move() {
-
         Move bestMove = algorithm.getBestMove(this,rootNode);
         Cell moveQTo = bestMove.getQueenTo();
         Cell arrowTo = bestMove.getArrowTo();
@@ -60,7 +54,6 @@ public class AI extends Player {
         queen.shoot(arrowTo);
     }
     private void updateTree(){
-
         this.tree=new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
         rootNode=this.tree.getRootNode();
     }
@@ -73,5 +66,9 @@ public class AI extends Player {
 
     public enum Phase{
         START_PHASE, MID_PHASE, END_PHASE
+    }
+
+    public MovesTree getTree(){
+        return tree;
     }
 }

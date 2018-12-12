@@ -53,8 +53,7 @@ public class SimpleCarlo {
             int winner = (gamenode.getData()).compareTerritory();
         }
         ArrayList<GameState> posmoves = tree.getPossibleStates(gamenode);
-        Random rand = new Random();
-        GameState randomNextState = posmoves.get(rand.nextInt(posmoves.size()));
+
         Node<GameState> nextNode = new Node<GameState>(randomNextState, gamenode);
         return expand(nextNode);
     }
