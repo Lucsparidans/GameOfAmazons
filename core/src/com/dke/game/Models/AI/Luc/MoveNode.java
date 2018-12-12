@@ -96,22 +96,17 @@ public class MoveNode {
 
     private double evaluateState(AI playerAI, TestBoard testBoard) {
         if (this.getData().isPlayerMaximizing(playerAI)) {
-            return shotsHeuristics(playerAI.getMyAmazons(), playerAI.getEnemyAmazons(),testBoard)
-                    + positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+            double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+            System.out.println(val);
+            return val;
         } else {
-            return shotsHeuristics(playerAI.getEnemyAmazons(), playerAI.getMyAmazons(),testBoard)
-                    + positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+            double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+            System.out.println(val);
+            return val;
         }
     }
 
     public void createCurrentState(MoveNode node, TestBoard testBoard) {
-//        if(node.getParent()==null){
-//            System.out.println("Rootnode:");
-//            testBoard.printBoard();
-//        }
-//        else{
-//            System.out.println("Node at depth: " + this.getDEPTH());
-//        }
         MoveNode cur = node;
         Stack<MoveNode> path = new Stack<>();
         path.push(cur);
@@ -186,7 +181,7 @@ public class MoveNode {
         return count;
     }
 
-    private double shotsHeuristics(Amazon2D[] ourQueens, Amazon2D[] enemyQueens, TestBoard testBoard) {
+    private double shotsHeuristics(TestBoard testBoard, Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
         double value = 0;
         for (Amazon queen : ourQueens) {
 
