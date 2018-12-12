@@ -105,7 +105,13 @@ public class MoveNode {
     }
 
     public void createCurrentState(MoveNode node, TestBoard testBoard) {
-       testBoard.printBoard();
+//        if(node.getParent()==null){
+//            System.out.println("Rootnode:");
+//            testBoard.printBoard();
+//        }
+//        else{
+//            System.out.println("Node at depth: " + this.getDEPTH());
+//        }
         MoveNode cur = node;
         Stack<MoveNode> path = new Stack<>();
         path.push(cur);
@@ -116,7 +122,7 @@ public class MoveNode {
         for (MoveNode n : path) {
             if (n.getData() != null) {
                 testBoard.executeMove(n.getData());
-                testBoard.printBoard();
+                //testBoard.printBoard();
             }
         }
     }
