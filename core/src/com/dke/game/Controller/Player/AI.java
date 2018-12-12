@@ -74,6 +74,7 @@ public class AI extends Player {
     public void performTurn() {
         updateTree();
         move();
+        gameLoop.getGameView().setTurnCounter(gameLoop.getGameView().getTurnCounter()+1);
     }
 
     public enum Phase {
