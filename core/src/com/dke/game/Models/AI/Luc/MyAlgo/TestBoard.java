@@ -85,6 +85,9 @@ public class TestBoard {
             System.out.print("|");
             for (int j = 0; j < boardCoordinates[i].length; j++) {
                 System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
+                if(this.boardCoordinates[i][j].getContentID().equals("A")){
+                    System.out.println("ARRROOWWWW");
+                }
             }
             System.out.println();
         }

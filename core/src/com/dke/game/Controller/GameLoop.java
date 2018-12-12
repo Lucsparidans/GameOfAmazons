@@ -81,6 +81,13 @@ public class GameLoop {
             }
         }
     }
+    public ArrayList<Arrow2D> getArrows(){
+        ArrayList<Arrow2D> arrows = new ArrayList<>();
+        for (Amazon2D a :this.getAmazons()) {
+            arrows.addAll(a.getArrowShots());
+        }
+        return arrows;
+    }
 
     public boolean isRunning() {
         return running;
@@ -243,10 +250,6 @@ public class GameLoop {
 
     public void setAmazons(Amazon2D[] amazons) {
         this.amazons = amazons;
-    }
-
-    public ArrayList<Arrow2D> getArrow() {
-        return arrow;
     }
 
     public void setArrow(ArrayList<Arrow2D> arrow) {

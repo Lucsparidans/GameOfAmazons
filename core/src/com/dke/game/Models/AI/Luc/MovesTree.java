@@ -17,7 +17,7 @@ public class MovesTree {
 
     private MoveNode rootNode;
     private State initialState;
-    private final int maxDepth = 1;
+    private final int maxDepth = 2;
     private AI player;
 
 
@@ -61,6 +61,7 @@ public class MovesTree {
             generateMoves(testBoard, moves, player.getOpposingSide());
         }
         testBoard.resetMoves();
+        //testBoard.printBoard();
         return moves;
     }
 
@@ -92,7 +93,7 @@ public class MovesTree {
                         moves.add(new Move(a, c, cs));
                         //testBoard.printBoard();
                     }
-                    testBoard.printBoard();
+                    //testBoard.printBoard();
                     a.undoMove();
                     //testBoard.printBoard();
                 }

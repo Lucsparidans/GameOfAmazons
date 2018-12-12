@@ -52,16 +52,15 @@ public class AI extends Player {
 
     private void move() {
 
-        Move bestMove = algorithm.getBestMove(this,rootNode);
-        Cell moveQTo = bestMove.getQueenTo();
-        Cell arrowTo = bestMove.getArrowTo();
-        Amazon2D queen = bestMove.getQueen();
-        queen.move(moveQTo);
-        queen.shoot(arrowTo);
+//        Move bestMove = algorithm.getBestMove(this,rootNode);
+//        Cell moveQTo = bestMove.getQueenTo();
+//        Cell arrowTo = bestMove.getArrowTo();
+//        Amazon2D queen = bestMove.getQueen();
+//        queen.move(moveQTo);
+//        queen.shoot(arrowTo);
     }
     private void updateTree(){
-
-        this.tree=new MovesTree(gameLoop.getAmazons(),gameLoop.getArrow(),this);
+        this.tree=new MovesTree(gameLoop.getAmazons(),gameLoop.getArrows(),this);
         rootNode=this.tree.getRootNode();
     }
 
