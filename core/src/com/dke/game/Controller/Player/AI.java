@@ -73,7 +73,7 @@ public class AI extends Player {
         long b = System.nanoTime();
         this.tree = new MovesTree(gameLoop.getAmazons(), gameLoop.getArrows(), this);
         long e = System.nanoTime();
-        System.out.println("The elapsed time is: " + (e - b) * 1e-9);
+        System.out.println("The elapsed time is: " + (e - b) * 1e-9 + " to generate the tree");
         rootNode = this.tree.getRootNode();
     }
 
