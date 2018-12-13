@@ -391,8 +391,8 @@ public abstract class Amazon extends Piece {
             if (!moveMade && !stop) {
                 xStack.pop();
                 yStack.pop();
-                if (xStack.isEmpty()) {
-                    //System.out.println("No amazon of opposite colour found");
+                if (xStack.isEmpty() && yStack.isEmpty()) {
+                    System.out.println("No amazon of opposite colour found");
                     stop = true;
                     isolated = true;
                 } else {

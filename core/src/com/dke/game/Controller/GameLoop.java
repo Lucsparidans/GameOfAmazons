@@ -6,7 +6,6 @@ import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.Luc.MiniMax;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Pieces;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -14,7 +13,6 @@ import com.dke.game.Views.GameView;
 import com.dke.game.Views.ScoreView;
 
 import java.util.ArrayList;
-
 /**
  * Class that represents the controller from the model view controller architecture
  */
@@ -38,7 +36,6 @@ public class GameLoop {
     public Board2D getBoard2D() {
         return board2D;
     }
-
     // another constructor to avoid static fields
     public GameLoop(ViewManager viewManager, String white_Type, String black_Type) {
         this.viewManager = viewManager;

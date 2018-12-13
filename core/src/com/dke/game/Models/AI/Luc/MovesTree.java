@@ -1,7 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Controller.Player.AI;
-import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Luc.MyAlgo.State;
 import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
 import com.dke.game.Models.DataStructs.Cell;
@@ -9,7 +8,6 @@ import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 
 public class MovesTree {
@@ -17,8 +15,9 @@ public class MovesTree {
 
     private MoveNode rootNode;
     private State initialState;
-    private final int maxDepth = 2;
+    private int maxDepth = 2;
     private AI player;
+    private int nodeCheck=0;
 
 
     public MovesTree(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, AI player) {
@@ -29,21 +28,26 @@ public class MovesTree {
     }
 
     public void expandNode(MoveNode current) {
+        if(player.getAlgorithm() instanceof Greedy){
+            maxDepth = 1;
+        }
         if (current.getDEPTH() < maxDepth) {
             ArrayList<Move> possibleMoves = getPossibleMoves(current);
             for (Move m : possibleMoves) {
+                nodeCheck++;
+                System.out.println(nodeCheck);
                 MoveNode child = new MoveNode(m, current);
-                /* child.setParent(current); */
+                // child.setParent(current); //
                 current.addChild(child);
             }
         }
         if (current.getDEPTH() == maxDepth || current.getChildren().size() == 0) {
             return;
         }
-        for (MoveNode node : current.getChildren()) {
+        /*for (MoveNode node : current.getChildren()) {
             //TODO execute move here
             expandNode(node);
-        }
+        }*/
 
 
     }

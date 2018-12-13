@@ -46,6 +46,10 @@ public class AI extends Player {
         return enemyAmazons;
     }
 
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
+
     public MovesTree getTree() {
         return tree;
     }

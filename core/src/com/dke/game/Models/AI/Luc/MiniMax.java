@@ -1,7 +1,6 @@
 package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Controller.Player.AI;
-import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ public class MiniMax implements Algorithm {
     private int depth = 1;
     private double secondHighest = Double.NEGATIVE_INFINITY;
     private double secondLowest = Double.POSITIVE_INFINITY;
-    private int cutOff = 20;
+    private int cutOff = 250;
     private ArrayList<MoveNode> highestEvalFreq = new ArrayList<>();
     private ArrayList<MoveNode> secondHighestEvalFreq = new ArrayList<>();
     private ArrayList<MoveNode> lowestEvalFreq = new ArrayList<>();
