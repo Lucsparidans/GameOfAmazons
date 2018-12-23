@@ -16,7 +16,9 @@ public class MiniMax implements Algorithm {
     private ArrayList<MoveNode> lowestEvalFreq = new ArrayList<>();
     private ArrayList<MoveNode> secondLowestEvalFreq = new ArrayList<>();
 
-
+    /*
+    Returns the move that was found to be the 'best' move using the minimax algorithm to search the tree.
+     */
     @Override
     public Move getBestMove(AI player, MoveNode root) {
         this.movesTree = player.getTree();
@@ -30,6 +32,10 @@ public class MiniMax implements Algorithm {
 
     //returns the best score of all possible Board Status
     //The cutoff rates reduce runtime, and since we get a lot of similar evals we cannot find global optimum anyways.
+    /*
+    Because the Heuristic evaluations are very similiar for many nodes, when we reach a the value of cutoff many the same evaluated nodes,
+     we stop searching and choose on of the best found so far.
+     */
     public MoveNode MiniMax(MoveNode aNode, int depth, boolean maxPlayer, double alpha, double beta, AI player) {
 
         MoveNode chNodeVal;
