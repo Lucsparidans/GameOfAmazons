@@ -8,9 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.dke.game.Controller.GameLoop;
-import com.dke.game.Controller.MainLoop;
-import com.dke.game.Controller.Player.AI;
-import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 

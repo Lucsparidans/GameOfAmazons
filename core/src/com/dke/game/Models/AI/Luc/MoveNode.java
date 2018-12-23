@@ -72,6 +72,11 @@ public class MoveNode {
         return this.DEPTH;
     }
 
+    /*
+    Calculates the depth of a node by creating a reference to the parent of the current node, this node,
+     and then replacing the reference to the current parent to the parents parent.
+    This is repeated while that is possible.
+     */
     private int getDepth() {
 
         int counter = 0;
@@ -87,7 +92,9 @@ public class MoveNode {
         }
         return counter;
     }
-
+    /*
+    Function which is called to calculate the heuristic value of the node.
+     */
     public void evaluateNode(AI player, TestBoard testBoard) {
         this.createCurrentState(this,testBoard);
         //testBoard.printBoard();
@@ -96,6 +103,9 @@ public class MoveNode {
         testBoard.resetMoves();
     }
 
+    /*
+    sub-memthod to othe  evaluate node method, this returns the value of the heuristic evaluation.
+     */
     private double evaluateState(AI playerAI, TestBoard testBoard) {
         if(this.data != null) {
             if (this.getData().isPlayerMaximizing(playerAI)) {
@@ -110,7 +120,13 @@ public class MoveNode {
         }
         return  0;
     }
+    /*
+    Because the node only contains a move object which describes the action that takes us from the state in the parent-node to the state in this node.
+    Because only the state of the rootnode of the movetree is kept, we backtrack from our node to the root while putting the current node we are referencing into
+    a stack. Once the rootnode is reached we can recreate the state we are currently in by executing all moves in the stack
+     while the stack still contains a move object.
 
+     */
     public void createCurrentState(MoveNode node, TestBoard testBoard) {
 //
         
@@ -128,7 +144,9 @@ public class MoveNode {
             }
         }
     }
-
+/*
+Heuristics
+ */
     //<editor-fold desc="Heuristics">
     //calculating the score for the node
     private double positioHheuristics(TestBoard testBoard, Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {

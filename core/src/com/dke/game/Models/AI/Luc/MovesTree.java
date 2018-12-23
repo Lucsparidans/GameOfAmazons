@@ -9,7 +9,10 @@ import com.dke.game.Models.GraphicalModels.Arrow2D;
 
 import java.util.ArrayList;
 
-
+/*
+The tree structure that uses bruteforce to generate all possible moves from a specific root node. The content of the nodes in the tree consist of
+move objects.
+ */
 public class MovesTree {
 
 
