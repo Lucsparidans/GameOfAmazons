@@ -13,14 +13,16 @@ public class AI extends Player {
     private Algorithm algorithm;
     private MoveNode rootNode;
     private GameLoop gameLoop;
+    private Board2D board2D;
     private MovesTree tree;
     private Amazon2D[] myAmazons;
     private Amazon2D[] enemyAmazons;
 
-    public AI(char side, Algorithm algorithm, Board2D board2D, GameLoop gameLoop) {
+    public AI(char side, Algorithm algorithm, GameLoop gameLoop) {
         super(side);
         this.algorithm = algorithm;
         this.gameLoop = gameLoop;
+        this.board2D=gameLoop.getBoard2D();
         enemyAmazons = new Amazon2D[4];
         myAmazons = new Amazon2D[4];
         int counter = 0;
@@ -44,17 +46,34 @@ public class AI extends Player {
         return enemyAmazons;
     }
 
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
+
+    public MovesTree getTree() {
+        return tree;
+    }
+
     private void move() {
         Move bestMove = algorithm.getBestMove(this,rootNode);
-        Cell moveQTo = bestMove.getQueenTo();
-        Cell arrowTo = bestMove.getArrowTo();
-        Amazon2D queen = bestMove.getQueen();
-        queen.move(moveQTo);
-        queen.shoot(arrowTo);
+//        Cell moveQTo = bestMove.getQueenTo();
+        Cell moveQueenTo = board2D.getBoardCoordinates()[bestMove.getQueenTo().getI()][bestMove.getQueenTo().getJ()];
+        Cell arrowTo = board2D.getBoardCoordinates()[bestMove.getArrowTo().getI()][bestMove.getArrowTo().getJ()];
+        Amazon2D amazon2D = gameLoop.getAmazons()[bestMove.getQueen().getIndex()];
+        amazon2D.move(moveQueenTo);
+        amazon2D.shoot(arrowTo);
+//        Cell arrowTo = bestMove.getArrowTo();
+//        Amazon2D queen = bestMove.getQueen();
+//        queen.move(moveQTo);
+//        queen.shoot(arrowTo);
+
     }
 
     private void updateTree() {
+        long b = System.nanoTime();
         this.tree = new MovesTree(gameLoop.getAmazons(), gameLoop.getArrows(), this);
+        long e = System.nanoTime();
+        System.out.println("The elapsed time is: " + (e - b) * 1e-9 + " to generate the tree");
         rootNode = this.tree.getRootNode();
     }
 
@@ -62,14 +81,10 @@ public class AI extends Player {
     public void performTurn() {
         updateTree();
         move();
+        gameLoop.getGameView().setTurnCounter(gameLoop.getGameView().getTurnCounter()+1);
     }
 
     public enum Phase {
         START_PHASE, MID_PHASE, END_PHASE
     }
-
-    public MovesTree getTree(){
-        return tree;
-    }
-
 }

@@ -43,6 +43,14 @@ public class Move {
         return queenFrom;
     }
 
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
     public boolean isPlayerMaximizing(Player p){
         if(p.getSide()==queen.getSide()){
             return true;

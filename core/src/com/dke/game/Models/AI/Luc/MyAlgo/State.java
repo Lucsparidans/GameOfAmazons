@@ -8,7 +8,9 @@ import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 
 import java.util.ArrayList;
-
+/*
+Represents the current state of the game
+ */
 public class State {
     private TestBoard testBoard;
     private Move move;

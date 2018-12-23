@@ -7,7 +7,6 @@ import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.Luc.MiniMax;
 import com.dke.game.Models.AI.NewSimpleCarlo;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Pieces;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -15,7 +14,6 @@ import com.dke.game.Views.GameView;
 import com.dke.game.Views.ScoreView;
 
 import java.util.ArrayList;
-
 /**
  * Class that represents the controller from the model view controller architecture
  */
@@ -24,11 +22,10 @@ public class GameLoop {
 
     private GameView gameView;
     private Board2D board2D;
-    private boolean running = false;
+    private boolean running;
     private Cell[][] boardCoordinates;
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow;
-    private volatile Thread thread;
     private ViewManager viewManager;
     private Player white;
     private Player black;
@@ -40,7 +37,6 @@ public class GameLoop {
     public Board2D getBoard2D() {
         return board2D;
     }
-
     // another constructor to avoid static fields
     public GameLoop(ViewManager viewManager, String white_Type, String black_Type) {
         this.viewManager = viewManager;
@@ -65,17 +61,17 @@ public class GameLoop {
         if (white_Type.equals("Human")) {
             if (black_Type.equals("AI")) {
                 white = new Human('W', gameView, this);
-                black = new AI('B', algo, board2D, this);
+                black = new AI('B', algo, this);
             } else if (black_Type.equals("Human")) {
                 white = new Human('W', gameView, this);
                 black = new Human('B', gameView, this);
             }
         } else if (white_Type.equals("AI")) {
             if (black_Type.equals("AI")) {
-                white = new AI('W', algo, board2D, this);
-                black = new AI('B', algo, board2D, this);
+                white = new AI('W', algo, this);
+                black = new AI('B', algo, this);
             } else if (black_Type.equals("Human")) {
-                white = new AI('B', algo, board2D, this);
+                white = new AI('B', algo, this);
                 black = new Human('B', gameView, this);
             }
         }
@@ -121,14 +117,14 @@ public class GameLoop {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
-        amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false);
-        amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false);
-        amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false);
-        amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false);
-        amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false);
-        amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false);
-        amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false);
-        amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false);
+        amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false,0);
+        amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false,1);
+        amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false,2);
+        amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false,3);
+        amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false,4);
+        amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false,5);
+        amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false,6);
+        amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false,7);
 
     }
 
@@ -231,14 +227,6 @@ public class GameLoop {
 
     public void setArrow(ArrayList<Arrow2D> arrow) {
         this.arrow = arrow;
-    }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public void setThread(Thread thread) {
-        this.thread = thread;
     }
 
     public ViewManager getViewManager() {

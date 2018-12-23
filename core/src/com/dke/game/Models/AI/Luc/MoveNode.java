@@ -1,6 +1,7 @@
 package com.dke.game.Models.AI.Luc;
 
 import com.dke.game.Controller.Player.AI;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
@@ -71,6 +72,11 @@ public class MoveNode {
         return this.DEPTH;
     }
 
+    /*
+    Calculates the depth of a node by creating a reference to the parent of the current node, this node,
+     and then replacing the reference to the current parent to the parents parent.
+    This is repeated while that is possible.
+     */
     private int getDepth() {
 
         int counter = 0;
@@ -86,26 +92,44 @@ public class MoveNode {
         }
         return counter;
     }
-
+    /*
+    Function which is called to calculate the heuristic value of the node.
+     */
     public void evaluateNode(AI player, TestBoard testBoard) {
         this.createCurrentState(this,testBoard);
         //testBoard.printBoard();
         this.value = evaluateState(player, testBoard);
+        this.data.setValue(this.value);
         testBoard.resetMoves();
     }
 
+    /*
+    sub-memthod to othe  evaluate node method, this returns the value of the heuristic evaluation.
+     */
     private double evaluateState(AI playerAI, TestBoard testBoard) {
-        if (this.getData().isPlayerMaximizing(playerAI)) {
-            return shotsHeuristics(playerAI.getMyAmazons(), playerAI.getEnemyAmazons(),testBoard)
-                    + positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
-        } else {
-            return shotsHeuristics(playerAI.getEnemyAmazons(), playerAI.getMyAmazons(),testBoard)
-                    + positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+        if(this.data != null) {
+            if (this.getData().isPlayerMaximizing(playerAI)) {
+                double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+                //System.out.println(val);
+                return val;
+            } else {
+                double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+                //System.out.println(val);
+                return val;
+            }
         }
+        return  0;
     }
+    /*
+    Because the node only contains a move object which describes the action that takes us from the state in the parent-node to the state in this node.
+    Because only the state of the rootnode of the movetree is kept, we backtrack from our node to the root while putting the current node we are referencing into
+    a stack. Once the rootnode is reached we can recreate the state we are currently in by executing all moves in the stack
+     while the stack still contains a move object.
 
+     */
     public void createCurrentState(MoveNode node, TestBoard testBoard) {
-       testBoard.printBoard();
+//
+        
         MoveNode cur = node;
         Stack<MoveNode> path = new Stack<>();
         path.push(cur);
@@ -116,11 +140,13 @@ public class MoveNode {
         for (MoveNode n : path) {
             if (n.getData() != null) {
                 testBoard.executeMove(n.getData());
-                testBoard.printBoard();
+                //testBoard.printBoard();
             }
         }
     }
-
+/*
+Heuristics
+ */
     //<editor-fold desc="Heuristics">
     //calculating the score for the node
     private double positioHheuristics(TestBoard testBoard, Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
@@ -180,7 +206,7 @@ public class MoveNode {
         return count;
     }
 
-    private double shotsHeuristics(Amazon2D[] ourQueens, Amazon2D[] enemyQueens, TestBoard testBoard) {
+    private double shotsHeuristics(TestBoard testBoard, Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
         double value = 0;
         for (Amazon queen : ourQueens) {
 

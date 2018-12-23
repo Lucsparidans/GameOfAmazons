@@ -14,8 +14,8 @@ public class Amazon2D extends Amazon {
     private Sprite icon;
     private boolean test;
 
-    public Amazon2D(char side,Cell cell, boolean test) {
-        super(side, cell);
+    public Amazon2D(char side,Cell cell, boolean test, int index) {
+        super(side, cell,index);
         this.test=test;
         if(!test) {
             icon = new Sprite(new Texture(Gdx.files.internal("Icons/Queens.png")));

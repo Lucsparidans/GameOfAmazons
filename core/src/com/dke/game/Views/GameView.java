@@ -13,7 +13,6 @@ import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Coordinate;
 import com.dke.game.Models.GraphicalModels.*;
 
 import java.util.ArrayList;
@@ -42,7 +41,9 @@ public class GameView extends View2D {
 
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
 
-
+    /*
+    Constructor for the GameView class
+     */
     public GameView(ViewManager viewManager, Board2D board2D, Cell[][] boardCoordinates, Amazon2D[] amazons, ArrayList<Arrow2D> arrow2Ds, GameLoop gameLoop) {
         super(viewManager);
         this.gameLoop = gameLoop;
