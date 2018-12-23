@@ -22,7 +22,9 @@ public class MovesTree {
     private AI player;
     private int nodeCheck=0;
 
-
+/*
+Constructor
+ */
     public MovesTree(Amazon2D[] amazon2DS, ArrayList<Arrow2D> arrow2DS, AI player) {
         initialState = new State(new TestBoard(amazon2DS, arrow2DS), null, player);
         this.player = player;
@@ -30,6 +32,9 @@ public class MovesTree {
         expandNode(rootNode);
     }
 
+    /*
+    Generate the children the the node "current".
+     */
     public void expandNode(MoveNode current) {
         if(player.getAlgorithm() instanceof Greedy){
             maxDepth = 1;
@@ -54,7 +59,9 @@ public class MovesTree {
 
 
     }
-
+    /*
+    Generate all possible moves in the current situation
+     */
     public ArrayList<Move> getPossibleMoves(MoveNode current) {
         ArrayList<Move> moves = new ArrayList<>();
         TestBoard testBoard = initialState.getTestBoard();
@@ -68,11 +75,15 @@ public class MovesTree {
         //testBoard.printBoard();
         return moves;
     }
-
+    /*
+    Create the state of the current node, meaning executing the moves in reverse order found by backktracking to the rootnode by using the stack.
+     */
     public void createCurrentState(MoveNode current, TestBoard testBoard) {
         current.createCurrentState(current,testBoard);
     }
-
+    /*
+    Creates all move objects that are possible in a current state
+     */
     private void generateMoves(TestBoard testBoard, ArrayList<Move> moves, char side) {
         for (Amazon2D a : testBoard.getAmazons()) {
             if (a.getSide() == side) {
