@@ -28,6 +28,11 @@ public class TestBoard {
         initializeBoard();
         createTestPieces(amazons, arrows);
         placePieces(this.amazons, this.arrows);
+
+
+        //TODO remove following lines:
+        //ChristmasCarlo cc = new ChristmasCarlo();
+        //cc.startalgo(boardCoordinates, true);
     }
 
     private void createTestPieces(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {

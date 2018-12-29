@@ -3,7 +3,10 @@ package com.dke.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.dke.game.Controller.MainLoop;
+import com.dke.game.Models.AI.Luc.MyAlgo.ChristmasCarlo;
 import com.dke.game.Models.DataStructs.Cell;
+
+import java.util.ArrayList;
 
 
 public class DesktopLauncher {
@@ -20,6 +23,25 @@ public class DesktopLauncher {
 
         new LwjglApplication(new MainLoop(), config);
 
+
+        //TODO REMOVE TEST THIS:
+        {
+            ChristmasCarlo TESTCARLO = new ChristmasCarlo();
+            char[][] testCharBoard = new char[10][10];
+            testCharBoard[3][0] = 'W';
+            testCharBoard[6][0] = 'W';
+            testCharBoard[0][3] = 'W';
+            testCharBoard[9][3] = 'W';
+            testCharBoard[0][6] = 'B';
+            testCharBoard[9][6] = 'B';
+            testCharBoard[3][9] = 'B';
+            testCharBoard[6][9] = 'B';
+            ArrayList<char[][]> nextstates = TESTCARLO.generateNextPossibleStates('B', testCharBoard);
+            System.out.println("nexstates: " + nextstates.size());
+            for (int i = 0; i < nextstates.size(); i += 50) {
+                ChristmasCarlo.printCharMatrix(nextstates.get(i));
+            }
+        }
 
     }
     //Multiple display configurations you can choose from by changing the displayMode variable above
