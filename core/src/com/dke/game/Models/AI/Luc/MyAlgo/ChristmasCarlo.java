@@ -1,6 +1,5 @@
 package com.dke.game.Models.AI.Luc.MyAlgo;
 
-import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -19,8 +18,13 @@ public class ChristmasCarlo{
         this.sideTurn = sideTurn;
 
         generateSimpleMatrix();
-        printCharMatrix(simpleMatrix);
 
+        //TODO, REPLACE 'B' WITH THE ACTUAL SIDE
+        ArrayList<char[][]> nextStates = generateNextPossibleStates('B' ,simpleMatrix);
+        //printCharMatrix(simpleMatrix);
+
+        //TODO, REPLACE 'W' WITH THE ACTUAL SIDE
+        getbestindex('B','W', nextStates);
     }
 
     public void generateSimpleMatrix(){
@@ -80,7 +84,7 @@ public class ChristmasCarlo{
                         copY+= copJ;
                         if(copX<boardWidth&&copY<boardHeight&&copX>-1&&copY>-1) {
                             if (currentboard[copX][copY] == blankchar[0]) {
-                                char[][] newboard = copyArray(currentboard);
+                                char[][] newboard = copyCharMatrix(currentboard);
                                 newboard[x][y]=blankchar[0];
                                 newboard[copX][copY] = whoseTurn;
 
@@ -123,7 +127,7 @@ public class ChristmasCarlo{
                     copY += copJ;
                     if (copX < boardWidth && copY < boardHeight && copX > -1 && copY > -1) {
                         if (board[copX][copY] == blankchar[0]) {
-                            char[][] newboard = copyArray(board);
+                            char[][] newboard = copyCharMatrix(board);
                             newboard[copX][copY] = 'A';
                             stateList.add(newboard);
                             //printCharMatrix(newboard);
@@ -137,6 +141,24 @@ public class ChristmasCarlo{
                 }
             }
         }
+    }
+
+    public double getbestindex(char AIside, char whoseTurn, ArrayList<char[][]> moveList){
+        int amountOfMoves = moveList.size();
+        double[] scoreList = new double[amountOfMoves];
+
+        for(int i = 0; i<amountOfMoves; i++){
+            char[][] startState = moveList.get(i);
+
+        }
+
+        double res = 1;
+        return res;
+    }
+
+    public double expandRandomly(char AIside, char whoseTurn, char[][] startState){
+        char[][]copyBoard = copyCharMatrix(startState);
+
     }
 
 
@@ -158,7 +180,7 @@ public class ChristmasCarlo{
         }
     }
 
-    public static char[][] copyArray(char[][] array) {
+    public static char[][] copyCharMatrix(char[][] array) {
         char[][] newArr = new char[array.length][array[0].length];
         for (int i = 0; i < array.length; i++){
             for (int j = 0; j < array[i].length; j++){
