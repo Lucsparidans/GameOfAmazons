@@ -27,20 +27,25 @@ public class DesktopLauncher {
         //TODO REMOVE TEST THIS:
         {
             ChristmasCarlo TESTCARLO = new ChristmasCarlo();
-            char[][] testCharBoard = new char[10][10];
-            testCharBoard[3][0] = 'W';
-            testCharBoard[6][0] = 'W';
-            testCharBoard[0][3] = 'W';
-            testCharBoard[9][3] = 'W';
-            testCharBoard[0][6] = 'B';
-            testCharBoard[9][6] = 'B';
-            testCharBoard[3][9] = 'B';
-            testCharBoard[6][9] = 'B';
-            ArrayList<char[][]> nextstates = TESTCARLO.generateNextPossibleStates('B', testCharBoard);
-            System.out.println("nexstates: " + nextstates.size());
-            for (int i = 0; i < nextstates.size(); i += 50) {
-                ChristmasCarlo.printCharMatrix(nextstates.get(i));
-            }
+//            char[][] testCharBoard = new char[10][10];
+//            testCharBoard[3][0] = 'W';
+//            testCharBoard[6][0] = 'W';
+//            testCharBoard[0][3] = 'W';
+//            testCharBoard[9][3] = 'W';
+//            testCharBoard[0][6] = 'B';
+//            testCharBoard[9][6] = 'B';
+//            testCharBoard[3][9] = 'B';
+//            testCharBoard[6][9] = 'B';
+
+            char[][] testCharBoard = new char[5][5];
+            testCharBoard[2][1] = 'W';
+            testCharBoard[4][4] = 'B';
+//            ArrayList<char[][]> nextstates = TESTCARLO.generateNextPossibleStates('B', testCharBoard);
+//            System.out.println("nexstates: " + nextstates.size());
+//            for (int i = 0; i < nextstates.size(); i += 50) {
+//                ChristmasCarlo.printCharMatrix(nextstates.get(i));
+//            }
+            TESTCARLO.expandRandomly('B','W',testCharBoard);
         }
 
     }

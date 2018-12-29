@@ -1,17 +1,24 @@
 package com.dke.game.Models.AI.Luc.MyAlgo;
 
+import com.dke.game.Controller.Player.AI;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ChristmasCarlo{
     Cell[][] currentCellMatrix;
     char sideTurn;
+    Random randomGenerator;
 
     char[][] simpleMatrix;
+
+    public ChristmasCarlo(){
+        randomGenerator = new Random();
+    }
 
     public void startalgo(Cell[][] currentCellMatrix, char sideTurn){
         this.currentCellMatrix = currentCellMatrix;
@@ -46,8 +53,8 @@ public class ChristmasCarlo{
     }
 
     public ArrayList<char[][]> generateNextPossibleStates(char whoseTurn, char[][] currentboard){
-        System.out.println("CURRENT BOARD:");
-        printCharMatrix(currentboard);
+        //System.out.println("CURRENT BOARD:");
+        //printCharMatrix(currentboard);
         ArrayList<char[][]> nextStates = new ArrayList<char[][]>();
         ArrayList<CarloCoordinate> moveableAmazons = new ArrayList<CarloCoordinate>();
         //Adds movable amazons to arrayList
@@ -107,6 +114,8 @@ public class ChristmasCarlo{
         return nextStates;
     }
 
+
+    //For a certain moved amazon, take all possible shots and add them to the stateList array.
     public static void addArrowShots(ArrayList<char[][]> stateList, int amazonX, int amazonY, char[][] board) {
         char[] blankchar = new char[1];
         int boardWidth = board.length;
@@ -158,6 +167,25 @@ public class ChristmasCarlo{
 
     public double expandRandomly(char AIside, char whoseTurn, char[][] startState){
         char[][]copyBoard = copyCharMatrix(startState);
+        printCharMatrix(copyBoard);
+
+        //This is slow!
+        ArrayList<char[][]> nextStates = generateNextPossibleStates(whoseTurn, copyBoard);
+        //!!
+
+        if(nextStates.size()==0){
+            if(AIside == whoseTurn){
+                System.out.println(AIside+"Lost");
+                return 0;
+
+            }else{
+                System.out.println(AIside+"Won");
+                return 1;
+            }
+        }
+
+        int randomindex = randomGenerator.nextInt(nextStates.size());
+        return expandRandomly(AIside, switchSide(whoseTurn), nextStates.get(randomindex));
 
     }
 
@@ -188,6 +216,11 @@ public class ChristmasCarlo{
             }
         }
         return newArr;
+    }
+
+    public static char switchSide(char input){
+        if(input == 'B'){return 'W';}
+        return 'B';
     }
 
 
