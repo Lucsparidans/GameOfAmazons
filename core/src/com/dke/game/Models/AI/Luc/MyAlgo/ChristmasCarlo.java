@@ -6,18 +6,62 @@ import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+
+
 
 public class ChristmasCarlo{
+    final double diagonalMoveBias = 30;
     Cell[][] currentCellMatrix;
     char sideTurn;
     Random randomGenerator;
 
     char[][] simpleMatrix;
+    char[] emptyChar;
+    static ArrayList<int[]> directionList;
+
+    int diagonalMoves = 0;
+    int nondiagonalMoves = 0;
+    double moveLengthsum = 0;
+    double moveAmount = 0;
 
     public ChristmasCarlo(){
         randomGenerator = new Random();
+        emptyChar = new char[1];
+        directionList = new ArrayList<int[]>();
+        initializeDirectionList(directionList);
+    }
+
+    public static void initializeDirectionList(ArrayList<int[]> directionList){
+        //directionList = new ArrayList<int[]>();
+        for(int i = -1; i<2;i++){
+            for(int j = -1; j<2; j++){
+                if(i!=0||j!=0){
+                    int[] newarray = {i, j};
+                    directionList.add(newarray);
+                    System.out.println(i+"  "+j);
+                }
+            }
+        }
+    }
+
+    //Shuffles moves randomly, with a given chance it will reshuffle if the first move is non-diagonal
+    public  void biasedShuffle(){
+        Collections.shuffle(directionList);
+        int[] firstEntry = directionList.get(0);
+        if(firstEntry[0]*firstEntry[1]==0){
+            int rand = randomGenerator.nextInt(100);
+            if(rand<diagonalMoveBias) {
+                Collections.shuffle(directionList);
+            }
+        }
+
     }
 
     public void startalgo(Cell[][] currentCellMatrix, char sideTurn){
@@ -165,6 +209,142 @@ public class ChristmasCarlo{
         return res;
     }
 
+    public char[][] getNextRandomState(char whoseTurn, char[][] startState){
+        //initializeDirectionList(directionList);
+        printCharMatrix(startState);
+        System.out.println("WhoseTurn: " + whoseTurn);
+        //Collections.shuffle(directionList);
+        biasedShuffle();
+        char[][] copyboard = copyCharMatrix(startState);
+        ArrayList<CarloCoordinate> myAmazons = new ArrayList<CarloCoordinate>();
+        for(int i = 0; i< copyboard.length; i++){
+            for(int j = 0; j< copyboard[0].length; j++){
+                if(copyboard[i][j] == whoseTurn){
+                    myAmazons.add(new CarloCoordinate(i,j));
+                }
+            }
+        }
+
+        int coorX = -1;
+        int coorY = -1;
+        int newCoorX = -1;
+        int newCoorY = -1;
+        Collections.shuffle(myAmazons);
+        boolean WeDidAMove = false;
+        for (int index = 0; index<myAmazons.size(); index++){
+            CarloCoordinate coor = myAmazons.get(index);
+            coorX = coor.getX();
+            coorY = coor.getY();
+
+            //Coming for loop calculates if there is even a possible move for the randomly Selected amazon
+            boolean possibleMoveForThisAmazon = false;
+            for(int i = coorX-1; i< coorX+2; i++){
+                for(int j = coorY-1; j<coorY+2; j++){
+                    if(i<0||i>copyboard.length-1||j<0||j>copyboard[0].length-1){
+                        continue;
+                    }
+                    if(copyboard[i][j]==emptyChar[0]){
+                        possibleMoveForThisAmazon = true;
+                        i = coorX+2;
+                        j = coorY +2;
+                    }
+                }
+            }
+
+            if(!possibleMoveForThisAmazon&&index == myAmazons.size()-1){
+                throw new RuntimeException("No possible moves for "+ whoseTurn);
+            }
+            if(!possibleMoveForThisAmazon){continue;}
+
+            for(int[] direction: directionList){
+                int xDir = direction[0];
+                int yDir = direction[1];
+                int distanceMulitplier = 1;
+                boolean previousMultiplicityWorked = true;
+                int distanceThatWorked = 0;
+                while(previousMultiplicityWorked){
+                    previousMultiplicityWorked = false;
+                    int multipliedxDir = xDir*distanceMulitplier;
+                    int multipliedyDir = yDir*distanceMulitplier;
+                    int xTry = coorX+multipliedxDir;
+                    int yTry = coorY+multipliedyDir;
+                    if(xTry<0||xTry>copyboard.length-1||yTry<0||yTry>copyboard[0].length-1){
+
+                    }else if(copyboard[xTry][yTry]==emptyChar[0]){
+                        distanceThatWorked = distanceMulitplier;
+                        previousMultiplicityWorked = true;
+                        distanceMulitplier++;
+                    }
+                }
+                int distanceWeUse = 0;
+                if(distanceThatWorked>0){
+                    if(distanceThatWorked ==1){
+                        distanceWeUse = 1;
+                    }else{
+                        distanceWeUse = ThreadLocalRandom.current().nextInt(1, distanceThatWorked + 1);
+                    }
+                    copyboard[coorX][coorY] = emptyChar[0];
+                    newCoorX = coorX+(direction[0]*distanceWeUse);
+                    newCoorY = coorY+(direction[1]*distanceWeUse);
+                    copyboard[newCoorX][newCoorY] = whoseTurn;
+                    WeDidAMove = true;
+                    if (direction[0]*direction[1]==0){
+                        nondiagonalMoves++;
+                    }else{
+                        diagonalMoves++;
+                    }
+                    System.out.println("DiagonalMoves: "+ diagonalMoves + " |||| Non-diagonalMoves: " +nondiagonalMoves);
+                    moveAmount++;
+                    moveLengthsum+= distanceWeUse;
+
+                    System.out.println("Avg distance: "+moveLengthsum/moveAmount);
+                    break;
+                }
+            }
+
+            if(WeDidAMove){break;}
+
+        }
+        return takeRandomShot(copyboard, newCoorX, newCoorY);
+    }
+
+    public char[][] takeRandomShot(char[][] boardState, int amazonCoorX, int amazonCoorY){
+        biasedShuffle();
+        for(int[] direction: directionList){
+            int xDir = direction[0];
+            int yDir = direction[1];
+            int distanceMulitplier = 1;
+            boolean previousMultiplicityWorked = true;
+            int distanceThatWorked = 0;
+            while(previousMultiplicityWorked){
+                previousMultiplicityWorked = false;
+                int multipliedxDir = xDir*distanceMulitplier;
+                int multipliedyDir = yDir*distanceMulitplier;
+                int xTry = amazonCoorX+multipliedxDir;
+                int yTry = amazonCoorY+multipliedyDir;
+                if(xTry<0||xTry>boardState.length-1||yTry<0||yTry>boardState[0].length-1){
+
+                }else if(boardState[xTry][yTry]==emptyChar[0]){
+                    distanceThatWorked = distanceMulitplier;
+                    previousMultiplicityWorked = true;
+                    distanceMulitplier++;
+                }
+            }
+            int distanceWeUse = 0;
+            if(distanceThatWorked>0){
+                if(distanceThatWorked ==1){
+                    distanceWeUse = 1;
+                }else{
+                    distanceWeUse = ThreadLocalRandom.current().nextInt(1, distanceThatWorked + 1);
+                }
+                boardState[amazonCoorX+(direction[0]*distanceWeUse)][amazonCoorY+(direction[1]*distanceWeUse)] = 'A';
+                //WeDidAMove = true;
+                break;
+            }
+        }
+        return boardState;
+    }
+
     public double expandRandomly(char AIside, char whoseTurn, char[][] startState){
         char[][]copyBoard = copyCharMatrix(startState);
         printCharMatrix(copyBoard);
@@ -189,9 +369,27 @@ public class ChristmasCarlo{
 
     }
 
+    public void expandRandomlyTestMethod(char whoseTurn, char[][] startState){
+        for(int i = 0; i< 200; i++){
+            char[][] nextState;
+            try {
+                nextState = getNextRandomState(whoseTurn, startState);
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+                break;
+            }
+            //printCharMatrix(startState);
+            startState = nextState;
+            whoseTurn = switchSide(whoseTurn);
+        }
+    }
+
 
     public static void printCharMatrix ( char[][] matrix){
         char[] blankchar = new char[1];
+        System.out.println(" ");
+        System.out.println("___________________________________");
+        System.out.println(" ");
         System.out.println("___________________________________");
         for (int i = 0; i < matrix.length; i++) {
             System.out.println(" ");
@@ -199,13 +397,22 @@ public class ChristmasCarlo{
 
             for (int j = 0; j < matrix[0].length; j++) {
                 System.out.print(" [");
-                System.out.print(matrix[i][j]);
                 if(matrix[i][j] == blankchar[0]){
                     System.out.print(" ");
+                }else if(matrix[i][j] == 'A'){
+                    System.out.print("@");
+                }else if(matrix[i][j]=='B'||matrix[i][j]=='W'){
+                    System.out.print(ConsoleColors.RED + matrix[i][j] + ConsoleColors.RESET);
                 }
+                //System.out.print(matrix[i][j]);
+
                 System.out.print("] ");
             }
         }
+        System.out.println(" ");
+        System.out.println("___________________________________");
+        System.out.println(" ");
+        System.out.println("___________________________________");
     }
 
     public static char[][] copyCharMatrix(char[][] array) {
