@@ -43,7 +43,7 @@ Constructor
             ArrayList<Move> possibleMoves = getPossibleMoves(current);
             for (Move m : possibleMoves) {
                 nodeCheck++;
-                System.out.println(nodeCheck);
+                //System.out.println(nodeCheck);
                 MoveNode child = new MoveNode(m, current);
                 // child.setParent(current); //
                 current.addChild(child);
