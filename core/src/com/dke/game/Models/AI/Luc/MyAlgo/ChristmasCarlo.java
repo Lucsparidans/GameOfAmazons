@@ -1,14 +1,11 @@
 package com.dke.game.Models.AI.Luc.MyAlgo;
 
-import com.dke.game.Controller.Player.AI;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -52,7 +49,7 @@ public class ChristmasCarlo{
     }
 
     //Shuffles moves randomly, with a given chance it will reshuffle if the first move is non-diagonal
-    public  void biasedShuffle(){
+    public  void biasedDirectionShuffle(){
         Collections.shuffle(directionList);
         int[] firstEntry = directionList.get(0);
         if(firstEntry[0]*firstEntry[1]==0){
@@ -209,12 +206,12 @@ public class ChristmasCarlo{
         return res;
     }
 
-    public char[][] getNextRandomState(char whoseTurn, char[][] startState){
+    public char[][] getNextRandomState(char whoseTurn, char[][] startState) throws NoPossibleMovesException {
         //initializeDirectionList(directionList);
-        printCharMatrix(startState);
-        System.out.println("WhoseTurn: " + whoseTurn);
+        //printCharMatrix(startState);
+        //System.out.println("WhoseTurn: " + whoseTurn);
         //Collections.shuffle(directionList);
-        biasedShuffle();
+        biasedDirectionShuffle();
         char[][] copyboard = copyCharMatrix(startState);
         ArrayList<CarloCoordinate> myAmazons = new ArrayList<CarloCoordinate>();
         for(int i = 0; i< copyboard.length; i++){
@@ -252,7 +249,7 @@ public class ChristmasCarlo{
             }
 
             if(!possibleMoveForThisAmazon&&index == myAmazons.size()-1){
-                throw new RuntimeException("No possible moves for "+ whoseTurn);
+                throw new NoPossibleMovesException();
             }
             if(!possibleMoveForThisAmazon){continue;}
 
@@ -288,16 +285,16 @@ public class ChristmasCarlo{
                     newCoorY = coorY+(direction[1]*distanceWeUse);
                     copyboard[newCoorX][newCoorY] = whoseTurn;
                     WeDidAMove = true;
-                    if (direction[0]*direction[1]==0){
-                        nondiagonalMoves++;
-                    }else{
-                        diagonalMoves++;
-                    }
-                    System.out.println("DiagonalMoves: "+ diagonalMoves + " |||| Non-diagonalMoves: " +nondiagonalMoves);
-                    moveAmount++;
-                    moveLengthsum+= distanceWeUse;
-
-                    System.out.println("Avg distance: "+moveLengthsum/moveAmount);
+//                    if (direction[0]*direction[1]==0){
+//                        nondiagonalMoves++;
+//                    }else{
+//                        diagonalMoves++;
+//                    }
+//                    System.out.println("DiagonalMoves: "+ diagonalMoves + " |||| Non-diagonalMoves: " +nondiagonalMoves);
+//                    moveAmount++;
+//                    moveLengthsum+= distanceWeUse;
+//
+//                    System.out.println("Avg distance: "+moveLengthsum/moveAmount);
                     break;
                 }
             }
@@ -309,7 +306,7 @@ public class ChristmasCarlo{
     }
 
     public char[][] takeRandomShot(char[][] boardState, int amazonCoorX, int amazonCoorY){
-        biasedShuffle();
+        biasedDirectionShuffle();
         for(int[] direction: directionList){
             int xDir = direction[0];
             int yDir = direction[1];
@@ -369,19 +366,21 @@ public class ChristmasCarlo{
 
     }
 
-    public void expandRandomlyTestMethod(char whoseTurn, char[][] startState){
-        for(int i = 0; i< 200; i++){
-            char[][] nextState;
-            try {
-                nextState = getNextRandomState(whoseTurn, startState);
-            }catch(Exception e){
-                System.out.println(e.getMessage());
-                break;
+    public double expandRandomlyTestMethod(char AIside, char whoseTurn, char[][] startState){
+        char[][] newState = new char[startState.length][startState[0].length];
+        try{
+            newState = getNextRandomState(whoseTurn, startState);
+        }catch(NoPossibleMovesException e){
+            if(whoseTurn == AIside){
+                return 0;
+            }else{
+                return 1;
             }
-            //printCharMatrix(startState);
-            startState = nextState;
-            whoseTurn = switchSide(whoseTurn);
         }
+
+        return expandRandomlyTestMethod(AIside, switchSide(whoseTurn), newState);
+
+
     }
 
 

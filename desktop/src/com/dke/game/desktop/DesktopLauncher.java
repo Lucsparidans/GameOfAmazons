@@ -6,7 +6,9 @@ import com.dke.game.Controller.MainLoop;
 import com.dke.game.Models.AI.Luc.MyAlgo.ChristmasCarlo;
 import com.dke.game.Models.DataStructs.Cell;
 
+import javax.swing.*;
 import java.util.ArrayList;
+
 
 
 public class DesktopLauncher {
@@ -40,10 +42,20 @@ public class DesktopLauncher {
 //            testCharBoard[3][3] = 'B';
 //            testCharBoard[5][5] = 'W';
 
+            long startTime = System.currentTimeMillis();
 
             TESTCARLO.printCharMatrix(testCharBoard);
+            double sum = 0;
+            int tries = 500000;
+            for(int i = 0; i<tries; i++) {
+                sum+=TESTCARLO.expandRandomlyTestMethod('B', 'W', testCharBoard);
+            }
+            System.out.println(sum/tries);
+            long endTime = System.currentTimeMillis();
+            double t = (double) tries;
 
-            TESTCARLO.expandRandomlyTestMethod('B', testCharBoard);
+            System.out.println("That took " + (endTime - startTime) + " milliseconds");
+            System.out.println("That took " + (endTime/t - startTime/t) + " milliseconds per expansion");
 
             //char[][] randomnext = TESTCARLO.getNextRandomState('W', testCharBoard);
             //TESTCARLO.printCharMatrix(randomnext);
