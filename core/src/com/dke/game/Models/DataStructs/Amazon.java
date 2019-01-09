@@ -222,7 +222,7 @@ public abstract class Amazon extends Piece {
             //Recurs
             if (!moveMade && !stop) {
                 xChecked.add((int)xStack.pop());
-                yStack.pop((int));
+                yChecked.add((int)yStack.pop());
                 if (xStack.isEmpty()) {
                     //System.out.println("No amazon of opposite colour found");
                     stop = true;
@@ -232,7 +232,7 @@ public abstract class Amazon extends Piece {
                 }
             }
 
-            /*console representation
+            //console representation
             if (!stop) {
                 // System.out.println(xStack.peek() + "," + yStack.peek());
                 for (int i = 0; i < 10; i++) {
@@ -250,21 +250,24 @@ public abstract class Amazon extends Piece {
 
         System.out.println(System.nanoTime() - time1);
         return count;
-    } */
+    }*/
 
     /* omg this is long not gonna read
      *counts the territory around a queen*/
 
     public int[][] countTerritory(Cell[][] board) {
+
+        int width = board.length;
+        int height = board[0].length;
         //System.out.println("countTerritory");
         //double time1 = System.nanoTime();
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
-        int[][] checkArray = new int[10][10];
+        int[][] checkArray = new int[width][height];
         boolean stop = false;
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 if (board[i][j].getContent() instanceof Arrow2D || board[i][j].getContent() instanceof Amazon2D) {
                     checkArray[i][j] = 3;
                 }
@@ -279,14 +282,14 @@ public abstract class Amazon extends Piece {
             boolean taken = false;
 
             //Checking for free neighbouring tile
-            if (xPos != 9) {
+            if (xPos != width-1) {
                 if (checkArray[xPos + 1][yPos] == 0) {
 
                     xPos++;
                     moveMade = true;
                 }
             }
-            if (xPos != 9 && yPos != 9 && !moveMade) {
+            if (xPos != width-1 && yPos != height-1 && !moveMade) {
                 if (checkArray[xPos + 1][yPos + 1] == 0) {
 
                     xPos++;
@@ -294,13 +297,13 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (yPos != 9 && !moveMade) {
+            if (yPos != height-1 && !moveMade) {
                 if (checkArray[xPos][yPos + 1] == 0) {
 
                     yPos++;
                     moveMade = true;
                 }
-            } else if (yPos != 9 && xPos != 0 && !moveMade) {
+            } else if (yPos != height-1 && xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos + 1] == 0) {
 
                     xPos--;
@@ -330,7 +333,7 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (xPos != 9 && yPos != 0 && !moveMade) {
+            if (xPos != width-1 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos + 1][yPos - 1] == 0) {
 
                     xPos++;
@@ -374,12 +377,12 @@ public abstract class Amazon extends Piece {
             //console representation
             if (!stop) {
                 // System.out.println(xStack.peek() + "," + yStack.peek());
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
+                //for (int i = 0; i < 10; i++) {
+                    //for (int j = 0; j < 10; j++) {
                         //    System.out.print(checkArray[j][i] + " ");
-                    }
+                    //}
                     //System.out.println();
-                }
+                //}
             }
         }
 
