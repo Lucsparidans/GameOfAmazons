@@ -121,10 +121,143 @@ public abstract class Amazon extends Piece {
         }
     }
 
+    /*public int countFast(Cell[][] board){
+        System.out.println("countFast");
+        double time1 = System.nanoTime();
+        int xPos = this.cell.getI();
+        int yPos = this.cell.getJ();
+        Stack xStack = new java.util.Stack();
+        Stack yStack = new java.util.Stack();
+        Stack xStore = new java.util.Stack();
+        Stack yStore = new java.util.Stack();
+        List<Integer> xChecked = new ArrayList<Integer>();
+        List<Integer> yChecked = new ArrayList<Integer>();
+
+        boolean stop = false;
+        while (!stop) {
+            boolean moveMade = false;
+            boolean taken = false;
+
+            //Checking for free neighbouring tile
+            System.out.println("doing");
+            if (xPos != 9) {
+                if (!(board[xPos + 1][yPos].isOccupied())) {
+
+                    xPos++;
+                    moveMade = true;
+                }
+            }
+            if (xPos != 9 && yPos != 9 && !moveMade) {
+                if (!(board[xPos + 1][yPos + 1].isOccupied())) {
+
+                    xPos++;
+                    yPos++;
+                    moveMade = true;
+                }
+            }
+            if (yPos != 9 && !moveMade) {
+                if (!(board[xPos][yPos + 1].isOccupied())) {
+
+                    yPos++;
+                    moveMade = true;
+                }
+            } else if (yPos != 9 && xPos != 0 && !moveMade) {
+                if (!(board[xPos - 1][yPos + 1].isOccupied())) {
+
+                    xPos--;
+                    yPos++;
+                    moveMade = true;
+                }
+            }
+            if (xPos != 0 && !moveMade) {
+                if (!(board[xPos - 1][yPos].isOccupied())) {
+
+                    xPos--;
+                    moveMade = true;
+                }
+            }
+            if (xPos != 0 && yPos != 0 && !moveMade) {
+                if (!(board[xPos - 1][yPos - 1].isOccupied())) {
+
+                    xPos--;
+                    yPos--;
+                    moveMade = true;
+                }
+            }
+            if (yPos != 0 && !moveMade) {
+                if (!(board[xPos][yPos - 1].isOccupied())) {
+
+                    yPos--;
+                    moveMade = true;
+                }
+            }
+            if (xPos != 9 && yPos != 0 && !moveMade) {
+                if (!(board[xPos + 1][yPos - 1].isOccupied())) {
+
+                    xPos++;
+                    yPos--;
+                    moveMade = true;
+                }
+            }
+
+            for (int i = 0; i < xStore.size(); i++) {
+                if (xStore.elementAt(i).equals(xPos) && yStore.elementAt(i).equals(yPos)) {
+                    taken = true;
+                }
+            }
+            if (!(board[xPos][yPos].isOccupied())) {
+                xStack.push(xPos);
+                yStack.push(yPos);
+                if (!taken) {
+                    System.out.println("adding");
+                    xStore.push(xPos);
+                    yStore.push(yPos);
+
+                }
+            }
+            if (xStack.isEmpty()) {
+                //System.out.println("No amazon of opposite colour found");
+                stop = true;
+            }
+            //Recurs
+            if (!moveMade && !stop) {
+                xChecked.add((int)xStack.pop());
+                yStack.pop((int));
+                if (xStack.isEmpty()) {
+                    //System.out.println("No amazon of opposite colour found");
+                    stop = true;
+                } else {
+                    xPos = (int) xStack.peek();
+                    yPos = (int) yStack.peek();
+                }
+            }
+
+            /*console representation
+            if (!stop) {
+                // System.out.println(xStack.peek() + "," + yStack.peek());
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        //    System.out.print(checkArray[j][i] + " ");
+                    }
+                    //System.out.println();
+                }
+            }
+            System.out.println( "peeking  " + xStore.peek() + " " + yStore.peek());
+
+        }
+
+        int count = xStore.size();
+
+        System.out.println(System.nanoTime() - time1);
+        return count;
+    } */
+
     /* omg this is long not gonna read
-     *counts the territorry around a queen*/
+     *counts the territory around a queen*/
 
     public int[][] countTerritory(Cell[][] board) {
+        //System.out.println("countTerritory");
+        //double time1 = System.nanoTime();
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
         int[][] checkArray = new int[10][10];
@@ -259,8 +392,11 @@ public abstract class Amazon extends Piece {
             //System.out.print(count[1][i]);
 
         }
+        //System.out.println(System.nanoTime() - time1);
+
         return count;
     }
+
 
 
     /*@param board[][]
@@ -269,12 +405,14 @@ public abstract class Amazon extends Piece {
         boolean isolated = false;
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
+        int width = board.length;
+        int height = board[0].length;
 
         boolean stop = false;
-        int[][] checkArray = new int[10][10];
-        for (int i = 0; i < 10; i++) {
+        int[][] checkArray = new int[width][height];
+        for (int i = 0; i < height; i++) {
             //System.out.print("|");
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < width; j++) {
                 if (board[i][j].getContent() instanceof Arrow2D) {
                     //System.out.print(board[i][j].getContentType());
                     checkArray[i][j] = 3;
@@ -314,7 +452,7 @@ public abstract class Amazon extends Piece {
             }
 
             //Checking for free neighbouring tile
-            if (xPos != 9) {
+            if (xPos != width-1) {
                 if (checkArray[xPos + 1][yPos] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -322,7 +460,7 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (xPos != 9 && yPos != 9 && !moveMade) {
+            if (xPos != width-1 && yPos != height-1 && !moveMade) {
                 if (checkArray[xPos + 1][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -331,14 +469,14 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (yPos != 9 && !moveMade) {
+            if (yPos != height-1 && !moveMade) {
                 if (checkArray[xPos][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
                     yPos++;
                     moveMade = true;
                 }
-            } else if (yPos != 9 && xPos != 0 && !moveMade) {
+            } else if (yPos != height-1 && xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -372,7 +510,7 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (xPos != 9 && yPos != 0 && !moveMade) {
+            if (xPos != width-1 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos + 1][yPos - 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -392,7 +530,7 @@ public abstract class Amazon extends Piece {
                 xStack.pop();
                 yStack.pop();
                 if (xStack.isEmpty() && yStack.isEmpty()) {
-                    System.out.println("No amazon of opposite colour found");
+                    //System.out.println("No amazon of opposite colour found");
                     stop = true;
                     isolated = true;
                 } else {
@@ -404,8 +542,8 @@ public abstract class Amazon extends Piece {
             //console representation
             if (!stop) {
                 //  System.out.println(xStack.peek() + "," + yStack.peek());
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
                         //     System.out.print(checkArray[j][i] + " ");
                     }
                     // System.out.println();
