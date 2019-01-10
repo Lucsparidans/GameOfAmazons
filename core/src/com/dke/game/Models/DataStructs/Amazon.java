@@ -585,8 +585,8 @@ public abstract class Amazon extends Piece {
         possibleMoves = new ArrayList<>();
         boolean positive = true;
         boolean negative = true;
-        for (int i = 1; i < 10; i++) {
-            if (this.cell.getI() + i >= boardCoordinates[0].length) {
+        for (int i = 1; i < boardCoordinates.length; i++) {
+            if (this.cell.getI() + i >= boardCoordinates.length) {
                 positive = false;
             }
             if (this.cell.getI() - i < 0) {
@@ -613,8 +613,8 @@ public abstract class Amazon extends Piece {
         positive = true;
         negative = true;
 
-        for (int i = 1; i < 10; i++) {
-            if (this.cell.getJ() + i >= boardCoordinates.length) {
+        for (int i = 1; i < boardCoordinates[0].length; i++) {
+            if (this.cell.getJ() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
@@ -645,9 +645,16 @@ public abstract class Amazon extends Piece {
         positive = true;
         negative = true;
 
-        for (int i = 1; i < 10; i++) {
+        int largestDimension = 0;
+        if(boardCoordinates.length >= boardCoordinates[0].length){
+            largestDimension = boardCoordinates.length;
+        }
+        else{
+            largestDimension = boardCoordinates[0].length;
+        }
+        for (int i = 1; i < largestDimension; i++) {
 
-            if (this.cell.getI() + i >= boardCoordinates[0].length) {
+            if (this.cell.getI() + i >= boardCoordinates.length) {
                 positive = false;
             }
             if (this.cell.getI() - i < 0) {
@@ -683,17 +690,17 @@ public abstract class Amazon extends Piece {
         positive = true;
         negative = true;
 
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < largestDimension; i++) {
             if (this.cell.getI() - i < 0) {
                 positive = false;
             }
-            if (this.cell.getJ() + i >= boardCoordinates.length) {
+            if (this.cell.getJ() + i >= boardCoordinates[0].length) {
                 positive = false;
             }
             if (this.cell.getJ() - i < 0) {
                 negative = false;
             }
-            if (this.cell.getI() + i >= boardCoordinates[0].length) {
+            if (this.cell.getI() + i >= boardCoordinates.length) {
                 negative = false;
             }
 
