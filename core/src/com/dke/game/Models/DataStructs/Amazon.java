@@ -257,13 +257,13 @@ public abstract class Amazon extends Piece {
 
     public int[][] countTerritory(Cell[][] board) {
 
-        int width = board.length;
-        int height = board[0].length;
+        int width = board[0].length;
+        int height = board.length;
         //System.out.println("countTerritory");
         //double time1 = System.nanoTime();
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
-        int[][] checkArray = new int[width][height];
+        int[][] checkArray = new int[height][width];
         boolean stop = false;
 
         for (int i = 0; i < height; i++) {
@@ -282,14 +282,14 @@ public abstract class Amazon extends Piece {
             boolean taken = false;
 
             //Checking for free neighbouring tile
-            if (xPos != width-1) {
+            if (xPos != height-1) {
                 if (checkArray[xPos + 1][yPos] == 0) {
 
                     xPos++;
                     moveMade = true;
                 }
             }
-            if (xPos != width-1 && yPos != height-1 && !moveMade) {
+            if (xPos != height-1 && yPos != width-1 && !moveMade) {
                 if (checkArray[xPos + 1][yPos + 1] == 0) {
 
                     xPos++;
@@ -297,13 +297,13 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (yPos != height-1 && !moveMade) {
+            if (yPos != width-1 && !moveMade) {
                 if (checkArray[xPos][yPos + 1] == 0) {
 
                     yPos++;
                     moveMade = true;
                 }
-            } else if (yPos != height-1 && xPos != 0 && !moveMade) {
+            } else if (yPos != width-1 && xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos + 1] == 0) {
 
                     xPos--;
@@ -333,7 +333,7 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (xPos != width-1 && yPos != 0 && !moveMade) {
+            if (xPos != height-1 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos + 1][yPos - 1] == 0) {
 
                     xPos++;

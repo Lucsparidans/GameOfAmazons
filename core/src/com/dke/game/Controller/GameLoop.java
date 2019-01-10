@@ -181,7 +181,7 @@ public class GameLoop {
 
     //Check if the game has reached an end condition
     private boolean checkEnd() {
-        this.board2D.printBoard();
+        //this.board2D.printBoard();
         int checkCount = 0;
 
         for (int i = 0; i < amazons.length; i++) {
