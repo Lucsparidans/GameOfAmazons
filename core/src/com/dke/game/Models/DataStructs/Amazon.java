@@ -1,6 +1,6 @@
 package com.dke.game.Models.DataStructs;
 
-import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
+import com.dke.game.Models.AI.Luc.MINMAX.TestBoard;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -408,11 +408,11 @@ public abstract class Amazon extends Piece {
         boolean isolated = false;
         int xPos = this.cell.getI();
         int yPos = this.cell.getJ();
-        int width = board.length;
-        int height = board[0].length;
+        int width = board[0].length;
+        int height = board.length;
 
         boolean stop = false;
-        int[][] checkArray = new int[width][height];
+        int[][] checkArray = new int[height][width];
         for (int i = 0; i < height; i++) {
             //System.out.print("|");
             for (int j = 0; j < width; j++) {
@@ -455,7 +455,7 @@ public abstract class Amazon extends Piece {
             }
 
             //Checking for free neighbouring tile
-            if (xPos != width-1) {
+            if (xPos != height-1) {
                 if (checkArray[xPos + 1][yPos] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -463,7 +463,7 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (xPos != width-1 && yPos != height-1 && !moveMade) {
+            if (xPos != height-1 && yPos != width-1 && !moveMade) {
                 if (checkArray[xPos + 1][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -472,14 +472,14 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (yPos != height-1 && !moveMade) {
+            if (yPos != width-1 && !moveMade) {
                 if (checkArray[xPos][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
                     yPos++;
                     moveMade = true;
                 }
-            } else if (yPos != height-1 && xPos != 0 && !moveMade) {
+            } else if (yPos != width-1 && xPos != 0 && !moveMade) {
                 if (checkArray[xPos - 1][yPos + 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);
@@ -513,7 +513,7 @@ public abstract class Amazon extends Piece {
                     moveMade = true;
                 }
             }
-            if (xPos != width-1 && yPos != 0 && !moveMade) {
+            if (xPos != height-1 && yPos != 0 && !moveMade) {
                 if (checkArray[xPos + 1][yPos - 1] == 0) {
                     xStack.push(xPos);
                     yStack.push(yPos);

@@ -1,4 +1,4 @@
-package com.dke.game.Models.AI.Luc.MyAlgo;
+package com.dke.game.Models.AI.Luc.MINMAX;
 
 
 import com.dke.game.Models.AI.Luc.Move;

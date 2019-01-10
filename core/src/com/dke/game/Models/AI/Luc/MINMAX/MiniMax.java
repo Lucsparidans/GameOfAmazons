@@ -1,7 +1,10 @@
-package com.dke.game.Models.AI.Luc;
+package com.dke.game.Models.AI.Luc.MINMAX;
 
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
+import com.dke.game.Models.AI.Luc.MINMAX.MovesTree;
+import com.dke.game.Models.AI.Luc.Move;
 
 import java.util.ArrayList;
 

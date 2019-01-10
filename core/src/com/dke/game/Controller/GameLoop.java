@@ -4,7 +4,7 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MiniMax;
+import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
@@ -116,15 +116,27 @@ public class GameLoop {
         board2D = new Board2D();
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
-        amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false,0);
-        amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false,1);
-        amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false,2);
-        amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false,3);
-        amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false,4);
-        amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false,5);
-        amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false,6);
-        amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false,7);
+        if(boardCoordinates.length == 5 && boardCoordinates[0].length == 6) {
+            amazons[0] = new Amazon2D('W', boardCoordinates[0][1], false, 0);
+            amazons[1] = new Amazon2D('W', boardCoordinates[1][0], false, 1);
+            amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false, 2);
+            amazons[3] = new Amazon2D('W', boardCoordinates[4][1], false, 3);
+            amazons[4] = new Amazon2D('B', boardCoordinates[0][4], false, 4);
+            amazons[5] = new Amazon2D('B', boardCoordinates[1][5], false, 5);
+            amazons[6] = new Amazon2D('B', boardCoordinates[3][5], false, 6);
+            amazons[7] = new Amazon2D('B', boardCoordinates[4][4], false, 7);
+        }
 
+        if(boardCoordinates.length == 10 && boardCoordinates[0].length == 10) {
+            amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false, 0);
+            amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false, 1);
+            amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false, 2);
+            amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false, 3);
+            amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false, 4);
+            amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false, 5);
+            amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false, 6);
+            amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false, 7);
+        }
     }
 
     //Place the amazons on the board
@@ -135,6 +147,30 @@ public class GameLoop {
 
         }
 
+        //preloadBoard(false);
+
+    }
+
+    private void preloadBoard(boolean random) {
+        if (random) {
+            for (int i = 0; i < (boardCoordinates.length * boardCoordinates[0].length) / 2; i++) {
+                boolean madeShot = false;
+                while (!madeShot) {
+                    Cell option = boardCoordinates[(int) (boardCoordinates.length * Math.random())][(int) (boardCoordinates[0].length * Math.random())];
+                    if (!option.isOccupied()) {
+                        amazons[0].shoot(option);
+                        madeShot = true;
+                    }
+                }
+            }
+        }
+        else{
+            for (int i = 2; i < 8; i++) {
+                for (int j = 2; j < 8; j++) {
+                    amazons[0].shoot(boardCoordinates[i][j]);
+                }
+            }
+        }
     }
 
     //Push new view and some thread stuff
@@ -145,7 +181,7 @@ public class GameLoop {
 
     //Check if the game has reached an end condition
     private boolean checkEnd() {
-        //this.board2D.printBoard();
+        this.board2D.printBoard();
         int checkCount = 0;
 
         for (int i = 0; i < amazons.length; i++) {
