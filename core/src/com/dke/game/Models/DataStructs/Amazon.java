@@ -200,12 +200,14 @@ public abstract class Amazon extends Piece {
                 }
             }
 
-            for (int i = 0; i < xStore.size(); i++) {
-                if (xStore.elementAt(i).equals(xPos) && yStore.elementAt(i).equals(yPos)) {
+            for (int i = 0; i < xChecked.size(); i++) {
+             //   if (xStore.elementAt(i).equals(xPos) && yStore.elementAt(i).equals(yPos)) {
+                if(xChecked.get(i) == xPos && yChecked.get(i) == yPos){
                     taken = true;
                 }
             }
             if (!(board[xPos][yPos].isOccupied())) {
+
                 xStack.push(xPos);
                 yStack.push(yPos);
                 if (!taken) {
@@ -235,12 +237,12 @@ public abstract class Amazon extends Piece {
             //console representation
             if (!stop) {
                 // System.out.println(xStack.peek() + "," + yStack.peek());
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
+                //for (int i = 0; i < 10; i++) {
+                    //for (int j = 0; j < 10; j++) {
                         //    System.out.print(checkArray[j][i] + " ");
-                    }
+                    //}
                     //System.out.println();
-                }
+                //}
             }
             System.out.println( "peeking  " + xStore.peek() + " " + yStore.peek());
 
@@ -250,7 +252,7 @@ public abstract class Amazon extends Piece {
 
         System.out.println(System.nanoTime() - time1);
         return count;
-    }*/
+    }
 
     /* omg this is long not gonna read
      *counts the territory around a queen*/

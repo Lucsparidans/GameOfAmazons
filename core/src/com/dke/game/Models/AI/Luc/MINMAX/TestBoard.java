@@ -83,6 +83,52 @@ public class TestBoard {
         }
     }
 
+    public boolean checkEnd() {
+        //this.board2D.printBoard();
+        int checkCount = 0;
+
+        for (int i = 0; i < amazons.length; i++) {
+
+            if (amazons[i].endMe(boardCoordinates)) {
+                checkCount++;
+            }
+        }
+        int current = 0;
+        for (int i = 0; i < amazons.length; i++) {
+
+            if (!(amazons[i].endMe(boardCoordinates))) {
+                amazons[i].possibleMoves(this);
+                if ((amazons[i].getPossibleMoves()).size() == 0) {
+                    current++;
+                }
+            }
+        }
+        int currentWhite = 0;
+        for (int j = 0; j < 4; j++) {
+            amazons[j].possibleMoves(this);
+            if (amazons[j].getPossibleMoves().size() == 0) {
+                currentWhite++;
+            }
+        }
+        int currentBlack = 0;
+        for (int j = 4; j < 8; j++) {
+            amazons[j].possibleMoves(this);
+            if (amazons[j].getPossibleMoves().size() == 0) {
+                currentBlack++;
+            }
+        }
+        //if all isolated
+        if (checkCount == amazons.length) {
+            return true;
+        }
+        //if all isolated or immobile
+        else if (current == amazons.length - checkCount || currentWhite == amazons.length/2 || currentBlack == amazons.length/2) {
+            return true;
+        }
+
+        return false;
+    }
+
 
     public void printBoard() {
 //        for (int i = 0; i < boardCoordinates.length; i++) {
