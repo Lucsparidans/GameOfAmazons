@@ -31,12 +31,13 @@ public class Board2D extends Board {
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
     //draw
-    public Board2D() {
+    public Board2D() throws IllegalBoardDimensionsException {
         this(new ShapeRenderer());
     }
 
     //draw
-    public Board2D(ShapeRenderer shapeRenderer) {
+    public Board2D(ShapeRenderer shapeRenderer) throws IllegalBoardDimensionsException {
+        super();
         this.shapeRenderer = shapeRenderer;
         font.setColor(Color.BLACK);
         font.getData().setScale(1);

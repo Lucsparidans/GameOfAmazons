@@ -5,6 +5,7 @@ import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
+import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
@@ -112,8 +113,12 @@ public class GameLoop {
     }
 
     //initial setup of the game
-    private void initialiseGame() {
-        board2D = new Board2D();
+    private void initialiseGame()  {
+        try {
+            board2D = new Board2D();
+        } catch (Board.IllegalBoardDimensionsException e) {
+            e.printStackTrace();
+        }
         boardCoordinates = board2D.getBoardCoordinates();
         this.amazons = new Amazon2D[8];
         if(boardCoordinates.length == 5 && boardCoordinates[0].length == 6) {

@@ -6,8 +6,32 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * The board class with the array and dimensions
  */
 public abstract class Board extends Actor {
-    public static final int height = 5;
-    public static final int width = 6;
+    public static int height;
+    public static int width;
+    public BoardSize boardSize = BoardSize.FIVExSIX;
 
+
+    public Board() throws IllegalBoardDimensionsException {
+        if(boardSize == BoardSize.FIVExSIX){
+            height = 5;
+            width = 6;
+        }
+        else if(boardSize == BoardSize.TENxTEN){
+            height = 10;
+            width = 10;
+        }
+        else{
+            throw new IllegalBoardDimensionsException("Unsupported board dimensions");
+        }
+    }
+    public class IllegalBoardDimensionsException extends Exception{
+        public IllegalBoardDimensionsException(String message) {
+            super(message);
+        }
+    }
+
+    public enum BoardSize{
+    FIVExSIX,TENxTEN,ERROR
+}
 
 }
