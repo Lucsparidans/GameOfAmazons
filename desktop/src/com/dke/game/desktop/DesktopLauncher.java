@@ -28,7 +28,7 @@ public class DesktopLauncher {
 
         //TODO REMOVE TEST THIS:
         {
-            ChristmasCarlo TESTCARLO = new ChristmasCarlo();
+            ChristmasCarlo TESTCARLO = new ChristmasCarlo('B',2);
             char[][] testCharBoard = new char[10][10];
             testCharBoard[3][0] = 'W';
             testCharBoard[6][0] = 'W';
@@ -39,30 +39,41 @@ public class DesktopLauncher {
             testCharBoard[3][9] = 'B';
             testCharBoard[6][9] = 'B';
 
+            char[][] tinyBoard = new char[5][5];
+            tinyBoard[2][1] = 'W';
+            tinyBoard[4][4] = 'B';
+
+            //TESTCARLO.startalgoWithCharArray(testCharBoard, 'B');
+            double amountofloops = 5;
+            double sum = 0;
+            for(int i = 0; i< amountofloops; i++) {
+                sum += TESTCARLO.expandRandomVSAI('B', 'B', testCharBoard);
+                System.out.println(i);
+            }
+            System.out.println("avg wins: "+ sum/amountofloops);
+
 //            testCharBoard[3][3] = 'B';
 //            testCharBoard[5][5] = 'W';
 
-            long startTime = System.currentTimeMillis();
+//            long startTime = System.currentTimeMillis();
 
-            TESTCARLO.printCharMatrix(testCharBoard);
-            double sum = 0;
-            int tries = 500000;
-            for(int i = 0; i<tries; i++) {
-                sum+=TESTCARLO.expandRandomlyTestMethod('B', 'W', testCharBoard);
-            }
-            System.out.println(sum/tries);
-            long endTime = System.currentTimeMillis();
-            double t = (double) tries;
-
-            System.out.println("That took " + (endTime - startTime) + " milliseconds");
-            System.out.println("That took " + (endTime/t - startTime/t) + " milliseconds per expansion");
+//            TESTCARLO.printCharMatrix(testCharBoard);
+//            double sum = 0;
+//            int tries = 500000;
+//            for(int i = 0; i<tries; i++) {
+//                sum+=TESTCARLO.expandRandomlyTestMethod('B', 'W', testCharBoard);
+//            }
+//            System.out.println(sum/tries);
+//            long endTime = System.currentTimeMillis();
+//            double t = (double) tries;
+//
+//            System.out.println("That took " + (endTime - startTime) + " milliseconds");
+//            System.out.println("That took " + (endTime/t - startTime/t) + " milliseconds per expansion");
 
             //char[][] randomnext = TESTCARLO.getNextRandomState('W', testCharBoard);
             //TESTCARLO.printCharMatrix(randomnext);
 
-//            char[][] testCharBoard = new char[5][5];
-//            testCharBoard[2][1] = 'W';
-//            testCharBoard[4][4] = 'B';
+
 ////            ArrayList<char[][]> nextstates = TESTCARLO.generateNextPossibleStates('B', testCharBoard);
 ////            System.out.println("nexstates: " + nextstates.size());
 ////            for (int i = 0; i < nextstates.size(); i += 50) {

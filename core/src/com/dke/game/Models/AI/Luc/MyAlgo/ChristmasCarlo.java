@@ -17,7 +17,9 @@ public class ChristmasCarlo{
     final double diagonalMoveBias = 30;
     Cell[][] currentCellMatrix;
     char sideTurn;
+    char AIside;
     Random randomGenerator;
+    int expansionFactor = 1;
 
     char[][] simpleMatrix;
     char[] emptyChar;
@@ -28,7 +30,9 @@ public class ChristmasCarlo{
     double moveLengthsum = 0;
     double moveAmount = 0;
 
-    public ChristmasCarlo(){
+    public ChristmasCarlo(char AIside, int expansionFactor){
+        this.expansionFactor = expansionFactor;
+        this.AIside = AIside;
         randomGenerator = new Random();
         emptyChar = new char[1];
         directionList = new ArrayList<int[]>();
@@ -61,21 +65,44 @@ public class ChristmasCarlo{
 
     }
 
-    public void startalgo(Cell[][] currentCellMatrix, char sideTurn){
-        this.currentCellMatrix = currentCellMatrix;
-        this.sideTurn = sideTurn;
+    public char[][] startalgoWithCharArray(char[][] convertedToCharMatrix, char sideTurn){
+        ArrayList<char[][]> nextPossibleMoves = generateNextPossibleStates(sideTurn, convertedToCharMatrix);
+        int sizeofMoveArray = nextPossibleMoves.size();
+        double[] nextMovesScores = new double[sizeofMoveArray];
 
-        generateSimpleMatrix();
+        double expansionfactorDouble = (double) expansionFactor;
+        char switchedside = switchSide(sideTurn);
+        for(int i = 0; i<sizeofMoveArray; i++){
+            double sum = 0;
+            for(int j = 0; j<expansionFactor; j++) {
+                double thisScore = expandRandomlyTestMethod(AIside, switchedside, nextPossibleMoves.get(i));
+                sum+= thisScore;
+            }
+            double score = sum/expansionfactorDouble;
+            nextMovesScores[i] = score;
+            //System.out.print(" "+score);
+        }
 
-        //TODO, REPLACE 'B' WITH THE ACTUAL SIDE
-        ArrayList<char[][]> nextStates = generateNextPossibleStates('B' ,simpleMatrix);
-        //printCharMatrix(simpleMatrix);
+        double maxScore = 0;
+        int maxIndex = 0;
+        for(int i = 0; i< nextMovesScores.length; i++){
+            if(nextMovesScores[i]>maxScore){
+                maxScore = nextMovesScores[i];
+                maxIndex = i;
+            }
+        }
 
-        //TODO, REPLACE 'W' WITH THE ACTUAL SIDE
-        getbestindex('B','W', nextStates);
+        char[][] BestMove = nextPossibleMoves.get(maxIndex);
+        return BestMove;
     }
 
-    public void generateSimpleMatrix(){
+    public void startalgoWithCellArray(Cell[][] currentCellMatrix, char sideTurn){
+        char[][] convertedToCharMatrix = generateSimpleMatrix(currentCellMatrix);
+
+        startalgoWithCharArray(convertedToCharMatrix, sideTurn);
+    }
+
+    public char[][] generateSimpleMatrix(Cell[][] currentCellMatrix){
         simpleMatrix = new char[currentCellMatrix.length][currentCellMatrix[0].length];
         for(int i = 0; i< simpleMatrix.length; i++){
             for(int j = 0; j<simpleMatrix[0].length; j++){
@@ -91,9 +118,11 @@ public class ChristmasCarlo{
                 }
             }
         }
+        return simpleMatrix;
     }
 
     public ArrayList<char[][]> generateNextPossibleStates(char whoseTurn, char[][] currentboard){
+        //System.out.println("nextPossibleSTates is called");
         //System.out.println("CURRENT BOARD:");
         //printCharMatrix(currentboard);
         ArrayList<char[][]> nextStates = new ArrayList<char[][]>();
@@ -209,7 +238,7 @@ public class ChristmasCarlo{
     public char[][] getNextRandomState(char whoseTurn, char[][] startState) throws NoPossibleMovesException {
         //initializeDirectionList(directionList);
         //printCharMatrix(startState);
-        //System.out.println("WhoseTurn: " + whoseTurn);
+        //System.out.println("getNExtRandomSTateCalled ");
         //Collections.shuffle(directionList);
         biasedDirectionShuffle();
         char[][] copyboard = copyCharMatrix(startState);
@@ -379,8 +408,33 @@ public class ChristmasCarlo{
         }
 
         return expandRandomlyTestMethod(AIside, switchSide(whoseTurn), newState);
+    }
 
+    public double expandRandomVSAI(char AIside, char whoseTurn, char[][] startState){
+        char[][] newState;
+        try{
+            if(AIside == whoseTurn){
+                //System.out.println("AI :" +AIside+"'s turn:");
 
+                newState = startalgoWithCharArray(startState, whoseTurn);
+                //printCharMatrix(newState);
+            }else {
+                //System.out.println("RandomMove");
+                //System.out.println("Random :" +switchSide(AIside)+"'s turn:");
+                newState = getNextRandomState(whoseTurn, startState);
+                //printCharMatrix(newState);
+            }
+        }catch(Exception e){
+            if(whoseTurn == AIside){
+                //System.out.println(switchSide(AIside ) + " Won");
+                return 0;
+            }else{
+                //System.out.println(AIside  + " Won");
+                return 1;
+            }
+        }
+
+        return expandRandomVSAI(AIside, switchSide(whoseTurn), newState);
     }
 
 
