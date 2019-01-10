@@ -89,6 +89,7 @@ public class GameLoop {
         return running;
     }
 
+
     //Tread stuff
     public void update() {
 

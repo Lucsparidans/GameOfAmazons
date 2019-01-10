@@ -23,6 +23,7 @@ public class MiniMax implements Algorithm {
     public Move getBestMove(AI player, MoveNode root) {
         this.movesTree = player.getTree();
         MoveNode bestEval = MiniMax(movesTree.getRootNode(), depth, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, player);
+
         while (bestEval.getParent().getParent() != null) {
             bestEval = bestEval.getParent();
         }
@@ -36,10 +37,10 @@ public class MiniMax implements Algorithm {
     Because the Heuristic evaluations are very similiar for many nodes, when we reach a the value of cutoff many the same evaluated nodes,
      we stop searching and choose on of the best found so far.
      */
-    public MoveNode MiniMax(MoveNode aNode, int depth, boolean maxPlayer, double alpha, double beta, AI player) {
+    public MoveNode MiniMax(MoveNode aNode, int searchDepth, boolean maxPlayer, double alpha, double beta, AI player) {
 
         MoveNode chNodeVal;
-        if (depth == 0 || aNode.getChildren().isEmpty()) {
+        if (searchDepth == 0 || aNode.getChildren().isEmpty()) {
 
             aNode.evaluateNode(player,movesTree.getInitialState().getTestBoard());
             System.out.println("the number of nodes evaluated is: " + nodesEvaled++);
@@ -51,7 +52,7 @@ public class MiniMax implements Algorithm {
 
 
             for (int i = 0; i < aNode.getChildren().size(); i++) {
-                chNodeVal = MiniMax(aNode.getChildren().get(i), depth - 1, false, alpha, beta, player);
+                chNodeVal = MiniMax(aNode.getChildren().get(i), searchDepth - 1, false, alpha, beta, player);
 
 //                bestValue =Math.max( bestValue,chNodeVal);
                 if (bestValue == null) {
@@ -75,11 +76,11 @@ public class MiniMax implements Algorithm {
                 if (beta <= alpha) break;
             }
             double rnd = Math.random()*highestEvalFreq.size();
-            return highestEvalFreq.get((int)rnd);
+            return highestEvalFreq.get(((int)rnd));
         } else {
             MoveNode bestValue = null;
             for (int i = 0; i < aNode.getChildren().size(); i++) {
-                chNodeVal = MiniMax(aNode.getChildren().get(i), depth - 1, true, alpha, beta, player);
+                chNodeVal = MiniMax(aNode.getChildren().get(i), searchDepth - 1, true, alpha, beta, player);
 //                bestValue =Math.min( bestValue, chNodeVal);
 //                beta= Math.min(beta,bestValue);
                 if (bestValue == null) {
@@ -102,7 +103,7 @@ public class MiniMax implements Algorithm {
                 if (beta <= alpha) break;
             }
             double rnd = Math.random()*lowestEvalFreq.size();
-            return lowestEvalFreq.get((int)rnd);
+            return lowestEvalFreq.get(((int)rnd));
         }
     }
 }
