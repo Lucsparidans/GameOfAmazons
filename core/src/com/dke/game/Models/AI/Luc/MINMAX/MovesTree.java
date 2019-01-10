@@ -1,8 +1,9 @@
-package com.dke.game.Models.AI.Luc;
+package com.dke.game.Models.AI.Luc.MINMAX;
 
 import com.dke.game.Controller.Player.AI;
-import com.dke.game.Models.AI.Luc.MyAlgo.State;
-import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
+import com.dke.game.Models.AI.Luc.Greedy;
+import com.dke.game.Models.AI.Luc.Move;
+import com.dke.game.Models.AI.Luc.MINMAX.MyAlgo.State;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
@@ -43,7 +44,7 @@ Constructor
             ArrayList<Move> possibleMoves = getPossibleMoves(current);
             for (Move m : possibleMoves) {
                 nodeCheck++;
-                System.out.println(nodeCheck);
+                System.out.println(nodeCheck + " Nodes created");
                 MoveNode child = new MoveNode(m, current);
                 // child.setParent(current); //
                 current.addChild(child);
@@ -51,6 +52,12 @@ Constructor
         }
         if (current.getDEPTH() == maxDepth || current.getChildren().size() == 0) {
             return;
+        }
+        else{
+            for (MoveNode n :
+                    current.getChildren()) {
+                expandNode(n);
+            }
         }
         /*for (MoveNode node : current.getChildren()) {
             //TODO execute move here

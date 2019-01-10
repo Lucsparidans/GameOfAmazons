@@ -31,12 +31,13 @@ public class Board2D extends Board {
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
     //draw
-    public Board2D() {
+    public Board2D() throws IllegalBoardDimensionsException {
         this(new ShapeRenderer());
     }
 
     //draw
-    public Board2D(ShapeRenderer shapeRenderer) {
+    public Board2D(ShapeRenderer shapeRenderer) throws IllegalBoardDimensionsException {
+        super();
         this.shapeRenderer = shapeRenderer;
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
@@ -146,14 +147,15 @@ public class Board2D extends Board {
         }
     }
     public void printBoard() {
-        for (int j = boardCoordinates.length-1; j >= 0 ; j--) {
+        for (int j = boardCoordinates[0].length-1; j >= 0 ; j--) {
             System.out.print("|");
-            for (int i = 0; i < boardCoordinates[j].length; i++) {
+            for (int i = 0; i < boardCoordinates.length; i++) {
                 System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
             }
             System.out.println();
         }
         System.out.println();
+
     }
     public Cell[][] getBoardCoordinates() {
         return boardCoordinates.clone();

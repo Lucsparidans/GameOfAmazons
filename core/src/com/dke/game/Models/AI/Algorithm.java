@@ -2,7 +2,7 @@ package com.dke.game.Models.AI;
 
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Models.AI.Luc.Move;
-import com.dke.game.Models.AI.Luc.MoveNode;
+import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
 
 
 public interface Algorithm {

@@ -1,6 +1,7 @@
 package com.dke.game.Views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,8 +11,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dke.game.Controller.GameLoop;
+import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
+import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.*;
 
@@ -180,6 +183,10 @@ synchronized (this) {//<-thread stuff
                 else{
                     black.performTurn();
                 }
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
+                AI ai = new AI('W',new MiniMax(),gameLoop);
+                ai.performTurn();
             }
         }
     }
