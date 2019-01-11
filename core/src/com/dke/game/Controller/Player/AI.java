@@ -2,10 +2,10 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
-import com.dke.game.Models.AI.Luc.MINMAX.MovesTree;
+import com.dke.game.Models.AI.MINMAX.MoveNode;
+import com.dke.game.Models.AI.MINMAX.MovesTree;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.AI.Luc.Move;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 

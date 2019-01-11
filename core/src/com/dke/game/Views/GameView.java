@@ -14,7 +14,7 @@ import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
-import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
+import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.*;
 

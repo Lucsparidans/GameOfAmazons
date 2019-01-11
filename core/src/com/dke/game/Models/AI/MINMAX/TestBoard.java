@@ -1,7 +1,7 @@
-package com.dke.game.Models.AI.Luc.MINMAX;
+package com.dke.game.Models.AI.MINMAX;
 
 
-import com.dke.game.Models.AI.Luc.Move;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;

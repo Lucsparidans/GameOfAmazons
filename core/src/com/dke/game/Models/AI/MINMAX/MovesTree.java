@@ -1,9 +1,9 @@
-package com.dke.game.Models.AI.Luc.MINMAX;
+package com.dke.game.Models.AI.MINMAX;
 
 import com.dke.game.Controller.Player.AI;
-import com.dke.game.Models.AI.Luc.Greedy;
-import com.dke.game.Models.AI.Luc.Move;
-import com.dke.game.Models.AI.Luc.MINMAX.MyAlgo.State;
+import com.dke.game.Models.AI.Greedy.Greedy;
+import com.dke.game.Models.DataStructs.Move;
+import com.dke.game.Models.AI.MINMAX.MyAlgo.State;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;

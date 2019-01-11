@@ -1,6 +1,6 @@
 package com.dke.game.Models.DataStructs;
 
-import com.dke.game.Models.AI.Luc.MINMAX.TestBoard;
+import com.dke.game.Models.AI.MINMAX.TestBoard;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;

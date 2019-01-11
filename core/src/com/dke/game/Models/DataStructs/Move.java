@@ -1,4 +1,4 @@
-package com.dke.game.Models.AI.Luc;
+package com.dke.game.Models.DataStructs;
 
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Cell;

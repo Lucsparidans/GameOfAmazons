@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.dke.game.Models.AI.Luc.Move;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.*;
 
 import java.util.ArrayList;
