@@ -13,7 +13,7 @@ public class GameState {
     private TestBoard getBoard(){
         return this.board;
     }
-    public GameState(Stack<Action> actionPath, Action action, GameState parent) {
+    public GameState(Stack<Action> actionPath, Action action, GameState parent, TestBoard board) {
         this.actionPath = actionPath;
         this.parentAction = action;
         actionPath.push(action);

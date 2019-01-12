@@ -18,7 +18,7 @@ public class MiniMax implements Algorithm {
     Returns the move that was found to be the 'best' move using the minimax algorithm to search the tree.
      */
     @Override
-    public Move getBestMove(AI player, MoveNode root) {
+    public Move getBestMove(AI player) {
         this.movesTree = player.getTree();
         MoveNode bestEval = MiniMax(movesTree.getRootNode(), depth, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, player);
 

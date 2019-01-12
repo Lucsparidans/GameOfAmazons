@@ -18,7 +18,7 @@ public class MoveNode {
     private final int DEPTH;
     private List<MoveNode> children = new ArrayList<>();
     private double value;
-    private static Random random = new Random(100);
+    private static Random random = new Random(10);
 
     public MoveNode(Move data, MoveNode parent) {
         this.data = data;

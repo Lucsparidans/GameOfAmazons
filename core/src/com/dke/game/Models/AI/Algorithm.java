@@ -6,5 +6,5 @@ import com.dke.game.Models.DataStructs.Move;
 
 
 public interface Algorithm {
-   Move getBestMove(AI player, MoveNode root);
+   Move getBestMove(AI player);
 }

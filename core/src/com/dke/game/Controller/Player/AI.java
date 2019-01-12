@@ -2,6 +2,7 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.AI.MINMAX.MoveNode;
 import com.dke.game.Models.AI.MINMAX.MovesTree;
 import com.dke.game.Models.DataStructs.Cell;
@@ -17,6 +18,7 @@ public class AI extends Player {
     private MovesTree tree;
     private Amazon2D[] myAmazons;
     private Amazon2D[] enemyAmazons;
+
 
     public AI(char side, Algorithm algorithm, GameLoop gameLoop) {
         super(side);
@@ -79,7 +81,9 @@ public class AI extends Player {
 
     @Override
     public void performTurn() {
-        updateTree();
+        if(algorithm instanceof MiniMax) {
+            updateTree();
+        }
         move();
         gameLoop.getGameView().setTurnCounter(gameLoop.getGameView().getTurnCounter()+1);
     }
