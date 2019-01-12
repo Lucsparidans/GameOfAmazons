@@ -8,6 +8,7 @@ import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -152,6 +153,9 @@ public class TestBoard {
         System.out.println();
     }
 
+    public TestBoard deepCopy(){
+        return new TestBoard(amazons.clone(),(ArrayList<Arrow2D>)arrows.clone());
+    }
     public Cell[][] getBoard() {
         return this.boardCoordinates.clone();
     }
