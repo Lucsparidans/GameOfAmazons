@@ -20,7 +20,7 @@ public class OnlineEvolution implements Algorithm {
 
     public OnlineEvolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {
         initialBoard = new TestBoard(amazons,arrows);
-        initialState = new GameState(null,null,null, initialBoard);
+        initialState = new GameState(null,null, initialBoard);
     }
     @Override
     public Move getBestMove(AI player) {
