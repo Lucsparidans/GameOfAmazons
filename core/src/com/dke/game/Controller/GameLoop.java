@@ -5,6 +5,7 @@ import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.MINMAX.MiniMax;
+import com.dke.game.Models.AI.OnlineEvolution.OnlineEvolution;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -30,7 +31,7 @@ public class GameLoop {
     private Player white;
     private Player black;
     private Player currentPlayer;
-    private Algorithm algo = new MiniMax();
+    private Algorithm algo;
 
 
     // get current board
@@ -42,6 +43,7 @@ public class GameLoop {
         this.viewManager = viewManager;
         arrow = new ArrayList<>();
         initialiseGame();
+        algo = new OnlineEvolution(amazons,arrow);
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
         createPlayers(white_Type, black_Type, gameView);
         gameView.setPlayers(white, black);

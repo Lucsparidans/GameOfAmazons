@@ -23,27 +23,41 @@ public class OnlineEvolution implements Algorithm {
      * Constructor
      * @param amazons
      * @param arrows
-     * @param player
      */
-    public OnlineEvolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, Player player) {
-        initializeVariables(player, amazons, arrows);
+    public OnlineEvolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows) {
+        initializeVariables(amazons, arrows);
+
     }
 
     /**
      * Method to avoid clutter in the constructor
-     * @param player
      * @param amazons
      * @param arrows
      */
-    private void initializeVariables(Player player, Amazon2D[] amazons, ArrayList<Arrow2D> arrows){
+    private void initializeVariables(Amazon2D[] amazons, ArrayList<Arrow2D> arrows){
         initialBoard = new TestBoard(amazons,arrows);
         population = new Genome[popSize];
-        for (int i = 0; i < popSize; i++) {
-            population[i] = new Genome(initialBoard,genomeLength,player);
-        }
+
     }
     @Override
     public Move getBestMove(AI player) {
-        return null;
+        Genome best = null;
+        for (int i = 0; i < popSize; i++) {
+            System.out.printf("Population: %d" +
+                    "\n", i+1);
+            population[i] = new Genome(initialBoard,genomeLength,player);
+        }
+        for (Genome g :
+                population) {
+            if(best == null){
+                best = g;
+            }
+            else {
+                if (g.getEval() > best.getEval()) {
+                    best = g;
+                }
+            }
+        }
+        return best.getMove();
     }
 }

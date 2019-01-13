@@ -131,27 +131,38 @@ public class TestBoard {
     }
 
 
-    public void printBoard() {
-//        for (int i = 0; i < boardCoordinates.length; i++) {
+//    public void printBoard() {
+////        for (int i = 0; i < boardCoordinates.length; i++) {
+////            System.out.print("|");
+////            for (int j = 0; j < boardCoordinates[i].length; j++) {
+////                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
+////                if (this.boardCoordinates[i][j].getContentID().equals("A")) {
+////                    System.out.println("ARRROOWWWW");
+////                }
+////            }
+////            System.out.println();
+////        }
+////        System.out.println();
+//        for (int j = boardCoordinates.length-1; j >= 0 ; j--) {
 //            System.out.print("|");
-//            for (int j = 0; j < boardCoordinates[i].length; j++) {
+//            for (int i = 0; i < boardCoordinates[j].length; i++) {
 //                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
-//                if (this.boardCoordinates[i][j].getContentID().equals("A")) {
-//                    System.out.println("ARRROOWWWW");
-//                }
 //            }
 //            System.out.println();
 //        }
 //        System.out.println();
-        for (int j = boardCoordinates.length-1; j >= 0 ; j--) {
-            System.out.print("|");
-            for (int i = 0; i < boardCoordinates[j].length; i++) {
-                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
-            }
-            System.out.println();
+//    }
+public void printBoard() {
+    for (int j = boardCoordinates[0].length-1; j >= 0 ; j--) {
+        System.out.print("|");
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
         }
         System.out.println();
     }
+    System.out.println();
+
+}
 
     public TestBoard deepCopy(){
         return new TestBoard(amazons.clone(),(ArrayList<Arrow2D>)arrows.clone());

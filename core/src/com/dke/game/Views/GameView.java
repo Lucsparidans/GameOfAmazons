@@ -185,7 +185,7 @@ synchronized (this) {//<-thread stuff
                 }
             }
             if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
-                AI ai = new AI('W',new MiniMax(),gameLoop);
+                AI ai = new AI('W',gameLoop.getAlgo(),gameLoop);
                 ai.performTurn();
             }
         }

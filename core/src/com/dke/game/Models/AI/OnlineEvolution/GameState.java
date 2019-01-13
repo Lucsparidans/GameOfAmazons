@@ -12,7 +12,9 @@ public class GameState {
 
     public GameState(Action action, GameState parent, TestBoard board, boolean whiteMove) {
         this.parentAction = action;
-        this.parentBoard = parent.getBoard();
+        if(parent!=null) {
+            this.parentBoard = parent.getBoard();
+        }
         this.board=board;
         this.whiteMove = whiteMove;
     }
