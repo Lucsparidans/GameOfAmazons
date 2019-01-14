@@ -4,6 +4,7 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
 import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
@@ -30,7 +31,8 @@ public class GameLoop {
     private Player white;
     private Player black;
     private Player currentPlayer;
-    private Algorithm algo = new MiniMax();
+    //private Algorithm algo = new MiniMax();
+    public Algorithm algo;
 
 
     // get current board
@@ -46,6 +48,7 @@ public class GameLoop {
         createPlayers(white_Type, black_Type, gameView);
         gameView.setPlayers(white, black);
         gameView.getStage().addActor(board2D);
+        algo = new ChristmasCarlo('B',2,this );
         placePieces();
         this.viewManager.push(gameView);
         currentPlayer = white;
@@ -58,6 +61,13 @@ public class GameLoop {
 
     //Thread stuff
     private void createPlayers(String white_Type, String black_Type, GameView gameView) {
+        //THIS IS BAD CODING:::
+        algo = new ChristmasCarlo('B',2,this);
+        if(algo == null){System.out.println("null yeet feut");}
+        System.out.println(algo.getClass().getSimpleName());
+        ////
+        ////
+        System.out.println("Created players");
         if (white_Type.equals("Human")) {
             if (black_Type.equals("AI")) {
                 white = new Human('W', gameView, this);

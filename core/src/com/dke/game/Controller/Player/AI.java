@@ -2,6 +2,8 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
+import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
 import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
 import com.dke.game.Models.AI.Luc.MINMAX.MovesTree;
 import com.dke.game.Models.DataStructs.Cell;
@@ -21,6 +23,7 @@ public class AI extends Player {
     public AI(char side, Algorithm algorithm, GameLoop gameLoop) {
         super(side);
         this.algorithm = algorithm;
+        System.out.println(algorithm.getClass().getSimpleName());
         this.gameLoop = gameLoop;
         this.board2D=gameLoop.getBoard2D();
         enemyAmazons = new Amazon2D[4];
@@ -55,6 +58,7 @@ public class AI extends Player {
     }
 
     private void move() {
+        System.out.println(algorithm.getClass().getSimpleName());
         Move bestMove = algorithm.getBestMove(this,rootNode);
 //        Cell moveQTo = bestMove.getQueenTo();
         Cell moveQueenTo = board2D.getBoardCoordinates()[bestMove.getQueenTo().getI()][bestMove.getQueenTo().getJ()];
@@ -79,12 +83,16 @@ public class AI extends Player {
 
     @Override
     public void performTurn() {
-        updateTree();
+        //updateTree();
         move();
         gameLoop.getGameView().setTurnCounter(gameLoop.getGameView().getTurnCounter()+1);
     }
 
     public enum Phase {
         START_PHASE, MID_PHASE, END_PHASE
+    }
+
+    public char getSide(){
+        return side;
     }
 }

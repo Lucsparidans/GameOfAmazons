@@ -3,7 +3,7 @@ package com.dke.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.dke.game.Controller.MainLoop;
-import com.dke.game.Models.AI.Luc.MyAlgo.ChristmasCarlo;
+import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
 import com.dke.game.Models.DataStructs.Cell;
 
 import javax.swing.*;
@@ -27,60 +27,60 @@ public class DesktopLauncher {
 
 
         //TODO REMOVE TEST THIS:
-        {
-            ChristmasCarlo TESTCARLO = new ChristmasCarlo('B',2);
-            char[][] testCharBoard = new char[10][10];
-            testCharBoard[3][0] = 'W';
-            testCharBoard[6][0] = 'W';
-            testCharBoard[0][3] = 'W';
-            testCharBoard[9][3] = 'W';
-            testCharBoard[0][6] = 'B';
-            testCharBoard[9][6] = 'B';
-            testCharBoard[3][9] = 'B';
-            testCharBoard[6][9] = 'B';
-
-            char[][] tinyBoard = new char[5][5];
-            tinyBoard[2][1] = 'W';
-            tinyBoard[4][4] = 'B';
-
-            //TESTCARLO.startalgoWithCharArray(testCharBoard, 'B');
-            double amountofloops = 5;
-            double sum = 0;
-            for(int i = 0; i< amountofloops; i++) {
-                sum += TESTCARLO.expandRandomVSAI('B', 'B', testCharBoard);
-                System.out.println(i);
-            }
-            System.out.println("avg wins: "+ sum/amountofloops);
-
-//            testCharBoard[3][3] = 'B';
-//            testCharBoard[5][5] = 'W';
-
-//            long startTime = System.currentTimeMillis();
-
-//            TESTCARLO.printCharMatrix(testCharBoard);
-//            double sum = 0;
-//            int tries = 500000;
-//            for(int i = 0; i<tries; i++) {
-//                sum+=TESTCARLO.expandRandomlyTestMethod('B', 'W', testCharBoard);
-//            }
-//            System.out.println(sum/tries);
-//            long endTime = System.currentTimeMillis();
-//            double t = (double) tries;
+//        {
+//            ChristmasCarlo TESTCARLO = new ChristmasCarlo('B',5);
+//            char[][] testCharBoard = new char[10][10];
+//            testCharBoard[3][0] = 'W';
+//            testCharBoard[6][0] = 'W';
+//            testCharBoard[0][3] = 'W';
+//            testCharBoard[9][3] = 'W';
+//            testCharBoard[0][6] = 'B';
+//            testCharBoard[9][6] = 'B';
+//            testCharBoard[3][9] = 'B';
+//            testCharBoard[6][9] = 'B';
 //
-//            System.out.println("That took " + (endTime - startTime) + " milliseconds");
-//            System.out.println("That took " + (endTime/t - startTime/t) + " milliseconds per expansion");
-
-            //char[][] randomnext = TESTCARLO.getNextRandomState('W', testCharBoard);
-            //TESTCARLO.printCharMatrix(randomnext);
-
-
-////            ArrayList<char[][]> nextstates = TESTCARLO.generateNextPossibleStates('B', testCharBoard);
-////            System.out.println("nexstates: " + nextstates.size());
-////            for (int i = 0; i < nextstates.size(); i += 50) {
-////                ChristmasCarlo.printCharMatrix(nextstates.get(i));
+//            char[][] tinyBoard = new char[5][5];
+//            tinyBoard[2][1] = 'W';
+//            tinyBoard[4][4] = 'B';
+//
+//            //TESTCARLO.startalgoWithCharArray(testCharBoard, 'B');
+//            double amountofloops = 50;
+//            double sum = 0;
+//            for(int i = 0; i< amountofloops; i++) {
+//                sum += TESTCARLO.expandRandomVSAI('B', 'B', tinyBoard);
+//                System.out.println(i);
+//            }
+//            System.out.println("avg wins: "+ sum/amountofloops);
+//
+////            testCharBoard[3][3] = 'B';
+////            testCharBoard[5][5] = 'W';
+//
+////            long startTime = System.currentTimeMillis();
+//
+////            TESTCARLO.printCharMatrix(testCharBoard);
+////            double sum = 0;
+////            int tries = 500000;
+////            for(int i = 0; i<tries; i++) {
+////                sum+=TESTCARLO.expandRandomlyTestMethod('B', 'W', testCharBoard);
 ////            }
-//            TESTCARLO.expandRandomly('B','W',testCharBoard);
-        }
+////            System.out.println(sum/tries);
+////            long endTime = System.currentTimeMillis();
+////            double t = (double) tries;
+////
+////            System.out.println("That took " + (endTime - startTime) + " milliseconds");
+////            System.out.println("That took " + (endTime/t - startTime/t) + " milliseconds per expansion");
+//
+//            //char[][] randomnext = TESTCARLO.getNextRandomState('W', testCharBoard);
+//            //TESTCARLO.printCharMatrix(randomnext);
+//
+//
+//////            ArrayList<char[][]> nextstates = TESTCARLO.generateNextPossibleStates('B', testCharBoard);
+//////            System.out.println("nexstates: " + nextstates.size());
+//////            for (int i = 0; i < nextstates.size(); i += 50) {
+//////                ChristmasCarlo.printCharMatrix(nextstates.get(i));
+//////            }
+////            TESTCARLO.expandRandomly('B','W',testCharBoard);
+//        }
 
     }
     //Multiple display configurations you can choose from by changing the displayMode variable above

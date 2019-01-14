@@ -1,9 +1,18 @@
-package com.dke.game.Models.AI.Luc.MyAlgo;
+package com.dke.game.Models.AI.Luc.MINMAX;
 
+import com.dke.game.Controller.GameLoop;
+import com.dke.game.Models.AI.Luc.MyAlgo.ConsoleColors;
+import com.dke.game.Controller.Player.AI;
+import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
+import com.dke.game.Models.AI.Luc.MINMAX.NoPossibleMovesException;
+import com.dke.game.Models.AI.Luc.Move;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
+import com.dke.game.Models.AI.Luc.MyAlgo.CarloCoordinate;
+import com.dke.game.Models.GraphicalModels.Board2D;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 
-public class ChristmasCarlo{
+public class ChristmasCarlo implements Algorithm {
     final double diagonalMoveBias = 30;
     Cell[][] currentCellMatrix;
     char sideTurn;
@@ -29,8 +38,11 @@ public class ChristmasCarlo{
     int nondiagonalMoves = 0;
     double moveLengthsum = 0;
     double moveAmount = 0;
+    private GameLoop gameLoop;
 
-    public ChristmasCarlo(char AIside, int expansionFactor){
+    public ChristmasCarlo(char AIside, int expansionFactor, GameLoop gl){
+        System.out.println("Constructed ChristmasCarlo");
+        this.gameLoop = gl;
         this.expansionFactor = expansionFactor;
         this.AIside = AIside;
         randomGenerator = new Random();
@@ -96,10 +108,10 @@ public class ChristmasCarlo{
         return BestMove;
     }
 
-    public void startalgoWithCellArray(Cell[][] currentCellMatrix, char sideTurn){
+    public char[][] startalgoWithCellArray(Cell[][] currentCellMatrix, char sideTurn){
         char[][] convertedToCharMatrix = generateSimpleMatrix(currentCellMatrix);
 
-        startalgoWithCharArray(convertedToCharMatrix, sideTurn);
+        return startalgoWithCharArray(convertedToCharMatrix, sideTurn);
     }
 
     public char[][] generateSimpleMatrix(Cell[][] currentCellMatrix){
@@ -483,6 +495,54 @@ public class ChristmasCarlo{
         return 'B';
     }
 
+
+    @Override
+    public Move getBestMove(AI player, MoveNode root) {
+        System.out.println("GETBESTMOVE CARLLO ACTIVATED");
+        this.AIside = player.getSide();
+        Board2D b2d = gameLoop.getBoard2D();
+        Cell[][] boardCoordinates = b2d.getBoardCoordinates();
+        char[][] charBoardCoordinates = generateSimpleMatrix(boardCoordinates);
+        char[][] bestMove= startalgoWithCharArray(charBoardCoordinates, this.AIside);
+
+        Move theMove = produceMove(boardCoordinates, charBoardCoordinates, bestMove);
+
+        return theMove;
+    }
+
+    public Move produceMove(Cell[][] startCellMatrix, char[][] startCharMatrix, char[][] endCharMatrix){
+        System.out.println("startCharMatrix");
+        printCharMatrix(startCharMatrix);
+        System.out.println("endCharMatrix:");
+        printCharMatrix(endCharMatrix);
+        CarloCoordinate startCoordinateAmazon = null;
+        CarloCoordinate endCoordinateAmazon = null;
+        CarloCoordinate arrowCoordinate = null;
+        for(int i = 0; i<startCharMatrix.length; i++){
+            for(int j = 0; j<startCharMatrix[0].length; j++){
+                if (endCharMatrix[i][j] != startCharMatrix[i][j]){
+                    if(endCharMatrix[i][j] == emptyChar[0]&&(startCharMatrix[i][j] =='B'||startCharMatrix[i][j]=='W')){
+                        startCoordinateAmazon = new CarloCoordinate(i, j);
+                    }if((endCharMatrix[i][j]=='B'||endCharMatrix[i][j] =='W')&&startCharMatrix[i][j]== emptyChar[0]){
+                        endCoordinateAmazon = new CarloCoordinate(i,j);
+                    }if(endCharMatrix[i][j]=='A'&&startCharMatrix[i][j] == emptyChar[0]){
+                        arrowCoordinate = new CarloCoordinate(i, j);
+                    }
+                }
+
+            }
+        }
+
+
+        System.out.println("x: "+ startCoordinateAmazon.getX() + "  Y: " + startCoordinateAmazon.getY());
+        Amazon2D QueenToMove = (Amazon2D)startCellMatrix[startCoordinateAmazon.getX()][startCoordinateAmazon.getY()].getContent();
+        Cell QueenTo = startCellMatrix[endCoordinateAmazon.getX()][endCoordinateAmazon.getY()];
+        Cell ArrowTo = startCellMatrix[arrowCoordinate.getX()][arrowCoordinate.getY()];
+
+        Move theMove = new Move(QueenToMove,QueenTo,ArrowTo);
+
+        return theMove;
+    }
 
 
 }
