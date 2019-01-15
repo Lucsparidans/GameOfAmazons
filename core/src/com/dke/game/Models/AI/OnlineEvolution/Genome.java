@@ -15,7 +15,7 @@ import java.util.Random;
  * This is meant as a sequence of gameStates and actions to allow for opponent modeling in this algorithm, the genome in this case was
  * interpreted to be what usually a population would be.
  */
-public class Genome {
+public class Genome implements Comparable{
     private HashMap actionPair;
     private ArrayList<GameState> gameStates;
     private ArrayList<Action> actionSequence;
@@ -85,8 +85,6 @@ public class Genome {
         char currentSide = currentPlayer.getSide();
         while(genomeLength >= 0) {
             generateMoves(board,currentSide);
-            System.out.println("Current shared board:");
-            board.printBoard();
 
             //Toggle side and reduce depth to be generated
             if(currentSide=='W'){
@@ -236,5 +234,22 @@ public class Genome {
         return new Move(actionSequence.get(0).getAmazon(),actionSequence.get(0).getDestination(),actionSequence.get(1).getDestination());
     }
 
-
+    /**
+     * Comparable interface for sorting purposes
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Genome) {
+            if (this.getEval() > ((Genome) o).getEval()){
+                return 1;
+            }
+            else if(this.getEval() < ((Genome) o).getEval()){
+                return -1;
+            }
+            else return 0;
+        }
+        return 0;
+    }
 }
