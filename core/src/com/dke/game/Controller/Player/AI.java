@@ -23,6 +23,7 @@ public class AI extends Player {
     public AI(char side, Algorithm algorithm, GameLoop gameLoop) {
         super(side);
         this.algorithm = algorithm;
+        this.algorithm.initialize(this);
         this.gameLoop = gameLoop;
         this.board2D=gameLoop.getBoard2D();
         enemyAmazons = new Amazon2D[4];
@@ -54,6 +55,10 @@ public class AI extends Player {
 
     public MovesTree getTree() {
         return tree;
+    }
+
+    public GameLoop getGameLoop() {
+        return gameLoop;
     }
 
     private void move() {

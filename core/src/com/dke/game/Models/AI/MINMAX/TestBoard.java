@@ -163,8 +163,20 @@ public void printBoard() {
     System.out.println();
 
 }
+private void updateArrowList(){
+    for (Amazon2D a :
+            amazons) {
+        if(!a.getArrowShots().isEmpty()){
+            for (Arrow2D arrow :
+                    a.getArrowShots()) {
+                this.arrows.add(arrow);
+            }
+        }
+    }
+}
 
     public TestBoard deepCopy(){
+        updateArrowList();
         return new TestBoard(amazons.clone(),(ArrayList<Arrow2D>)arrows.clone());
     }
     public Cell[][] getBoard() {

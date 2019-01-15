@@ -40,18 +40,21 @@ public class GameLoop {
     }
     // another constructor to avoid static fields
     public GameLoop(ViewManager viewManager, String white_Type, String black_Type) {
-        this.viewManager = viewManager;
-        arrow = new ArrayList<>();
-        initialiseGame();
-        algo = new OnlineEvolution(amazons,arrow);
-        gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
-        createPlayers(white_Type, black_Type, gameView);
-        gameView.setPlayers(white, black);
-        gameView.getStage().addActor(board2D);
-        placePieces();
-        this.viewManager.push(gameView);
-        currentPlayer = white;
-        running = true;
+        synchronized (this) {
+            this.viewManager = viewManager;
+            arrow = new ArrayList<>();
+            initialiseGame();
+            algo = new OnlineEvolution(amazons, arrow, this);
+            gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
+            createPlayers(white_Type, black_Type, gameView);
+            gameView.setPlayers(white, black);
+            gameView.getStage().addActor(board2D);
+            placePieces();
+            this.viewManager.push(gameView);
+            currentPlayer = white;
+            running = true;
+
+        }
     }
 
     public GameLoop(ViewManager viewmanager) {

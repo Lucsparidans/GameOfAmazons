@@ -29,6 +29,11 @@ public class MiniMax implements Algorithm {
 
     }
 
+    @Override
+    public void initialize(AI p) {
+
+    }
+
     //returns the best score of all possible Board Status
     //The cutoff rates reduce runtime, and since we get a lot of similar evals we cannot find global optimum anyways.
     /*

@@ -7,6 +7,7 @@ import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -35,13 +36,13 @@ public class Genome {
         initializeVariables(initialBoard,currentPlayer);
         System.out.printf("The initial board: \n");
         initialBoard.printBoard();
-        TestBoard test = initialBoard.deepCopy();
-        test.getAmazons()[0].move(test.getBoard()[3][3]);
-        test.getAmazons()[0].shoot(test.getBoard()[3][4]);
-        System.out.println("The initial board after copying and altering the copy");
-        initialBoard.printBoard();
-        System.out.println("The altered copy of the initialboard");
-        test.printBoard();
+//        TestBoard test = initialBoard.deepCopy();
+//        test.getAmazons()[0].move(test.getBoard()[3][3]);
+//        test.getAmazons()[0].shoot(test.getBoard()[3][4]);
+//        System.out.println("The initial board after copying and altering the copy");
+//        initialBoard.printBoard();
+//        System.out.println("The altered copy of the initialboard");
+//        test.printBoard();
         generateGenome(initialBoard, genomeLength, currentPlayer);
     }
 
@@ -84,6 +85,8 @@ public class Genome {
         char currentSide = currentPlayer.getSide();
         while(genomeLength >= 0) {
             generateMoves(board,currentSide);
+            System.out.println("Current shared board:");
+            board.printBoard();
 
             //Toggle side and reduce depth to be generated
             if(currentSide=='W'){
@@ -101,55 +104,77 @@ public class Genome {
      * @param testBoard
      * @param side
      */
-    private void generateMoves(TestBoard testBoard, char side) {
+    private TestBoard generateMoves(TestBoard testBoard, char side) {
         if(side=='W'){
             Amazon2D a = whiteAmazons.get(rnd.nextInt(whiteAmazons.size()));
-            generateMoves(a.getCell(),testBoard,true);
+            return generateMoves(a,testBoard,true);
         }
         else if(side=='B'){
             Amazon2D a = blackAmazons.get(rnd.nextInt(blackAmazons.size()));
-            generateMoves(a.getCell(),testBoard,false);
+            return generateMoves(a,testBoard,false);
         }
+        return testBoard;
 
     }
 
     /**
+     * Finds a random amazon which can move
+     * @param amazon
+     * @param possibleMoves
+     * @param board
+     * @return
+     */
+    private Amazon2D canMove(Amazon2D amazon, ArrayList<Cell> possibleMoves, TestBoard board){
+        for (Amazon2D a :
+                amazons) {
+            if (amazon != a && a.getSide() == amazon.getSide() && a.possibleMoves(board).size()!=0) {
+                amazon = a;
+                return amazon;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Method to avoid duplicate code
-     * @param amazonLocation
+     * @param amazon
      * @param board
      */
-    private void generateMoves(Cell amazonLocation, TestBoard board, boolean whiteMove){
+    private TestBoard generateMoves(Amazon2D amazon, TestBoard board, boolean whiteMove){
         try {
-
-            TestBoard moveBoard = board.deepCopy();
-            Amazon2D selected = (Amazon2D)moveBoard.getBoard()[amazonLocation.getI()][amazonLocation.getJ()].getContent();
-            ArrayList<Cell> possibleMoves = selected.possibleMoves(moveBoard);
+            Cell[][] boardCoordinates = board.getBoard();
+            ArrayList<Cell> possibleMoves = amazon.possibleMoves(board);
+            if(possibleMoves.isEmpty()){
+                amazon = canMove(amazon,possibleMoves,board);
+            }
             Cell moveCell = possibleMoves.get(rnd.nextInt(possibleMoves.size()));
-            selected.move(moveCell);
-            Action moveAction = new Action(Action.ActionType.MOVE, moveCell,selected);
+            amazon.move(moveCell);
+            Action moveAction = new Action(Action.ActionType.MOVE, moveCell,amazon);
             actionSequence.add(moveAction);
             if (gameStates.isEmpty()) {
-                gameStates.add(new GameState(moveAction, null, moveBoard,whiteMove));
+                gameStates.add(new GameState(moveAction, null, board.deepCopy(),whiteMove));
             } else {
-                gameStates.add(new GameState(moveAction, gameStates.get(gameStates.size() - 1), moveBoard,whiteMove));
+                gameStates.add(new GameState(moveAction, gameStates.get(gameStates.size() - 1), board.deepCopy(),whiteMove));
             }
-            moveBoard.printBoard();
-            TestBoard shootBoard = moveBoard.deepCopy();
-            amazonLocation = selected.getCell();
-            Amazon2D shootAmazon = (Amazon2D)shootBoard.getBoard()[amazonLocation.getI()][amazonLocation.getJ()].getContent();
-            possibleMoves = shootAmazon.possibleMoves(shootBoard);
+            //board.printBoard();
+            possibleMoves = amazon.possibleMoves(board);
+            if(possibleMoves.isEmpty()){
+                amazon = canMove(amazon,possibleMoves,board);
+            }
             Cell shootCell = possibleMoves.get(rnd.nextInt(possibleMoves.size()));
-            shootAmazon.shoot(shootBoard.getBoard()[shootCell.getI()][shootCell.getJ()]);
-            Action shootAction = new Action(Action.ActionType.SHOT, shootCell,shootAmazon);
+            amazon.shoot(board.getBoard()[shootCell.getI()][shootCell.getJ()]);
+            Action shootAction = new Action(Action.ActionType.SHOT, shootCell,amazon);
             actionSequence.add(shootAction);
-            gameStates.add(new GameState(shootAction, gameStates.get(gameStates.size() - 1), shootBoard,whiteMove));
-            shootBoard.printBoard();
+            gameStates.add(new GameState(shootAction, gameStates.get(gameStates.size() - 1), board.deepCopy(),whiteMove));
+            board.printBoard();
             actionPair.put(moveAction,shootAction);
             actionPair.put(shootAction,moveAction);
+            return board;
         }
         catch(Action.InvalidActionTypeException e){
             System.out.println("Invalid action type?!");
         }
+        return board;
     }
     // TODO create crossover functionality
     private void crossover(){
@@ -201,13 +226,15 @@ public class Genome {
 
         }
         if(state.isWhiteMove()) {
-            return moveWeight*(newMovW-prevMovW)+(1-moveWeight)*(newMovB-prevMovB);
+            return moveWeight*(newMovW-prevMovW)-(1-moveWeight)*(newMovB-prevMovB);
         }
         else{
-            return (1-moveWeight)*(newMovW-prevMovW)+moveWeight*(newMovB-prevMovB);
+            return moveWeight*(newMovB-prevMovB)-(1-moveWeight)*(newMovW-prevMovW);
         }
     }
     public Move getMove(){
         return new Move(actionSequence.get(0).getAmazon(),actionSequence.get(0).getDestination(),actionSequence.get(1).getDestination());
     }
+
+
 }

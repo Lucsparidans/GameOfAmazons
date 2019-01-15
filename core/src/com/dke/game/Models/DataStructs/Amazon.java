@@ -743,5 +743,6 @@ public abstract class Amazon extends Piece {
     public int getIndex() {
         return index;
     }
+
 }
 
