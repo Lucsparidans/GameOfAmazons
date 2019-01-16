@@ -34,8 +34,10 @@ public class Genome implements Comparable{
      */
     public Genome(TestBoard initialBoard, int genomeLength, Player currentPlayer) {
         initializeVariables(initialBoard,currentPlayer);
-        System.out.printf("The initial board: \n");
-        initialBoard.printBoard();
+        if(Evolution.debugPrinting) {
+            System.out.printf("The initial board: \n");
+            initialBoard.printBoard();
+        }
 //        TestBoard test = initialBoard.deepCopy();
 //        test.getAmazons()[0].move(test.getBoard()[3][3]);
 //        test.getAmazons()[0].shoot(test.getBoard()[3][4]);
@@ -164,7 +166,9 @@ public class Genome implements Comparable{
             Action shootAction = new Action(Action.ActionType.SHOT, shootCell,amazon);
             actionSequence.add(shootAction);
             gameStates.add(new GameState(shootAction, gameStates.get(gameStates.size() - 1), board.deepCopy(),whiteMove));
-            board.printBoard();
+            if(Evolution.debugPrinting) {
+                board.printBoard();
+            }
             actionPair.put(moveAction,shootAction);
             actionPair.put(shootAction,moveAction);
             return board;

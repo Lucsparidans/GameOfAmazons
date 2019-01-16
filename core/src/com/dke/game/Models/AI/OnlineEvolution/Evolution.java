@@ -25,6 +25,8 @@ public class Evolution implements Algorithm {
     private int genCount = 0;
     private Player player;
     private GameLoop gameLoop;
+    private Thread genThread;
+    public static final boolean debugPrinting = true;
 
     /**
      * Constructor
@@ -55,19 +57,27 @@ public class Evolution implements Algorithm {
      * @return
      */
     private Genome[] computeGenerations(Player player){
+        this.best = null;
+        genCount = 0;
         Genome bestGenome = null;
         for(int gen = 0; gen < generations; gen++) {
-            printGenCount();
-            if (genCount > 1) {
+            if(debugPrinting) {
+                printGenCount();
+            }
+            if (gen > 0) {
                 for (int i = 0; i < threshold; i++) {
-                    System.out.printf("new Population: %d" +
-                            "\n", i + 1);
+                    if(Evolution.debugPrinting) {
+                        System.out.printf("new Population: %d" +
+                                "\n", i + 1);
+                    }
                     population[i] = new Genome(initialBoard.deepCopy(), genomeLength, player);
                 }
             } else {
                 for (int i = 0; i < popSize; i++) {
-                    System.out.printf("Population: %d" +
-                            "\n", i + 1);
+                    if(Evolution.debugPrinting) {
+                        System.out.printf("Population: %d" +
+                                "\n", i + 1);
+                    }
                     population[i] = new Genome(initialBoard.deepCopy(), genomeLength, player);
                 }
             }
@@ -79,11 +89,27 @@ public class Evolution implements Algorithm {
                     if (g.getEval() > bestGenome.getEval()) {
                         bestGenome = g;
                     }
+                    else if( g.getEval() == bestGenome.getEval()){
+                        if(Math.floor(Math.random()*2) ==1){
+                            bestGenome = g;
+                        }
+                    }
                 }
             }
             Arrays.sort(population);
+            if(debugPrinting) {
+                System.out.println("###############################################################");
+                System.out.printf("                     Sorted array:\n");
+                System.out.println("###############################################################");
+
+                for (Genome g :
+                        population) {
+                    System.out.println(g.getEval());
+                }
+            }
             this.best = bestGenome.getMove();
         }
+
         return population;
     }
 
@@ -99,6 +125,10 @@ public class Evolution implements Algorithm {
         return this.best;
     }
 
+    /**
+     * When generating a move the second time and further the board needs to be updated
+     * @param gameLoop
+     */
     private void updateInitialBoard(GameLoop gameLoop){
         this.initialBoard = new TestBoard(gameLoop.getAmazons(),gameLoop.getArrows());
     }
@@ -107,10 +137,18 @@ public class Evolution implements Algorithm {
     public void initialize(AI p) {
         synchronized (this) {
             this.player = p;
-
+            this.genThread = new Thread(new GenomeGenerator());
 
         }
 
     }
+
+    private class GenomeGenerator implements Runnable{
+        @Override
+        public void run() {
+
+        }
+    }
+
 
 }
