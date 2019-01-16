@@ -26,7 +26,7 @@ public class Evolution implements Algorithm {
     private Player player;
     private GameLoop gameLoop;
     private Thread genThread;
-    public static final boolean debugPrinting = false;
+    public static boolean debugPrinting = false;
 
     /**
      * Constructor
@@ -43,6 +43,7 @@ public class Evolution implements Algorithm {
      * @param arrows
      */
     private void initializeVariables(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop){
+
         initialBoard = new TestBoard(amazons,arrows);
         population = new Genome[popSize];
         this.gameLoop = gameLoop;
