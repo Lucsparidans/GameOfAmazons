@@ -9,9 +9,11 @@ public class GameState {
     private TestBoard board;
     private TestBoard parentBoard;
     private boolean whiteMove;
+    private GameState parent;
 
     public GameState(Action action, GameState parent, TestBoard board, boolean whiteMove) {
         this.parentAction = action;
+        this.parent = parent;
         if(parent!=null) {
             this.parentBoard = parent.getBoard();
         }
@@ -32,5 +34,9 @@ public class GameState {
 
     public boolean isWhiteMove() {
         return whiteMove;
+    }
+
+    public GameState getParent() {
+        return parent;
     }
 }

@@ -26,6 +26,7 @@ public class Genome implements Comparable{
     private ArrayList<Amazon2D> whiteAmazons;
     private ArrayList<Amazon2D> blackAmazons;
     private double eval = 0;
+    private final boolean debug = false;
 
     /**
      * Method that creates the action sequence with the corresponding gameState for this population
@@ -46,6 +47,7 @@ public class Genome implements Comparable{
 //        System.out.println("The altered copy of the initialboard");
 //        test.printBoard();
         generateGenome(initialBoard, genomeLength, currentPlayer);
+
     }
 
     /**
@@ -70,10 +72,10 @@ public class Genome implements Comparable{
             }
         }
         if(currentPlayer.getSide()=='W') {
-            initialState = new GameState(null, null, initialBoard, true);
+            initialState = new GameState(null, null, initialBoard.deepCopy(), true);
         }
         else{
-            initialState = new GameState(null,null,initialBoard,false);
+            initialState = new GameState(null,null,initialBoard.deepCopy(),false);
         }
     }
 
@@ -143,7 +145,7 @@ public class Genome implements Comparable{
      */
     private TestBoard generateMoves(Amazon2D amazon, TestBoard board, boolean whiteMove){
         try {
-            Cell[][] boardCoordinates = board.getBoard();
+
             ArrayList<Cell> possibleMoves = amazon.possibleMoves(board);
             if(possibleMoves.isEmpty()){
                 amazon = canMove(amazon,possibleMoves,board);
@@ -171,6 +173,7 @@ public class Genome implements Comparable{
             if(Evolution.debugPrinting) {
                 board.printBoard();
             }
+
             actionPair.put(moveAction,shootAction);
             actionPair.put(shootAction,moveAction);
             return board;
@@ -218,13 +221,19 @@ public class Genome implements Comparable{
         return evaluateGenome(gameStates.get(gameStates.size()-1));
     }
     /**
-     * Simple heuristic function foro testing
+     * Simple heuristic function for testing
      * @param state
      * @return
      */
     private double evaluateGenome(GameState state){
-        TestBoard initialBoard = state.getParentBoard();
+        TestBoard initialBoard = initialState.getBoard();
         TestBoard newBoard = state.getBoard();
+        if(debug) {
+            System.out.println("Initial board heur:");
+            initialBoard.printBoard();
+            System.out.println("New board heur:");
+            newBoard.printBoard();
+        }
         int prevMovW = 0;
         int prevMovB = 0;
         int newMovW = 0;
