@@ -57,7 +57,7 @@ public class AI extends Player {
     }
 
     private void move() {
-        Move bestMove = algorithm.getBestMove(this,rootNode);
+        Move bestMove = algorithm.getBestMove(this);
 //        Cell moveQTo = bestMove.getQueenTo();
         Cell moveQueenTo = board2D.getBoardCoordinates()[bestMove.getQueenTo().getI()][bestMove.getQueenTo().getJ()];
         Cell arrowTo = board2D.getBoardCoordinates()[bestMove.getArrowTo().getI()][bestMove.getArrowTo().getJ()];

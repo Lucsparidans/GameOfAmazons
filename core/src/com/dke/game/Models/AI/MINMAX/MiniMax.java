@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class MiniMax implements Algorithm {
     private MovesTree movesTree;
     private int depth = 2;
-    private int cutOff = 1000;
+    private int cutOff = 3000;
     private ArrayList<MoveNode> highestEvalFreq = new ArrayList<>();
     private ArrayList<MoveNode> lowestEvalFreq = new ArrayList<>();
     private int nodesEvaled = 0;
@@ -25,6 +25,7 @@ public class MiniMax implements Algorithm {
         while (bestEval.getParent().getParent() != null) {
             bestEval = bestEval.getParent();
         }
+
         return bestEval.getData();
 
     }
@@ -41,7 +42,7 @@ public class MiniMax implements Algorithm {
         if (searchDepth == 0 || aNode.getChildren().isEmpty()) {
 
             aNode.evaluateNode(player,movesTree.getInitialState().getTestBoard());
-            System.out.println("the number of nodes evaluated is: " + nodesEvaled++);
+            //System.out.println("the number of nodes evaluated is: " + nodesEvaled++);
             return aNode;
         }
         //no
