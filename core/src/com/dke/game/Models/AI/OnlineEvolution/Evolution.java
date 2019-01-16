@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class Evolution implements Algorithm {
     private TestBoard initialBoard;
     private Genome[] population;
-    private int generations = 2;
+    private int generations = 5;
     private int popSize = 100;
     private final int genomeLength = 0;
     private Move best;
@@ -102,9 +102,8 @@ public class Evolution implements Algorithm {
                 System.out.printf("                     Sorted array:\n");
                 System.out.println("###############################################################");
 
-                for (Genome g :
-                        population) {
-                    System.out.println(g.getEval());
+                for (int i = 0; i < population.length; i++) {
+                    System.out.printf("Population %d has value: %f\n",i,population[i].getEval());
                 }
             }
             this.best = bestGenome.getMove();

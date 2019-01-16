@@ -127,9 +127,10 @@ public class Genome implements Comparable{
     private Amazon2D canMove(Amazon2D amazon, ArrayList<Cell> possibleMoves, TestBoard board){
         for (Amazon2D a :
                 amazons) {
-            if (amazon != a && a.getSide() == amazon.getSide() && a.possibleMoves(board).size()!=0) {
-                amazon = a;
-                return amazon;
+            if (amazon != a && a.getSide() == amazon.getSide()) {
+                if(a.possibleMoves(board).size()>0){
+                    return a;
+                }
             }
         }
         return null;
@@ -146,6 +147,7 @@ public class Genome implements Comparable{
             ArrayList<Cell> possibleMoves = amazon.possibleMoves(board);
             if(possibleMoves.isEmpty()){
                 amazon = canMove(amazon,possibleMoves,board);
+                possibleMoves = amazon.possibleMoves(board);
             }
             Cell moveCell = possibleMoves.get(rnd.nextInt(possibleMoves.size()));
             amazon.move(moveCell);
@@ -179,17 +181,34 @@ public class Genome implements Comparable{
         return board;
     }
     // TODO create crossover functionality
-    private void crossover(){
-
+    private void crossover(Genome g){
+        ArrayList<Action> gActions = g.getActionSequence();
+        boolean compatible = true;
+        for (int i = 0; i < actionSequence.size()-1; i++) {
+            if(gActions.get(i) != actionSequence.get(i)){
+                compatible = false;
+            }
+        }
+        int index = actionSequence.size()-1;
+        if(compatible){
+            actionSequence.add(index,gActions.get(gActions.size()-1));
+        }
     }
     //TODO create mutation functionality
     private void mutation(){
-
+        if(rnd.nextBoolean()){
+            //mutate move
+        }
+        else{
+            //mutate shot
+        }
     }
     //TODO create legality check for new moves produced by mutating and crossing over
     private boolean checkLegal(){
         return false;
     }
+
+    //TODO method that performs the crossover and mutation on this (and some other) genome
 
     /**
      * return evaluation
@@ -236,6 +255,10 @@ public class Genome implements Comparable{
     }
     public Move getMove(){
         return new Move(actionSequence.get(0).getAmazon(),actionSequence.get(0).getDestination(),actionSequence.get(1).getDestination());
+    }
+
+    public ArrayList<Action> getActionSequence() {
+        return actionSequence;
     }
 
     /**
