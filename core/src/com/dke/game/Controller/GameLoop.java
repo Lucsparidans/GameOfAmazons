@@ -31,6 +31,9 @@ public class GameLoop {
     private Player black;
     private Player currentPlayer;
     private Algorithm algo;
+    public static Phase PHASE = Phase.BEGIN;
+    public static final int END_BEGIN = 1;
+    public static final int END_MID = 4;
 
 
     // get current board
@@ -79,6 +82,10 @@ public class GameLoop {
                 black = new Human('B', gameView, this);
             }
         }
+    }
+
+    public enum Phase{
+        BEGIN,MIDDLE,END;
     }
 
     public ArrayList<Arrow2D> getArrows() {

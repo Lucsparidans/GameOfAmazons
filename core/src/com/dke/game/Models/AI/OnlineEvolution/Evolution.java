@@ -1,5 +1,6 @@
 package com.dke.game.Models.AI.OnlineEvolution;
 
+import com.badlogic.gdx.Game;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
@@ -17,8 +18,9 @@ import java.util.Arrays;
 public class Evolution implements Algorithm {
     private TestBoard initialBoard;
     private Genome[] population;
-    private int generations = 5;
-    private int popSize = 100;
+    private int generations =1;
+    private int popSize =100;
+
     private final int genomeLength = 0;
     private Move best;
     private final int threshold = popSize/2;
@@ -26,7 +28,7 @@ public class Evolution implements Algorithm {
     private Player player;
     private GameLoop gameLoop;
     private Thread genThread;
-    public static boolean debugPrinting = true;
+    public static boolean debugPrinting = false;
 
     /**
      * Constructor
@@ -35,6 +37,29 @@ public class Evolution implements Algorithm {
      */
     public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop) {
         initializeVariables(amazons, arrows, gameLoop);
+    }
+
+    private void updateVariablesPhase(){
+        if(GameLoop.PHASE == GameLoop.Phase.BEGIN){
+            generations = 1;
+            genCount = 100;
+            if(debugPrinting) {
+                System.out.println("Begin phase");
+            }
+        }else if(GameLoop.PHASE == GameLoop.Phase.MIDDLE){
+            generations = 2;
+            genCount = 200;
+            if(debugPrinting) {
+                System.out.println("Middle phase");
+            }
+        }
+        else if(GameLoop.PHASE == GameLoop.Phase.END){
+            generations = 3;
+            genCount = 300;
+            if(debugPrinting) {
+                System.out.println("End phase");
+            }
+        }
     }
 
     /**
@@ -120,6 +145,7 @@ public class Evolution implements Algorithm {
     }
     @Override
     public Move getBestMove(AI player) {
+        updateVariablesPhase();
         updateInitialBoard(player.getGameLoop());
         computeGenerations(player);
         return this.best;

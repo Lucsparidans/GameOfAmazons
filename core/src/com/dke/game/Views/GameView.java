@@ -15,6 +15,7 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.AI.MINMAX.MiniMax;
+import com.dke.game.Models.AI.OnlineEvolution.Evolution;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.*;
 
@@ -170,21 +171,38 @@ synchronized (this) {//<-thread stuff
         return c;
 
     }
+    private void setPhase(){
+        if(turnCounter == 0){
+            GameLoop.PHASE = GameLoop.Phase.BEGIN;
+        }
+        else if (this.turnCounter>=GameLoop.END_BEGIN && this.turnCounter< GameLoop.END_MID){
+            GameLoop.PHASE = GameLoop.Phase.MIDDLE;
+        }
+        else{
+            GameLoop.PHASE = GameLoop.Phase.END;
+        }
+    }
 
     @Override //Use  input to do somethings like moving the pieces
     protected void handleInput() {
         synchronized (this) {
             super.handleInput();
             gameLoop.update();
+
             if (Gdx.input.justTouched() || repeat) {
+
+                setPhase();
                 if(turnCounter%2==0){
+
                     white.performTurn();
                 }
                 else{
+
                     black.performTurn();
                 }
             }
             if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
+                setPhase();
                 AI ai = new AI('W',gameLoop.getAlgo(),gameLoop);
                 ai.performTurn();
             }
