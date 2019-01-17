@@ -184,7 +184,7 @@ Heuristics
                 int i = ourQueenCell.getI();
                 int j = ourQueenCell.getJ();
                 int[][] territory = ourQueen.countTerritory(testBoard.getBoard()); //basically how many cells are free to use from that position
-                //WARNING: due to no coordinates, can't put the location of the queen in question.
+
                 value = +territoryToInt(territory);
                 //Score"territory" ends
             }
