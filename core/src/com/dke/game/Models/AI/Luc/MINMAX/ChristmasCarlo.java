@@ -103,9 +103,23 @@ public class ChristmasCarlo implements Algorithm {
                 maxIndex = i;
             }
         }
+        ArrayList intlist = new ArrayList<>();
+        for(int i =0; i< nextMovesScores.length; i++){
+            if(nextMovesScores[i]==maxScore){
+                intlist.add(i);
+            }///////TODO FINISH THIS !! SELECTS A RANDOM BEST MOVE
 
-        char[][] BestMove = nextPossibleMoves.get(maxIndex);
+        }
+        int bestIndex = (int) getRandomArrayListElement(intlist);
+
+        char[][] BestMove = nextPossibleMoves.get(bestIndex);
         return BestMove;
+    }
+
+    public Object getRandomArrayListElement(ArrayList a){
+        int index = randomGenerator.nextInt(a.size());
+        Object item = a.get(index);
+        return item;
     }
 
     public char[][] startalgoWithCellArray(Cell[][] currentCellMatrix, char sideTurn){
@@ -521,17 +535,21 @@ public class ChristmasCarlo implements Algorithm {
         for(int i = 0; i<startCharMatrix.length; i++){
             for(int j = 0; j<startCharMatrix[0].length; j++){
                 if (endCharMatrix[i][j] != startCharMatrix[i][j]){
-                    if(endCharMatrix[i][j] == emptyChar[0]&&(startCharMatrix[i][j] =='B'||startCharMatrix[i][j]=='W')){
+                    if((endCharMatrix[i][j] == emptyChar[0]||endCharMatrix[i][j] == 'A')&&(startCharMatrix[i][j] =='B'||startCharMatrix[i][j]=='W')){
                         startCoordinateAmazon = new CarloCoordinate(i, j);
                     }if((endCharMatrix[i][j]=='B'||endCharMatrix[i][j] =='W')&&startCharMatrix[i][j]== emptyChar[0]){
                         endCoordinateAmazon = new CarloCoordinate(i,j);
-                    }if(endCharMatrix[i][j]=='A'&&startCharMatrix[i][j] == emptyChar[0]){
+                    }if(endCharMatrix[i][j]=='A'&&startCharMatrix[i][j] != 'A'){
                         arrowCoordinate = new CarloCoordinate(i, j);
                     }
                 }
 
             }
         }
+
+        if(startCoordinateAmazon == null){ System.out.println("startcoordinate non existant lmao");}
+        if(arrowCoordinate == null){ System.out.println("arrowCoordinate non existant lmao");}
+        if(endCoordinateAmazon == null){ System.out.println("endCoordinate non existant lmao");}
 
 
         System.out.println("x: "+ startCoordinateAmazon.getX() + "  Y: " + startCoordinateAmazon.getY());
