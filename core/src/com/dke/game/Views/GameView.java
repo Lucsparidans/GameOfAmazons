@@ -188,9 +188,7 @@ synchronized (this) {//<-thread stuff
                 AI ai = new AI('W',gameLoop.getAlgo(),gameLoop);
                 ai.performTurn();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
-                viewManager.pop();
-            }
+
         }
     }
 

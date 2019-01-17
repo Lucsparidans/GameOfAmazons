@@ -23,8 +23,13 @@ public abstract class View extends InputAdapter implements ApplicationListener {
     }
 
     protected void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            //TODO implement a pause state
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if(viewManager.stackSize()==1){
+                Gdx.app.exit();
+            }
+            else if(viewManager.stackSize()>1) {
+                viewManager.pop();
+            }
         }
     }
 }
