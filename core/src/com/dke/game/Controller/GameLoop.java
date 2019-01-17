@@ -32,8 +32,8 @@ public class GameLoop {
     private Player currentPlayer;
     private Algorithm algo;
     public static Phase PHASE = Phase.BEGIN;
-    public static final int END_BEGIN = 1;
-    public static final int END_MID = 4;
+    public static final int END_BEGIN = 10;
+    public static final int END_MID = 20;
 
 
     // get current board
