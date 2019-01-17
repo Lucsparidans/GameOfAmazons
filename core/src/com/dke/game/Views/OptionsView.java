@@ -11,6 +11,10 @@ import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.MainLoop;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
+import com.dke.game.Models.DataStructs.Board;
+import javafx.scene.control.ComboBox;
+
+import java.util.Arrays;
 
 import static com.dke.game.Controller.MainLoop.skin;
 
@@ -19,6 +23,7 @@ public class OptionsView extends View {
     private Stage stage;
     private TextButton textButton;
     private CheckBox debug;
+    private SelectBox<String> boardSize;
 
 
     protected OptionsView(ViewManager viewManager) {
@@ -42,11 +47,17 @@ public class OptionsView extends View {
         table.row();
 
         debug = new CheckBox("Debug mode ",MainLoop.skin);
+        if(Evolution.debugPrinting){
+            debug.setChecked(true);
+        }
         table.add(debug);
         table.row();
 
-
-
+        String[] boardSizeOptions = {"10x10","5x6"};
+        boardSize = new SelectBox<String>(skin);
+        boardSize.setItems(boardSizeOptions);
+        table.add(boardSize);
+        table.row();
 
 
         textButton = new TextButton("Return", skin);
@@ -86,6 +97,12 @@ public class OptionsView extends View {
                 }
                 else{
                     Evolution.debugPrinting = false;
+                }
+                if(boardSize.getSelected().equals("10x10")){
+                    Board.boardSize = Board.BoardSize.TENxTEN;
+                }
+                else if(boardSize.getSelected().equals("5x6")){
+                    Board.boardSize = Board.BoardSize.FIVExSIX;
                 }
                 viewManager.pop();
             }

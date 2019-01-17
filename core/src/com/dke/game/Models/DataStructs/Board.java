@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public abstract class Board extends Actor {
     public static int height;
     public static int width;
-    public BoardSize boardSize = BoardSize.FIVExSIX;
+    public static BoardSize boardSize = BoardSize.FIVExSIX;
 
 
     public Board() throws IllegalBoardDimensionsException {

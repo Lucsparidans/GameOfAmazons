@@ -26,7 +26,7 @@ public class Evolution implements Algorithm {
     private Player player;
     private GameLoop gameLoop;
     private Thread genThread;
-    public static boolean debugPrinting = false;
+    public static boolean debugPrinting = true;
 
     /**
      * Constructor

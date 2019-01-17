@@ -19,7 +19,7 @@ public class Genome implements Comparable{
     private HashMap actionPair;
     private ArrayList<GameState> gameStates;
     private ArrayList<Action> actionSequence;
-    private double moveWeight = 0.8;
+    private double moveWeight = 0.5;
     private GameState initialState;
     private Random rnd;
     private Amazon2D[] amazons;
