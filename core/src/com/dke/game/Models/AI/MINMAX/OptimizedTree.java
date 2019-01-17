@@ -1,8 +1,8 @@
-//package com.dke.game.Models.AI.Luc.MyAlgo;
+//package com.dke.game.Models.AI.MINMAX.MyAlgo;
 //
 //import com.dke.game.Controller.Player.Player;
-//import com.dke.game.Models.AI.Luc.Move;
-//import com.dke.game.Models.AI.Luc.MyAlgo.Node;
+//import com.dke.game.Models.DataStructs.Move;
+//import com.dke.game.Models.AI.MINMAX.Node;
 //import com.dke.game.Models.DataStructs.Cell;
 //import com.dke.game.Models.GraphicalModels.Amazon2D;
 //import com.dke.game.Models.GraphicalModels.Arrow2D;

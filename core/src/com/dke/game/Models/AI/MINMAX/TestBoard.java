@@ -1,13 +1,14 @@
-package com.dke.game.Models.AI.Luc.MyAlgo;
+package com.dke.game.Models.AI.MINMAX;
 
 
-import com.dke.game.Models.AI.Luc.Move;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -83,29 +84,101 @@ public class TestBoard {
         }
     }
 
+    public boolean checkEnd() {
+        //this.board2D.printBoard();
+        int checkCount = 0;
 
-    public void printBoard() {
-//        for (int i = 0; i < boardCoordinates.length; i++) {
+        for (int i = 0; i < amazons.length; i++) {
+
+            if (amazons[i].endMe(boardCoordinates)) {
+                checkCount++;
+            }
+        }
+        int current = 0;
+        for (int i = 0; i < amazons.length; i++) {
+
+            if (!(amazons[i].endMe(boardCoordinates))) {
+                amazons[i].possibleMoves(this);
+                if ((amazons[i].getPossibleMoves()).size() == 0) {
+                    current++;
+                }
+            }
+        }
+        int currentWhite = 0;
+        for (int j = 0; j < 4; j++) {
+            amazons[j].possibleMoves(this);
+            if (amazons[j].getPossibleMoves().size() == 0) {
+                currentWhite++;
+            }
+        }
+        int currentBlack = 0;
+        for (int j = 4; j < 8; j++) {
+            amazons[j].possibleMoves(this);
+            if (amazons[j].getPossibleMoves().size() == 0) {
+                currentBlack++;
+            }
+        }
+        //if all isolated
+        if (checkCount == amazons.length) {
+            return true;
+        }
+        //if all isolated or immobile
+        else if (current == amazons.length - checkCount || currentWhite == amazons.length/2 || currentBlack == amazons.length/2) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+//    public void printBoard() {
+////        for (int i = 0; i < boardCoordinates.length; i++) {
+////            System.out.print("|");
+////            for (int j = 0; j < boardCoordinates[i].length; j++) {
+////                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
+////                if (this.boardCoordinates[i][j].getContentID().equals("A")) {
+////                    System.out.println("ARRROOWWWW");
+////                }
+////            }
+////            System.out.println();
+////        }
+////        System.out.println();
+//        for (int j = boardCoordinates.length-1; j >= 0 ; j--) {
 //            System.out.print("|");
-//            for (int j = 0; j < boardCoordinates[i].length; j++) {
+//            for (int i = 0; i < boardCoordinates[j].length; i++) {
 //                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
-//                if (this.boardCoordinates[i][j].getContentID().equals("A")) {
-//                    System.out.println("ARRROOWWWW");
-//                }
 //            }
 //            System.out.println();
 //        }
 //        System.out.println();
-        for (int j = boardCoordinates.length-1; j >= 0 ; j--) {
-            System.out.print("|");
-            for (int i = 0; i < boardCoordinates[j].length; i++) {
-                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
-            }
-            System.out.println();
+//    }
+public void printBoard() {
+    for (int j = boardCoordinates[0].length-1; j >= 0 ; j--) {
+        System.out.print("|");
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
         }
         System.out.println();
     }
+    System.out.println();
 
+}
+private void updateArrowList(){
+    for (Amazon2D a :
+            amazons) {
+        if(!a.getArrowShots().isEmpty()){
+            for (Arrow2D arrow :
+                    a.getArrowShots()) {
+                this.arrows.add(arrow);
+            }
+        }
+    }
+}
+
+    public TestBoard deepCopy(){
+        updateArrowList();
+        return new TestBoard(amazons.clone(),(ArrayList<Arrow2D>)arrows.clone());
+    }
     public Cell[][] getBoard() {
         return this.boardCoordinates.clone();
     }

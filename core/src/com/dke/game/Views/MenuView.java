@@ -108,7 +108,7 @@ public class MenuView extends View {
         settingsButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("TO BE IMPLEMENTED");
+                viewManager.push(new OptionsView(viewManager));
             }
         });
 
@@ -121,6 +121,7 @@ public class MenuView extends View {
 
     @Override
     public void render() {
+        super.handleInput();
         if (stage != null) {
             stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
             Gdx.input.setInputProcessor(stage);

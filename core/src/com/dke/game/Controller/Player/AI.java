@@ -2,10 +2,11 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MoveNode;
-import com.dke.game.Models.AI.Luc.MovesTree;
+import com.dke.game.Models.AI.MINMAX.MiniMax;
+import com.dke.game.Models.AI.MINMAX.MoveNode;
+import com.dke.game.Models.AI.MINMAX.MovesTree;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.AI.Luc.Move;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
@@ -18,9 +19,11 @@ public class AI extends Player {
     private Amazon2D[] myAmazons;
     private Amazon2D[] enemyAmazons;
 
+
     public AI(char side, Algorithm algorithm, GameLoop gameLoop) {
         super(side);
         this.algorithm = algorithm;
+        this.algorithm.initialize(this);
         this.gameLoop = gameLoop;
         this.board2D=gameLoop.getBoard2D();
         enemyAmazons = new Amazon2D[4];
@@ -54,8 +57,12 @@ public class AI extends Player {
         return tree;
     }
 
+    public GameLoop getGameLoop() {
+        return gameLoop;
+    }
+
     private void move() {
-        Move bestMove = algorithm.getBestMove(this,rootNode);
+        Move bestMove = algorithm.getBestMove(this);
 //        Cell moveQTo = bestMove.getQueenTo();
         Cell moveQueenTo = board2D.getBoardCoordinates()[bestMove.getQueenTo().getI()][bestMove.getQueenTo().getJ()];
         Cell arrowTo = board2D.getBoardCoordinates()[bestMove.getArrowTo().getI()][bestMove.getArrowTo().getJ()];
@@ -79,7 +86,9 @@ public class AI extends Player {
 
     @Override
     public void performTurn() {
-        updateTree();
+        if(algorithm instanceof MiniMax) {
+            updateTree();
+        }
         move();
         gameLoop.getGameView().setTurnCounter(gameLoop.getGameView().getTurnCounter()+1);
     }

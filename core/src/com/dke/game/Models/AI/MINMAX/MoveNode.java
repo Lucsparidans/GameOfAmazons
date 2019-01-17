@@ -1,14 +1,14 @@
-package com.dke.game.Models.AI.Luc;
+package com.dke.game.Models.AI.MINMAX;
 
 import com.dke.game.Controller.Player.AI;
-import com.dke.game.Controller.Player.Player;
-import com.dke.game.Models.AI.Luc.MyAlgo.TestBoard;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 public class MoveNode {
@@ -18,6 +18,7 @@ public class MoveNode {
     private final int DEPTH;
     private List<MoveNode> children = new ArrayList<>();
     private double value;
+    private static Random random = new Random(10);
 
     public MoveNode(Move data, MoveNode parent) {
         this.data = data;
@@ -108,15 +109,16 @@ public class MoveNode {
      */
     private double evaluateState(AI playerAI, TestBoard testBoard) {
         if(this.data != null) {
-            if (this.getData().isPlayerMaximizing(playerAI)) {
-                double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
-                //System.out.println(val);
-                return val;
-            } else {
-                double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
-                //System.out.println(val);
-                return val;
-            }
+//            if (this.getData().isPlayerMaximizing(playerAI)) {
+//                double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+//                //System.out.println(val);
+//                return val;
+//            } else {
+//                double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+//                //System.out.println(val);
+//                return val;
+//            }
+            return random.nextDouble();
         }
         return  0;
     }

@@ -21,4 +21,8 @@ public class ViewManager {
     public View peek(){
         return viewStack.peek();
     }
+
+    public int stackSize(){
+        return viewStack.size();
+    }
 }

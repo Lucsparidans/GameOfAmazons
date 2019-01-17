@@ -1,13 +1,11 @@
-package com.dke.game.Models.AI.Luc.MyAlgo;
+package com.dke.game.Models.AI.MINMAX.MyAlgo;
 
-import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
-import com.dke.game.Models.AI.Luc.Move;
-import com.dke.game.Models.DataStructs.Amazon;
+import com.dke.game.Models.AI.MINMAX.TestBoard;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 
-import java.util.ArrayList;
 /*
 Represents the current state of the game
  */
