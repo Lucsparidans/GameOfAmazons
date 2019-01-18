@@ -1,6 +1,5 @@
 package com.dke.game.Models.AI.OnlineEvolution;
 
-import com.badlogic.gdx.Game;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Player;
@@ -41,21 +40,21 @@ public class Evolution implements Algorithm {
 
     private void updateVariablesPhase(){
         if(GameLoop.PHASE == GameLoop.Phase.BEGIN){
-            generations = 1;
-            genCount = 100;
+            generations = 5;
+            genCount = 300;
             if(debugPrinting) {
                 System.out.println("Begin phase");
             }
         }else if(GameLoop.PHASE == GameLoop.Phase.MIDDLE){
-            generations = 2;
-            genCount = 200;
+            generations = 5;
+            genCount = 500;
             if(debugPrinting) {
                 System.out.println("Middle phase");
             }
         }
         else if(GameLoop.PHASE == GameLoop.Phase.END){
-            generations = 3;
-            genCount = 300;
+            generations = 6;
+            genCount = 700;
             if(debugPrinting) {
                 System.out.println("End phase");
             }
@@ -127,6 +126,7 @@ public class Evolution implements Algorithm {
                 System.out.println("###############################################################");
                 System.out.printf("                     Sorted array:\n");
                 System.out.println("###############################################################");
+                System.out.println();
 
                 for (int i = 0; i < population.length; i++) {
                     System.out.printf("Population %d has value: %f\n",i,population[i].getEval());
@@ -142,6 +142,9 @@ public class Evolution implements Algorithm {
         System.out.println("###############################################################");
         System.out.printf("                     Generation: %d \n", ++genCount);
         System.out.println("###############################################################");
+        System.out.println();
+
+
     }
     @Override
     public Move getBestMove(AI player) {

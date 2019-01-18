@@ -1,12 +1,13 @@
 package com.dke.game.Models.AI.OnlineEvolution;
 
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.MINMAX.TestBoard;
+import com.dke.game.Models.AI.OnlineEvolution.Action.ActionType;
+import com.dke.game.Models.AI.OnlineEvolution.Action.InvalidActionTypeException;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
-import com.dke.game.Models.AI.OnlineEvolution.Action.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -23,6 +24,8 @@ public class Genome implements Comparable{
     private GameState initialState;
     private Random rnd;
     private Amazon2D[] amazons;
+    private Player player;
+    private TestBoard currentBoard;
     private ArrayList<Amazon2D> whiteAmazons;
     private ArrayList<Amazon2D> blackAmazons;
     private double eval = 0;
@@ -49,10 +52,10 @@ public class Genome implements Comparable{
         generateGenome(initialBoard, genomeLength, currentPlayer);
 
     }
-    private Genome(TestBoard initialBoard, Player player, ArrayList<Action> actionSequence, TestBoard newBoard){
+    private Genome(TestBoard initialBoard, Player player, ArrayList<Action> actionSequence, TestBoard newBoard, boolean whiteMove){
         initializeVariables(initialBoard.deepCopy(),player);
         this.actionSequence = actionSequence;
-        this.gameStates.add(1,new GameState(actionSequence.get(1),));
+        this.gameStates.add(1,new GameState(actionSequence.get(actionSequence.size()-1),initialState,newBoard,whiteMove));
     }
 
     /**
@@ -67,6 +70,7 @@ public class Genome implements Comparable{
         blackAmazons = new ArrayList<>();
         actionSequence = new ArrayList<>();
         amazons = initialBoard.getAmazons();
+        player = currentPlayer;
         for (Amazon2D amazon :
                 amazons) {
             if (amazon.getSide() == 'W') {
@@ -93,7 +97,7 @@ public class Genome implements Comparable{
     private void generateGenome(TestBoard board, int genomeLength, Player currentPlayer){
         char currentSide = currentPlayer.getSide();
         while(genomeLength >= 0) {
-            generateMoves(board,currentSide);
+            this.currentBoard = generateMoves(board,currentSide);
 
             //Toggle side and reduce depth to be generated
             if(currentSide=='W'){
@@ -188,12 +192,24 @@ public class Genome implements Comparable{
         }
         return board;
     }
+
+
     // TODO create crossover functionality
-    private Genome crossover(Genome g, TestBoard currentBoard){
+    /**
+     * Crossover function
+     * @param g
+     * @return
+     * @throws InvalidActionTypeException
+     */
+
+    private Genome crossover(Genome g) throws InvalidActionTypeException {
         ArrayList<Action> gActions = g.getActionSequence();
+        char side = gActions.get(0).getAmazon().getSide();
         TestBoard initialBoardG = g.initialState.getBoard().deepCopy();
         TestBoard initialBoard = this.initialState.getBoard().deepCopy();
-//        boolean compatible = true;
+
+        //<editor-fold desc="First try, faster?">
+        //        boolean compatible = true;
 //        for (int i = 0; i < actionSequence.size()-1; i++) {
 //            if(gActions.get(i) != actionSequence.get(i)){
 //                compatible = false;
@@ -203,42 +219,109 @@ public class Genome implements Comparable{
 //        if(compatible){
 //            actionSequence.add(index,gActions.get(gActions.size()-1));
 //        }
+        //</editor-fold>
+        //TBH idk
+
         Cell crossMove = null;
         Cell crossShot = null;
-        boolean performedMove = false;
-        for (Amazon2D amazon :
-                initialBoard.getAmazons()) {
-            for (Action a :
-                    gActions) {
-                if(a.getActionType() == ActionType.MOVE){
-                    crossMove = findCrossOption(amazon,initialBoard,a);
-                    if(crossMove != null){
-                        amazon.move(initialBoard.getBoard()[crossMove.getI()][crossMove.getJ()]);
-                        performedMove = true;
-                        for (Action action :
-                                this.actionSequence) {
-                            if(action.getActionType()==ActionType.SHOT) {
-                                crossShot = findCrossOption(amazon, initialBoard, action);
-                                if(crossShot != null){
-                                    return
+        ArrayList<Action> actionSequence = new ArrayList<>();
+        if(side == 'W') {
+            for (Amazon2D amazon :
+                    initialBoard.getAmazons()) {
+                if (amazon.getSide() == 'W') {
+                    for (Action a :
+                            gActions) {
+                        if (a.getActionType() == ActionType.MOVE) {
+                            crossMove = findCrossOption(amazon, initialBoard, a);
+                            if (crossMove != null) {
+                                amazon.move(initialBoard.getBoard()[crossMove.getI()][crossMove.getJ()]);
+                                for (Action action :
+                                        this.actionSequence) {
+                                    if (action.getActionType() == ActionType.SHOT) {
+                                        crossShot = findCrossOption(amazon, initialBoard, action);
+                                        if (crossShot != null) {
+                                            amazon.shoot(crossShot);
+                                            actionSequence.add(new Action(ActionType.MOVE, crossMove, amazon));
+                                            actionSequence.add(new Action(ActionType.SHOT, crossShot, amazon));
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
             }
-        }
-        return null;
-    }
-    //TODO create mutation functionality
-    private void mutation(){
-        if(rnd.nextBoolean()){
-            //mutate move
+
+            return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), true);
         }
         else{
-            //mutate shot
+            for (Amazon2D amazon :
+                    initialBoard.getAmazons()) {
+                if (side == 'B') {
+                    for (Action a :
+                            gActions) {
+                        if (a.getActionType() == ActionType.MOVE) {
+                            crossMove = findCrossOption(amazon, initialBoard, a);
+                            if (crossMove != null) {
+                                amazon.move(initialBoard.getBoard()[crossMove.getI()][crossMove.getJ()]);
+                                for (Action action :
+                                        this.actionSequence) {
+                                    if (action.getActionType() == ActionType.SHOT) {
+                                        crossShot = findCrossOption(amazon, initialBoard, action);
+                                        if (crossShot != null) {
+                                            amazon.shoot(crossShot);
+                                            actionSequence.add(new Action(ActionType.MOVE, crossMove, amazon));
+                                            actionSequence.add(new Action(ActionType.SHOT, crossShot, amazon));
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), false);
         }
+    }
+
+    //TODO create mutation functionality
+    /**
+     * Mutation function
+     * @throws InvalidActionTypeException
+     */
+    private void mutation() throws InvalidActionTypeException{
+//        if(rnd.nextBoolean()){
+//            //mutate move
+//
+//        }
+//        else{
+        //mutate shot
+        actionSequence.get(actionSequence.size()-1).getAmazon().undoShot();
+        Amazon2D selected = null;
+        char side = this.player.getSide();
+        for (Amazon2D a :
+                currentBoard.getAmazons()) {
+            if (a.getSide() == side && side == 'W') {
+                ArrayList<Cell> possibleMoves = a.possibleMoves(currentBoard);
+                Cell shot = possibleMoves.get(rnd.nextInt(possibleMoves.size()));
+                Action shootAction = new Action(ActionType.SHOT,shot,a);
+                actionSequence.set(actionSequence.size()-1,shootAction);
+                a.shoot(shot);
+                gameStates.set(gameStates.size()-1,new GameState(shootAction,gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),true));
+            }
+            else if(a.getSide() == side && side == 'B'){
+                ArrayList<Cell> possibleMoves = a.possibleMoves(currentBoard);
+                Cell shot = possibleMoves.get(rnd.nextInt(possibleMoves.size()));
+                Action shootAction = new Action(ActionType.SHOT,shot,a);
+                actionSequence.set(actionSequence.size()-1,shootAction);
+                a.shoot(shot);
+                gameStates.set(gameStates.size()-1,new GameState(shootAction,gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),false));
+            }
+        }
+        // }
     }
 
     /**

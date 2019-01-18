@@ -11,9 +11,7 @@ public class Action {
         SHOT,MOVE
     }
 
-    public Action(ActionType type, Cell destination) throws InvalidActionTypeException {
-        this(type,destination,null);
-    }
+
     public Action(ActionType type, Cell destination, Amazon2D amazon2D) throws InvalidActionTypeException {
         if(type == type.MOVE){
             actionType = ActionType.MOVE;
