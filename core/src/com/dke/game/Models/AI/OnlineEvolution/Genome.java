@@ -1,13 +1,13 @@
 package com.dke.game.Models.AI.OnlineEvolution;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.MINMAX.TestBoard;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
-
+import com.dke.game.Models.AI.OnlineEvolution.Action.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -48,6 +48,11 @@ public class Genome implements Comparable{
 //        test.printBoard();
         generateGenome(initialBoard, genomeLength, currentPlayer);
 
+    }
+    private Genome(TestBoard initialBoard, Player player, ArrayList<Action> actionSequence, TestBoard newBoard){
+        initializeVariables(initialBoard.deepCopy(),player);
+        this.actionSequence = actionSequence;
+        this.gameStates.add(1,new GameState(actionSequence.get(1),));
     }
 
     /**
@@ -184,18 +189,47 @@ public class Genome implements Comparable{
         return board;
     }
     // TODO create crossover functionality
-    private void crossover(Genome g){
+    private Genome crossover(Genome g, TestBoard currentBoard){
         ArrayList<Action> gActions = g.getActionSequence();
-        boolean compatible = true;
-        for (int i = 0; i < actionSequence.size()-1; i++) {
-            if(gActions.get(i) != actionSequence.get(i)){
-                compatible = false;
+        TestBoard initialBoardG = g.initialState.getBoard().deepCopy();
+        TestBoard initialBoard = this.initialState.getBoard().deepCopy();
+//        boolean compatible = true;
+//        for (int i = 0; i < actionSequence.size()-1; i++) {
+//            if(gActions.get(i) != actionSequence.get(i)){
+//                compatible = false;
+//            }
+//        }
+//        int index = actionSequence.size()-1;
+//        if(compatible){
+//            actionSequence.add(index,gActions.get(gActions.size()-1));
+//        }
+        Cell crossMove = null;
+        Cell crossShot = null;
+        boolean performedMove = false;
+        for (Amazon2D amazon :
+                initialBoard.getAmazons()) {
+            for (Action a :
+                    gActions) {
+                if(a.getActionType() == ActionType.MOVE){
+                    crossMove = findCrossOption(amazon,initialBoard,a);
+                    if(crossMove != null){
+                        amazon.move(initialBoard.getBoard()[crossMove.getI()][crossMove.getJ()]);
+                        performedMove = true;
+                        for (Action action :
+                                this.actionSequence) {
+                            if(action.getActionType()==ActionType.SHOT) {
+                                crossShot = findCrossOption(amazon, initialBoard, action);
+                                if(crossShot != null){
+                                    return
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
-        int index = actionSequence.size()-1;
-        if(compatible){
-            actionSequence.add(index,gActions.get(gActions.size()-1));
-        }
+        return null;
     }
     //TODO create mutation functionality
     private void mutation(){
@@ -206,9 +240,23 @@ public class Genome implements Comparable{
             //mutate shot
         }
     }
-    //TODO create legality check for new moves produced by mutating and crossing over
-    private boolean checkLegal(){
-        return false;
+
+    /**
+     * return a cell if the amazons can make the proposed action
+     * @param amazon
+     * @param board
+     * @param action
+     * @return
+     */
+    private Cell findCrossOption(Amazon2D amazon, TestBoard board, Action action){
+        ArrayList<Cell> possibleMoves = amazon.possibleMoves(board);
+        for (Cell c :
+                possibleMoves) {
+            if(c.getI() == action.getDestination().getI() && c.getJ() == action.getDestination().getJ()){
+                return c;
+            }
+        }
+        return null;
     }
 
     //TODO method that performs the crossover and mutation on this (and some other) genome
