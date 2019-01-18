@@ -121,6 +121,7 @@ public class MenuView extends View {
 
     @Override
     public void render() {
+        super.handleInput();
         if (stage != null) {
             stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
             Gdx.input.setInputProcessor(stage);
