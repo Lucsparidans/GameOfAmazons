@@ -1,4 +1,7 @@
 package com.dke.game.Models.DataStructs;
+import com.dke.game.Models.GraphicalModels.Amazon2D;
+
+import java.util.ArrayList;
 
 /**
  * The cell class of which the array in the board class exists, this is basically a container for the datastructures we might need
@@ -10,6 +13,7 @@ public class Cell {
     private Coordinate topLeft, topRight, bottomRight, bottomLeft;
     private int i,j;
 
+    public Cell() {}
 
 
     public Cell(Piece content, Coordinate topLeft, Coordinate topRight, Coordinate bottomRight, Coordinate bottomLeft, int i, int j) {
@@ -91,6 +95,269 @@ public class Cell {
 
     public boolean getAvailable(){
         return isAvailable;
+    }
+
+    public int queenCells(Cell[][] cells) {
+        int whiteTer = 0;
+        int blackTer = 0;
+        int ter =0;
+        Cell[][] boardCoordinates = cells;
+        for(int i = 0; i<boardCoordinates.length; i++ ){
+            for(int j=0; j<boardCoordinates[0].length; j++){
+                if(!isOccupied()) {
+                    if(possibleCells(boardCoordinates, i, j) == 1){
+                        whiteTer++;
+                    }
+                    else if(possibleCells(boardCoordinates, i, j) == 2){
+                        blackTer++;
+                    }
+                }
+            }
+        }
+        ter = whiteTer - blackTer;
+
+        System.out.println("whiteter is: " + whiteTer);
+        System.out.println("blackter is: " + blackTer);
+        System.out.println("total ter is: " + ter);
+
+        return ter;
+    }
+
+    public int possibleCells(Cell[][] cells, int x, int y) {
+        int closest;
+        Cell[][] boardCoordinates = cells;
+        ArrayList<Cell> oneDisCells = new ArrayList<>();
+        boolean positive = true;
+        boolean negative = true;
+        boolean whiteQ = false;
+        boolean blackQ = false;
+
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            if (x + i >= boardCoordinates[0].length) {
+                positive = false;
+            }
+            if (x - i < 0) {
+                negative = false;
+            }
+            if (positive) {
+                if (boardCoordinates[x + i][y].isOccupied()) {
+                    if(boardCoordinates[x + i][y].getContent() instanceof Amazon2D){
+                        Amazon2D queen = (Amazon2D) boardCoordinates[x + i][y].getContent();
+                        if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                        }
+                        else if(queen.getSide() == 'B'){
+                            blackQ = true;
+                        }
+                        else{
+                            oneDisCells.add(boardCoordinates[x+i][y]);
+                        }
+
+                    }
+                }
+            }
+            if (negative) {
+                if (boardCoordinates[x - i][y].isOccupied()) {
+                    if(boardCoordinates[x - i][y].getContent() instanceof Amazon2D){
+                        Amazon2D queen = (Amazon2D) boardCoordinates[x - i][y].getContent();
+                        if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                        }
+                        else if(queen.getSide() == 'B'){
+                            blackQ = true;
+                        }
+                        else{
+                            oneDisCells.add(boardCoordinates[x-i][y]);
+                        }
+
+                    }
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ()].setAvailable("true");
+                }
+            }
+        }
+
+        positive = true;
+        negative = true;
+
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            if (i >= boardCoordinates.length) {
+                positive = false;
+            }
+            if (i < 0) {
+                negative = false;
+            }
+
+            if (positive) {
+                if (boardCoordinates[x][y + i].isOccupied()) {
+                    if(boardCoordinates[x][y + i].getContent() instanceof Amazon2D){
+                    Amazon2D queen = (Amazon2D) boardCoordinates[x][y + i].getContent();
+                         if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                         }
+                         else if(queen.getSide() == 'B'){
+                             blackQ = true;
+                         }
+                         else{
+                             oneDisCells.add(boardCoordinates[x][y + i]);
+                         }
+
+                    }
+                    //boardCoordinates[this.cell.getI()][this.cell.getJ() + i].setAvailable("true");
+                }
+            }
+
+            if (negative) {
+                if (boardCoordinates[x][y - i].isOccupied()) {
+                    if(boardCoordinates[x][y - i].getContent() instanceof Amazon2D){
+                        Amazon2D queen = (Amazon2D) boardCoordinates[x][y - i].getContent();
+                        if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                        }
+                        else if(queen.getSide() == 'B'){
+                            blackQ = true;
+                        }
+                        else{
+                            oneDisCells.add(boardCoordinates[x][y - i]);
+                        }
+
+                    }
+                    //boardCoordinates[this.cell.getI()][this.cell.getJ() - i].setAvailable("true");
+                }
+            }
+
+
+        }
+
+        positive = true;
+        negative = true;
+
+        for (int i = 0; i < boardCoordinates.length; i++) {
+
+            if (i >= boardCoordinates[0].length) {
+                positive = false;
+            }
+            if (i < 0) {
+                negative = false;
+            }
+            if (y + i >= boardCoordinates[0].length) {
+                positive = false;
+            }
+            if (y - i < 0) {
+                negative = false;
+            }
+
+            if (positive) {
+                if (boardCoordinates[x + i][y + i].isOccupied()) {
+                    if(boardCoordinates[x + i][y + i].getContent() instanceof Amazon2D){
+                        Amazon2D queen = (Amazon2D) boardCoordinates[x + i][y + i].getContent();
+                        if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                        }
+                        else if(queen.getSide() == 'B'){
+                            blackQ = true;
+                        }
+                        else{
+                            oneDisCells.add(boardCoordinates[x+i][y+i]);
+                        }
+
+                    }
+                    //boardCoordinates[this.cell.getI() + i][this.cell.getJ() + i].setAvailable("true");
+                }
+            }
+            if (negative) {
+                if (boardCoordinates[x - i][y - i].isOccupied()) {
+                    if(boardCoordinates[x - i][y - i].getContent() instanceof Amazon2D){
+                        Amazon2D queen = (Amazon2D) boardCoordinates[x - i][y - i].getContent();
+                        if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                        }
+                        else if(queen.getSide() == 'B'){
+                            blackQ = true;
+                        }
+                        else{
+                            oneDisCells.add(boardCoordinates[x+-i][y-i]);
+                        }
+
+                    }
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].setAvailable("true");
+                }
+            }
+
+
+        }
+
+        positive = true;
+        negative = true;
+
+        for (int i = 0; i < boardCoordinates.length; i++) {
+            if (x - i < 0) {
+                positive = false;
+            }
+            if (y + i >= boardCoordinates.length) {
+                positive = false;
+            }
+            if (y - i < 0) {
+                negative = false;
+            }
+            if (x + i >= boardCoordinates[0].length) {
+                negative = false;
+            }
+
+            if (positive) {
+                if (boardCoordinates[x - i][y + i].isOccupied()) {
+                    if(boardCoordinates[x - i][y + i].getContent() instanceof Amazon2D){
+                        Amazon2D queen = (Amazon2D) boardCoordinates[x - i][y + i].getContent();
+                        if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                        }
+                        else if(queen.getSide() == 'B'){
+                            blackQ = true;
+                        }
+                        else{
+                            oneDisCells.add(boardCoordinates[x-i][y+i]);
+                        }
+
+                    }
+                    // boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].setAvailable("true");
+                }
+            }
+
+            if (negative) {
+                if (boardCoordinates[x + i][y - i].isOccupied()) {
+                    if(boardCoordinates[x + i][y - i].getContent() instanceof Amazon2D){
+                        Amazon2D queen = (Amazon2D) boardCoordinates[x + i][y - i].getContent();
+                        if (queen.getSide() == 'W'){
+                            whiteQ = true;
+                        }
+                        else if(queen.getSide() == 'B'){
+                            blackQ = true;
+                        }
+                        else{
+                            oneDisCells.add(boardCoordinates[x+i][y-i]);
+                        }
+
+                    }
+                    //boardCoordinates[this.cell.getI() + i][this.cell.getJ() - i].setAvailable("true");
+                }
+            }
+        }
+
+        // if white queen is closer than black queen,, closest is equal to 1
+        if(whiteQ == true && blackQ == false){
+            closest = 1;
+        }
+
+        // if black queen is closer than white queen,, closest is equal to 2
+        else if(blackQ == true && whiteQ == false){
+            closest = 2;
+        }
+        else if(blackQ == true && whiteQ == true) {
+            for (Cell cell:oneDisCells) {
+               cell.possibleCells()
+            }
+        }
+        else { closest = 3;}
+        return closest;
     }
 
 

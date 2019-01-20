@@ -122,7 +122,7 @@ public abstract class Amazon extends Piece {
     }
 
     /* omg this is long not gonna read
-     *counts the territorry around a queen*/
+     *counts the territory around a queen*/
 
     public int[][] countTerritory(Cell[][] board) {
         int xPos = this.cell.getI();
@@ -592,6 +592,55 @@ public abstract class Amazon extends Piece {
 
     public int getIndex() {
         return index;
+    }
+
+    public int queensTerritory(Board2D board2D) {
+        return queensTerritory(board2D.getBoardCoordinates());
+    }
+
+    public int queensTerritor(TestBoard testBoard) {
+        return queensTerritory(testBoard.getBoard());
+    }
+
+    public int queensTerritory(Cell[][] board){
+        int queenTerritory = 0;
+        Cell[][] boardCoordinates = board;
+        int xPos = this.cell.getI();
+        int yPos = this.cell.getJ();
+        int[][] checkArray = new int[boardCoordinates.length][boardCoordinates[0].length];
+
+
+
+        return queenTerritory;
+    }
+
+    public int kingsTerritory(Board2D board2D) {
+        return kingsTerritory(board2D.getBoardCoordinates());
+    }
+
+    public int kingsTerritor(TestBoard testBoard) {
+        return kingsTerritory(testBoard.getBoard());
+    }
+
+    public int kingsTerritory(Cell[][] board){
+        Cell[][] boardCoordinates = board;
+        int whiteTerritory = 0;
+        int xPos = this.cell.getI();
+        int yPos = this.cell.getJ();
+        for(int i=0; i < boardCoordinates.length; i++ )
+            for(int j=0; j< boardCoordinates[0].length; j++) {
+                if(!boardCoordinates[i][j].isOccupied()){
+                    whiteTerritory++;
+                }
+            }
+        //use Dijkstra's algorithm or breadth-first search to find all the king's walking distances from every amazon to every empty cell
+
+
+        // if empty cell is closer to any white amazon than to any black amazon, whiteTerritory++
+        // if empty cell is closer to any black amazon than to any white amazon, whiteTerritory--
+
+        System.out.println("Territory of white is: " + whiteTerritory);
+        return whiteTerritory;
     }
 }
 
