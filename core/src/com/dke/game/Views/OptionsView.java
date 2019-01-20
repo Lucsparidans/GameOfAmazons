@@ -12,7 +12,6 @@ import com.dke.game.Controller.MainLoop;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
 import com.dke.game.Models.DataStructs.Board;
-import javafx.scene.control.ComboBox;
 
 import java.util.Arrays;
 
@@ -53,7 +52,7 @@ public class OptionsView extends View {
         table.add(debug);
         table.row();
 
-        String[] boardSizeOptions = {"10x10","5x6"};
+        String[] boardSizeOptions = {"5x6","10x10"};
         boardSize = new SelectBox<String>(skin);
         boardSize.setItems(boardSizeOptions);
         table.add(boardSize);

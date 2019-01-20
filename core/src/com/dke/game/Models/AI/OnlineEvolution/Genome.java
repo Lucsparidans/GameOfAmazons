@@ -202,7 +202,7 @@ public class Genome implements Comparable{
      * @throws InvalidActionTypeException
      */
 
-    private Genome crossover(Genome g) throws InvalidActionTypeException {
+    public Genome crossover(Genome g) throws InvalidActionTypeException {
         ArrayList<Action> gActions = g.getActionSequence();
         char side = gActions.get(0).getAmazon().getSide();
         TestBoard initialBoardG = g.initialState.getBoard().deepCopy();
@@ -292,7 +292,7 @@ public class Genome implements Comparable{
      * Mutation function
      * @throws InvalidActionTypeException
      */
-    private void mutation() throws InvalidActionTypeException{
+    public void mutate() throws InvalidActionTypeException{
 //        if(rnd.nextBoolean()){
 //            //mutate move
 //
@@ -320,6 +320,11 @@ public class Genome implements Comparable{
                 a.shoot(shot);
                 gameStates.set(gameStates.size()-1,new GameState(shootAction,gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),false));
             }
+        }
+        if(Evolution.debugPrinting){
+            System.out.println("Mutated board:");
+            currentBoard.printBoard();
+            System.out.println();
         }
         // }
     }

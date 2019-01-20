@@ -10,6 +10,7 @@ import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Main class for the online evolution algorithm
@@ -17,17 +18,19 @@ import java.util.Arrays;
 public class Evolution implements Algorithm {
     private TestBoard initialBoard;
     private Genome[] population;
-    private int generations =1;
-    private int popSize =100;
-
+    private int generations;
+    private int popSize;
+    private Random rnd;
     private final int genomeLength = 0;
     private Move best;
-    private final int threshold = popSize/2;
+    private int threshold;
     private int genCount = 0;
     private Player player;
     private GameLoop gameLoop;
     private Thread genThread;
-    public static boolean debugPrinting = false;
+    private float mutationRate = 0.5f;
+    private float crossovers = popSize/10;
+    public static boolean debugPrinting = true;
 
     /**
      * Constructor
@@ -40,21 +43,27 @@ public class Evolution implements Algorithm {
 
     private void updateVariablesPhase(){
         if(GameLoop.PHASE == GameLoop.Phase.BEGIN){
-            generations = 5;
-            genCount = 300;
+            this.generations = 2;
+            this.popSize = 2;
+            this.threshold = popSize/2;
+            this.population = new Genome[popSize];
             if(debugPrinting) {
                 System.out.println("Begin phase");
             }
         }else if(GameLoop.PHASE == GameLoop.Phase.MIDDLE){
             generations = 5;
-            genCount = 500;
+            popSize = 500;
+            this.threshold = popSize/2;
+            this.population = new Genome[popSize];
             if(debugPrinting) {
                 System.out.println("Middle phase");
             }
         }
         else if(GameLoop.PHASE == GameLoop.Phase.END){
             generations = 6;
-            genCount = 700;
+            popSize = 700;
+            this.threshold = popSize/2;
+            this.population = new Genome[popSize];
             if(debugPrinting) {
                 System.out.println("End phase");
             }
@@ -71,7 +80,7 @@ public class Evolution implements Algorithm {
         initialBoard = new TestBoard(amazons,arrows);
         population = new Genome[popSize];
         this.gameLoop = gameLoop;
-
+        this.rnd = new Random();
 
 
     }
@@ -90,12 +99,23 @@ public class Evolution implements Algorithm {
                 printGenCount();
             }
             if (gen > 0) {
-                for (int i = 0; i < threshold; i++) {
-                    if(Evolution.debugPrinting) {
-                        System.out.printf("new Population: %d" +
-                                "\n", i + 1);
+                if(popSize == 1){
+                    for (int i = 0; i < popSize; i++) {
+                        if (Evolution.debugPrinting) {
+                            System.out.printf("new Population: %d" +
+                                    "\n", i + 1);
+                        }
+                        population[i] = new Genome(initialBoard.deepCopy(), genomeLength, player);
                     }
-                    population[i] = new Genome(initialBoard.deepCopy(), genomeLength, player);
+                }
+                else {
+                    for (int i = 0; i < threshold; i++) {
+                        if (Evolution.debugPrinting) {
+                            System.out.printf("new Population: %d" +
+                                    "\n", i + 1);
+                        }
+                        population[i] = new Genome(initialBoard.deepCopy(), genomeLength, player);
+                    }
                 }
             } else {
                 for (int i = 0; i < popSize; i++) {
@@ -106,6 +126,7 @@ public class Evolution implements Algorithm {
                     population[i] = new Genome(initialBoard.deepCopy(), genomeLength, player);
                 }
             }
+
             for (Genome g :
                     population) {
                 if (bestGenome == null) {
@@ -127,11 +148,31 @@ public class Evolution implements Algorithm {
                 System.out.printf("                     Sorted array:\n");
                 System.out.println("###############################################################");
                 System.out.println();
-
-                for (int i = 0; i < population.length; i++) {
-                    System.out.printf("Population %d has value: %f\n",i,population[i].getEval());
+            }
+            for (int i = 0; i < popSize * mutationRate; i++) {
+                try {
+                    population[rnd.nextInt(popSize)].mutate();
+                } catch (Action.InvalidActionTypeException e) {
+                    e.printStackTrace();
                 }
             }
+//                for (int i = 0; i < crossovers; i++) {
+//
+//                }
+            Arrays.sort(population);
+            if(population[popSize-1].getEval() > bestGenome.getEval()){
+                best = population[popSize-1].getMove();
+            }
+            if(Evolution.debugPrinting) {
+                for (int i = 0; i < population.length; i++) {
+                    System.out.println("###############################################################");
+                    System.out.printf("                    New Sorted array:\n");
+                    System.out.println("###############################################################");
+                    System.out.println();
+                    System.out.printf("Population %d has value: %f\n", i, population[i].getEval());
+                }
+            }
+
             this.best = bestGenome.getMove();
         }
 

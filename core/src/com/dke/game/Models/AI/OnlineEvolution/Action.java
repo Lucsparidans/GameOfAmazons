@@ -20,6 +20,7 @@ public class Action {
         }else if(type == type.SHOT){
             actionType = ActionType.SHOT;
             this.destination = destination;
+            this.amazon = amazon2D;
         }else{
             throw new InvalidActionTypeException("Invalid ActionType");
         }
