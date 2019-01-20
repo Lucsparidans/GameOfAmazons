@@ -252,8 +252,9 @@ public class Genome implements Comparable{
                     }
                 }
             }
-
-            return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), true);
+            if(!actionSequence.isEmpty() && actionSequence.size()==1){
+                return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), true);
+            }
         }
         else{
             for (Amazon2D amazon :
@@ -282,12 +283,14 @@ public class Genome implements Comparable{
                     }
                 }
             }
-
-            return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), false);
+            if(!actionSequence.isEmpty() && actionSequence.size()==2) {
+                return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), false);
+            }
         }
+return null;
     }
 
-    //TODO create mutation functionality
+    //TODO create mutation for moves
     /**
      * Mutation function
      * @throws InvalidActionTypeException
