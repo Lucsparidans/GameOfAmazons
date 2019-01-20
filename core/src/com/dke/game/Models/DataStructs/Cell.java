@@ -9,8 +9,24 @@ public class Cell {
     public static int CELL_SIZE = 50;
     private Coordinate topLeft, topRight, bottomRight, bottomLeft;
     private int i,j;
+    public  String belongsTo;
+    public int moveNum;
 
+    public int getMoveNum() {
+        return moveNum;
+    }
 
+    public void setMoveNum(int moveNum) {
+        this.moveNum = moveNum;
+    }
+
+    public String getMoveID() {
+        return belongsTo;
+    }
+
+    public void setMoveID(String moveID) {
+        this.belongsTo = moveID;
+    }
 
     public Cell(Piece content, Coordinate topLeft, Coordinate topRight, Coordinate bottomRight, Coordinate bottomLeft, int i, int j) {
         this.content = content;

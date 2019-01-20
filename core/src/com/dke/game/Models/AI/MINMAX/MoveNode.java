@@ -5,6 +5,7 @@ import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
+import com.dke.game.Models.GraphicalModels.Board2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -240,6 +241,61 @@ Heuristics
         }
         return value;
 
+    }
+   public int countMove=0;
+    public void realDeealHeuristics(Amazon amazon,ArrayList<Amazon> allQueens, Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
+        //ArrayList<> allqueens= ourQueens + enemyQueens;
+
+        //for every queen
+        for (Amazon Q: ourQueens) {
+            //get possible moves
+            ArrayList<Cell> possibleMoves = Q.getPossibleMoves();
+            //mark every cell in the possible moves list as 1 (so moveNum=1)
+            for (Cell C : possibleMoves) {
+                //if cell not occupied
+                //and if cell not marked
+                if (!C.isOccupied()) {
+                    checkTiles(C);
+
+                }
+
+            }
+        }
+
+             //for every cell in the possible moves make a recursion 4 deep
+            //if cell marked
+        //mark all those unmarked cells with adequate moveID
+        //
+
+
+
+
+
+    }
+
+    public void checkTiles(Cell C) {
+        if (C.getMoveID() == null) {
+            //can't detect if conflicting the enemy q so moveID changed to string
+            C.setMoveID("W");
+            C.setMoveNum(countMove + 1);
+        }//if cell already marked,
+        // if cell moveID and moveNum of our queen = to cell moveID and moveNum of the enemy,
+        // then moveID of that cell is 0.
+        else if (C.getMoveID() != "W" && C.getMoveNum() == countMove + 1) {
+            C.setMoveNum(0);//for not existss
+
+
+        } //if cell already marked by black,
+        //and if cell moveNum > our potential moveNum
+        //reset movNum to the potential one
+        else if (C.getMoveID() != "W" && C.getMoveNum() > countMove + 1) {
+            C.setMoveNum(countMove + 1);
+
+                   /* }else if(C.getMoveID()!="W"&& C.getMoveNum()<countMove+1){
+                     continue;
+                    }*/
+            //cover the same side conflicting parts
+        }
     }
     //</editor-fold>
 }
