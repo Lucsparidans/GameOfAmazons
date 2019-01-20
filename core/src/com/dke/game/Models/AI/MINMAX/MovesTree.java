@@ -45,6 +45,7 @@ Constructor
             for (Move m : possibleMoves) {
                 nodeCheck++;
                 System.out.println(nodeCheck + " Nodes created");
+                //System.out.println(nodeCheck);
                 MoveNode child = new MoveNode(m, current);
                 // child.setParent(current); //
                 current.addChild(child);

@@ -101,6 +101,7 @@ public class MoveNode {
         this.createCurrentState(this,testBoard);
         //testBoard.printBoard();
         this.value = evaluateState(player, testBoard);
+        //this.value = evaluateQueens(player, testBoard);
         this.data.setValue(this.value);
         testBoard.resetMoves();
     }
@@ -109,7 +110,34 @@ public class MoveNode {
     sub-memthod to othe  evaluate node method, this returns the value of the heuristic evaluation.
      */
     private double evaluateState(AI playerAI, TestBoard testBoard) {
+        // mobility(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
         if(this.data != null) {
+            if (this.getData().isPlayerMaximizing(playerAI)) {
+                // double val = mobility(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+                double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+                //System.out.println(val);
+                return val;
+            } else {
+
+                //double val = mobility(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+                double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
+                //System.out.println(val);
+                return val;
+            }
+
+        }
+        return  0;
+    }
+
+    private double evaluateQueens(AI playerAI, TestBoard testBoard) {
+        if (this.data != null) {
+            if (this.getData().isPlayerMaximizing(playerAI)) {
+               // double val = queenCells(testBoard.getBoard());
+                return val;
+            } else {
+                //double val = queenCells(testBoard.getBoard());
+                return val;
+            }
 //            if (this.getData().isPlayerMaximizing(playerAI)) {
 //                double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
 //                //System.out.println(val);
@@ -121,7 +149,7 @@ public class MoveNode {
 //            }
             return random.nextDouble();
         }
-        return  0;
+        return 0;
     }
     /*
     Because the node only contains a move object which describes the action that takes us from the state in the parent-node to the state in this node.
@@ -132,7 +160,7 @@ public class MoveNode {
      */
     public void createCurrentState(MoveNode node, TestBoard testBoard) {
 //
-        
+
         MoveNode cur = node;
         Stack<MoveNode> path = new Stack<>();
         path.push(cur);
@@ -147,9 +175,9 @@ public class MoveNode {
             }
         }
     }
-/*
-Heuristics
- */
+    /*
+    Heuristics
+     */
     //<editor-fold desc="Heuristics">
     //calculating the score for the node
     private double positioHheuristics(TestBoard testBoard, Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
@@ -298,4 +326,106 @@ Heuristics
         }
     }
     //</editor-fold>
+
+
+
+    /*
+    kingsMoves is a method that will decide which move wins most territory according to how the king (in chess) moves
+    Cells closest to your amazons are your territory, the delta of before and after must be maximized
+    kingsMoves is best used in the beginning
+    */
+    private double kingsMoves(TestBoard testBoard, Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
+        double delta = 0;
+
+        //Call kingsTerritory in Amazon to calculate the territory ratio on the current board.
+        //try every move on the testboard and call the kingsTerritory on the testboard.
+        //Determine which change is the most positive
+
+        return delta;
+    }
+
+
+    /*
+    queensMoves is a method that will decide which move wins the most territory according to how the amazons can move.
+    Cells closest to your amazons are your territory, the delta of before and after must be maximized
+    queensMoves is best used in the beginning
+     */
+    // private double queensMoves(TestBoard testBoard, Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
+
+    //}
+
+    public double heuristics(Player p){
+        char side = p.getSide();
+        double result = 0;
+        boolean white = true;
+
+        if(side == 'B'){
+            white = false;
+        }
+
+
+        return result;
+    }
+
+    public double mobility(TestBoard testBoard, boolean whiteTurn) {
+        Amazon2D[] myAmazons = new Amazon2D[4];
+        Amazon2D[] enemyAmazons = new Amazon2D[4];
+        int w = 0;
+        int b = 0;
+        if(whiteTurn) {
+            for (Amazon2D a :
+                    testBoard.getAmazons()) {
+                if (a.getSide() == 'W') {
+                    myAmazons[w] = a;
+                    w++;
+                } else {
+                    enemyAmazons[b] = a;
+                    b++;
+                }
+            }
+        }
+        else{
+            for (Amazon2D a :
+                    testBoard.getAmazons()) {
+                if (a.getSide() == 'B') {
+                    myAmazons[b] = a;
+                    b++;
+                } else {
+                    enemyAmazons[w] = a;
+                    w++;
+                }
+            }
+        }
+        return mobility(testBoard.getBoard(), myAmazons,enemyAmazons);
+    }
+
+    public double mobility(Cell[][] board, Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
+        double ourMob = 0;
+        double oppMob = 0;
+        double mob = 0;
+
+        for (Amazon2D Q: ourQueens) {
+
+            ArrayList<Cell> moves = Q.getPossibleMoves();
+            ourMob = ourMob + moves.size();
+        }
+        for (Amazon2D Q: enemyQueens) {
+
+            ArrayList<Cell> moves = Q.getPossibleMoves();
+            oppMob = oppMob + moves.size();
+
+        }
+        mob = ourMob - oppMob;
+/*
+        System.out.println("white mobility is: " + ourMob);
+        System.out.println("Black mobility is: " + oppMob);
+        System.out.println("mobility is: " + mob);
+*/
+        // If mob is positive, white has the advantage, if it's negative black has the advantage.
+
+        return mob;
+    }
+
+
+
 }
