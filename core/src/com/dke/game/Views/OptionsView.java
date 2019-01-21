@@ -7,9 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.dke.game.Controller.MainLoop;
-import com.dke.game.Controller.Player.AI;
-import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
 import com.dke.game.Models.DataStructs.Board;
@@ -22,9 +21,13 @@ public class OptionsView extends View {
 
     private Stage stage;
     private TextButton textButton;
+    private TextButton playerSetup;
+    private TextButton generalSettings;
+    private TextButton videoSettings;
     private CheckBox debug;
     private CheckBox opponentModeling;
     private CheckBox opponentModeling2;
+    private MenuView menuView;
     private SelectBox<String> boardSize;
     private SelectBox<String> algorithms;
     private SelectBox<String> algorithms2;
@@ -36,10 +39,14 @@ public class OptionsView extends View {
     public static boolean OPPONENT_MODELING_2 = false;
 
 
-    protected OptionsView(ViewManager viewManager, String p1, String p2) {
+    protected OptionsView(ViewManager viewManager, MenuView menuView) {
         super(viewManager);
-        this.p1 = p1;
-        this.p2 = p2;
+        this.menuView = menuView;
+        //-----------------------
+        //Default setting
+        this.p1 = "Human";
+        this.p2 = "Human";
+        //-----------------------
     }
 
     @Override
@@ -51,10 +58,40 @@ public class OptionsView extends View {
     public void create() {
         stage = new Stage();
 
+        Table settings = new Table();
+        settings.setFillParent(true);
+        settings.left().padLeft(20);
+        //settings.debugAll();
+
+        generalSettings = new TextButton("General settings", skin, "menu");
+        generalSettings.getLabel().setAlignment(Align.left);
+        settings.add(generalSettings).width(200);
+        settings.row();
+
+        playerSetup = new TextButton("Player-setup", skin, "menu");
+        playerSetup.getLabel().setAlignment(Align.left);
+        settings.add(playerSetup).fillX();
+        settings.row();
+
+        videoSettings = new TextButton("Video settings", skin, "menu");
+        videoSettings.getLabel().setAlignment(Align.left);
+        settings.add(videoSettings).fillX();
+        settings.row();
+
+
+//        settings = new List(MainLoop.skin);
+//        String[] settingsContent = {"General settings","Player-Setup","Video Settings"};
+//        settings.setItems(settingsContent);
+//
+//        Table menuBar = new Table();
+//        menuBar.left();
+//        menuBar.setFillParent(true);
+//        menuBar.add(settings);
 
         Table table = new Table();
         Table titleTable = new Table();
         titleTable.top();
+
         Label title = new Label("Options Menu", skin,"title");
         titleTable.add(title).padTop(200);
         //table.row();
@@ -67,7 +104,7 @@ public class OptionsView extends View {
         table.row();
 
         String[] boardSizeOptions = {"5x6","10x10"};
-        boardSize = new SelectBox<String>(skin);
+        boardSize = new SelectBox<>(skin);
         boardSize.setItems(boardSizeOptions);
         table.add(boardSize).uniform();
         table.row();
@@ -113,25 +150,9 @@ public class OptionsView extends View {
 //        table.debugAll();
         table.setFillParent(true);
         titleTable.setFillParent(true);
-        //float pad = 1/100f * stage.getWidth();
-
-
-
-//        List settings = new List(MainLoop.skin);
-//        String[] settingsContent = {"Settings", "Difficulty", "Player-Setup", "Video-Settings"};
-//        settings.setItems(settingsContent);
-//
-//
-//
-//// align all actors to the top of the screen
-//        Table menuBar = new Table();
-//        menuBar.setFillParent(true);
-//        menuBar.add(settings).expand().left().fillY(); // set to screen width
-//
-//        stage.addActor(menuBar);
-
 
         createListeners();
+        stage.addActor(settings);
         stage.addActor(titleTable);
         stage.addActor(table);
     }
