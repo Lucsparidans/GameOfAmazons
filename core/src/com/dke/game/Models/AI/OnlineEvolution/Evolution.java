@@ -59,12 +59,12 @@ public class Evolution implements Algorithm {
 
     private void updateVariablesPhase() {
         if (GameLoop.PHASE == GameLoop.Phase.BEGIN) {
-            this.generations = 1;
-            this.popSize = 2;
-            this.threshold = popSize / 2;
-            crossovers = popSize / 4;
-            this.compPopSize = 4;
-            this.compGenerations = 2;
+            this.generations = 1;                           //Number of generation for the evolution
+            this.popSize = 2;                               //Number of elements in each population in this evolution
+            this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
+            crossovers = popSize / 4;                       //Number of crossovers
+            this.compPopSize = 4;                           //Number of elements in the coevolution populations
+            this.compGenerations = 2;                       //Number of generations generated in the coevolution
             this.population = new Genome[popSize];
         } else if (GameLoop.PHASE == GameLoop.Phase.MIDDLE) {
             generations = 5;
