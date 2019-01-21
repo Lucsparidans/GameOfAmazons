@@ -23,6 +23,8 @@ public class OptionsView extends View {
     private TextButton textButton;
     private CheckBox debug;
     private SelectBox<String> boardSize;
+    private SelectBox<String> algorithms;
+    public static String SELECTED_ALGORITHM = "Evolution";
 
 
     protected OptionsView(ViewManager viewManager) {
@@ -56,6 +58,12 @@ public class OptionsView extends View {
         boardSize = new SelectBox<String>(skin);
         boardSize.setItems(boardSizeOptions);
         table.add(boardSize);
+        table.row();
+
+        String[] algorithmOptions = {"Evolution", "Greedy", "Alpha-beta", "Monte-Carlo"};
+        algorithms = new SelectBox<String>(skin);
+        algorithms.setItems(algorithmOptions);
+        table.add(algorithms);
         table.row();
 
 
@@ -103,6 +111,7 @@ public class OptionsView extends View {
                 else if(boardSize.getSelected().equals("5x6")){
                     Board.boardSize = Board.BoardSize.FIVExSIX;
                 }
+                SELECTED_ALGORITHM = algorithms.getSelected();
                 viewManager.pop();
             }
         });

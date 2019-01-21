@@ -11,6 +11,7 @@ import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 import com.dke.game.Views.GameView;
+import com.dke.game.Views.OptionsView;
 import com.dke.game.Views.ScoreView;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class GameLoop {
             this.viewManager = viewManager;
             arrow = new ArrayList<>();
             initialiseGame();
-            algo = new Evolution(amazons, arrow, this, true);
+            setAlgorithm();
             gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
             createPlayers(white_Type, black_Type, gameView);
             gameView.setPlayers(white, black);
@@ -58,6 +59,23 @@ public class GameLoop {
 
         }
     }
+
+    //TODO implement this
+    private void setAlgorithm(){
+        if(OptionsView.SELECTED_ALGORITHM.equals("Evolution")) {
+            algo = new Evolution(amazons, arrow, this, false);
+        }
+        else if(OptionsView.SELECTED_ALGORITHM.equals("Greedy")){
+            //algo = ;
+        }
+        else if(OptionsView.SELECTED_ALGORITHM.equals("Alpha-Beta")){
+            //algo = ;
+        }
+        else if(OptionsView.SELECTED_ALGORITHM.equals("Monte-Carlo")){
+            //algo = ;
+        }
+    }
+
 
     public GameLoop(ViewManager viewmanager) {
         this(viewmanager, "Human", "Human");

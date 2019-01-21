@@ -36,7 +36,7 @@ public class Evolution implements Algorithm {
     private float mutationRate = 0.1f;
     private float crossovers;
     private boolean competitiveCoevolution;
-    private boolean debug = true;
+    private boolean debug = false;
     public static boolean debugPrinting = true;
 
     /**
@@ -49,6 +49,7 @@ public class Evolution implements Algorithm {
     }
     public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution,int compGenerations, int compPopSize, Genome[] parentPopulation){
         initializeVariables(amazons,arrows,gameLoop,competitiveCoevolution);
+        //Below initializing the variables for the coevolution because values are different from the updateVariablesPhase() method.
         this.generations = compGenerations;
         this.popSize = compPopSize;
         this.population = new Genome[popSize];
