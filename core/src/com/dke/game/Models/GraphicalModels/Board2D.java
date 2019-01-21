@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.*;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class Board2D extends Board {
@@ -24,16 +26,18 @@ public class Board2D extends Board {
     //private final int MARGAIN_BACKGROUND = Cell.CELL_SIZE;
     private static BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/font.fnt"));
     private Cell[][] boardCoordinates;
+    private Stack<Move> executedMoves = new Stack<>();
 
     //private final float CAP_HEIGHT = font.getData().capHeight;
 
     //draw
-    public Board2D() {
+    public Board2D() throws IllegalBoardDimensionsException {
         this(new ShapeRenderer());
     }
 
     //draw
-    public Board2D(ShapeRenderer shapeRenderer) {
+    public Board2D(ShapeRenderer shapeRenderer) throws IllegalBoardDimensionsException {
+        super();
         this.shapeRenderer = shapeRenderer;
         font.setColor(Color.BLACK);
         font.getData().setScale(1);
@@ -129,6 +133,30 @@ public class Board2D extends Board {
         }
     }
 
+    public void executeMove(Move move){
+        Amazon2D a = move.getQueen();
+        a.move(move.getQueenTo());
+        a.shoot(move.getArrowTo());
+        executedMoves.push(move);
+    }
+    public void resetMoves(){
+        while (!executedMoves.empty()){
+            Move m = executedMoves.pop();
+            m.getQueen().undoShot();
+            m.getQueen().undoMove();
+        }
+    }
+    public void printBoard() {
+        for (int j = boardCoordinates[0].length-1; j >= 0 ; j--) {
+            System.out.print("|");
+            for (int i = 0; i < boardCoordinates.length; i++) {
+                System.out.print(this.boardCoordinates[i][j].getContentType() + "|");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+    }
     public Cell[][] getBoardCoordinates() {
         return boardCoordinates.clone();
     }
@@ -140,7 +168,7 @@ public class Board2D extends Board {
     /*@return a matrix with locations of pieces
      * occupied or not*/
     public Cell[][] getBoard() {
-        return super.board.clone();
+        return this.boardCoordinates.clone();
     }
 
     private int calcBoardHeight() {

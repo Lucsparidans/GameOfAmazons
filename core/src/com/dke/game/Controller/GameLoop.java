@@ -4,8 +4,7 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
-import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
+import com.dke.game.Models.AI.OnlineEvolution.Evolution;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -31,8 +30,10 @@ public class GameLoop {
     private Player white;
     private Player black;
     private Player currentPlayer;
-    //private Algorithm algo = new MiniMax();
-    public Algorithm algo;
+    private Algorithm algo;
+    public static Phase PHASE = Phase.BEGIN;
+    public static final int END_BEGIN = 10;
+    public static final int END_MID = 30;
 
 
     // get current board
@@ -41,18 +42,21 @@ public class GameLoop {
     }
     // another constructor to avoid static fields
     public GameLoop(ViewManager viewManager, String white_Type, String black_Type) {
-        this.viewManager = viewManager;
-        arrow = new ArrayList<>();
-        initialiseGame();
-        gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
-        createPlayers(white_Type, black_Type, gameView);
-        gameView.setPlayers(white, black);
-        gameView.getStage().addActor(board2D);
-        algo = new ChristmasCarlo('B',2,2700,true);
-        placePieces();
-        this.viewManager.push(gameView);
-        currentPlayer = white;
-        running = true;
+        synchronized (this) {
+            this.viewManager = viewManager;
+            arrow = new ArrayList<>();
+            initialiseGame();
+            algo = new Evolution(amazons, arrow, this, true);
+            gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
+            createPlayers(white_Type, black_Type, gameView);
+            gameView.setPlayers(white, black);
+            gameView.getStage().addActor(board2D);
+            placePieces();
+            this.viewManager.push(gameView);
+            currentPlayer = white;
+            running = true;
+
+        }
     }
 
     public GameLoop(ViewManager viewmanager) {
@@ -61,13 +65,6 @@ public class GameLoop {
 
     //Thread stuff
     private void createPlayers(String white_Type, String black_Type, GameView gameView) {
-        //THIS IS BAD CODING::: TODO IMPROVE
-        algo = new ChristmasCarlo('B',2,2700, true);
-        if(algo == null){System.out.println("null yeet feut");}
-        System.out.println(algo.getClass().getSimpleName());
-        ////
-        ////
-        System.out.println("Created players");
         if (white_Type.equals("Human")) {
             if (black_Type.equals("AI")) {
                 white = new Human('W', gameView, this);
@@ -85,6 +82,10 @@ public class GameLoop {
                 black = new Human('B', gameView, this);
             }
         }
+    }
+
+    public enum Phase{
+        BEGIN,MIDDLE,END;
     }
 
     public ArrayList<Arrow2D> getArrows() {
@@ -119,7 +120,6 @@ public class GameLoop {
                 running = false;
             }
         }
-
 
 
     }

@@ -78,6 +78,7 @@ public class ScoreView extends View {
 
     @Override
     public void render() {
+        super.handleInput();
         if (this.stage != null) {
             this.stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
             Gdx.input.setInputProcessor(stage);

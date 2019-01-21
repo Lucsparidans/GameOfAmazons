@@ -124,6 +124,7 @@ public class Human extends Player {
                         selectedAmazon.shoot(test);
                         Ui.clear();
                         phase = 1;
+                        selectedAmazon = null;
                     }
                 }
             }

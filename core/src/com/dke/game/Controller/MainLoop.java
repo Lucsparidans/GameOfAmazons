@@ -17,7 +17,6 @@ public class MainLoop extends ApplicationAdapter {
     public static Skin skin;
 
 
-
     @Override //Method that initialises the whole program
     public void create() {
 
@@ -34,10 +33,8 @@ public class MainLoop extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            viewManager.peek().render();
-            if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-                Gdx.app.exit();
-            }
+        viewManager.peek().render();
+
     }
 
 

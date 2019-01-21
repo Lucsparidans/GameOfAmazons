@@ -1,8 +1,6 @@
-package com.dke.game.Models.AI.Luc;
+package com.dke.game.Models.AI.MINMAX;
 
 
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +12,16 @@ public class Node<T> {
     private List<Node<T>> children = new ArrayList<Node<T>>();
 
     private Node<T> parent = null;
+    private final int DEPTH;
 
 
-    public Node(T data) {
+    public Node(T data, Node<T> parent) {
+        this.parent = parent;
         this.data = data;
-
+        this.DEPTH = this.getDepth();
+    }
+    public Node(Node<T> parent){
+        this(null,parent);
     }
 
     public Node getRoot() {
@@ -40,7 +43,7 @@ public class Node<T> {
     public void addChildren(List<Node<T>> children) {
         // Finish this method
         this.children.addAll(children);
-        for (Node child:children) {
+        for (Node child : children) {
             child.setParent(this);
         }
     }
@@ -70,30 +73,22 @@ public class Node<T> {
         return this.parent;
     }
 
-    public int getDepth() {
-//        if (root == null) {
-//            return 0;
-//        }
-//        int h = 0;
-//
-//        for (Node<T> n : root.getChildren()) {
-//            h = Math.max(h, getDepth(n));
-//        }
-//        return h + 1;
-        int counter = 0;
-        Node<T> cur;
+    private int getDepth() {
+        int count = 0;
+        Node<T> current;
 
-        if(this.getParent() != null){
-            cur=this.getParent();
-            counter++;
-            while(cur.getParent()!=null){
-                counter++;
-                cur = cur.parent;
+        if (this.getParent() != null) {
+            current = this.getParent();
+            count++;
+            while (current.getParent() != null) {
+                current = current.parent;
+                count++;
             }
         }
-        return 0;
+        return count;
     }
 
-
-
+    public int getDEPTH() {
+        return DEPTH;
+    }
 }
