@@ -1,6 +1,7 @@
 package com.dke.game.Models.AI.MINMAX;
 
 import com.dke.game.Controller.Player.AI;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.DataStructs.Move;
 
@@ -30,7 +31,7 @@ public class MiniMax implements Algorithm {
     }
 
     @Override
-    public void initialize(AI p) {
+    public void initialize(Player p) {
 
     }
 

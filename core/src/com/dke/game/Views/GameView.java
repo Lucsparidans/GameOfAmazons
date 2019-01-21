@@ -172,7 +172,7 @@ synchronized (this) {//<-thread stuff
 
     }
     private void setPhase(){
-        if(turnCounter == 0){
+        if(turnCounter >= 0){
             GameLoop.PHASE = GameLoop.Phase.BEGIN;
         }
         else if (this.turnCounter>=GameLoop.END_BEGIN && this.turnCounter< GameLoop.END_MID){
@@ -190,7 +190,6 @@ synchronized (this) {//<-thread stuff
             gameLoop.update();
 
             if (Gdx.input.justTouched() || repeat) {
-
                 setPhase();
                 if(turnCounter%2==0){
 

@@ -409,6 +409,10 @@ return null;
         return actionSequence;
     }
 
+    public TestBoard getCurrentBoard() {
+        return currentBoard;
+    }
+
     /**
      * Comparable interface for sorting purposes
      * @param o

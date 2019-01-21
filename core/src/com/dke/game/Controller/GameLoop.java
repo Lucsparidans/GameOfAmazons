@@ -33,7 +33,7 @@ public class GameLoop {
     private Algorithm algo;
     public static Phase PHASE = Phase.BEGIN;
     public static final int END_BEGIN = 10;
-    public static final int END_MID = 20;
+    public static final int END_MID = 30;
 
 
     // get current board
@@ -46,7 +46,7 @@ public class GameLoop {
             this.viewManager = viewManager;
             arrow = new ArrayList<>();
             initialiseGame();
-            algo = new Evolution(amazons, arrow, this);
+            algo = new Evolution(amazons, arrow, this, false);
             gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
             createPlayers(white_Type, black_Type, gameView);
             gameView.setPlayers(white, black);

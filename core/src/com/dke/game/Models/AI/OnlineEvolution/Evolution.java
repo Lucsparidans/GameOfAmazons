@@ -19,17 +19,23 @@ public class Evolution implements Algorithm {
     private TestBoard initialBoard;
     private Genome[] population;
     private int generations;
+    private int compGenerations;
+    private int compPopSize;
+    private Genome[] parentPopulation;
+    private int numberCompGens = 1;
     private int popSize;
     private Random rnd;
     private final int genomeLength = 0;
-    private Move best;
+    private Genome best;
     private int threshold;
     private int genCount = 0;
+    private int compGenCount = 0;
     private Player player;
+    private Player opponent;
     private GameLoop gameLoop;
-    private Thread genThread;
     private float mutationRate = 0.1f;
     private float crossovers;
+    private boolean competitiveCoevolution;
     public static boolean debugPrinting = true;
 
     /**
@@ -37,13 +43,19 @@ public class Evolution implements Algorithm {
      * @param amazons
      * @param arrows
      */
-    public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop) {
-        initializeVariables(amazons, arrows, gameLoop);
+    public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution) {
+        initializeVariables(amazons, arrows, gameLoop, competitiveCoevolution);
+    }
+    public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution,int compGenerations, int compPopSize, Genome[] parentPopulation){
+        initializeVariables(amazons,arrows,gameLoop,competitiveCoevolution);
+        this.compGenerations = compGenerations;
+        this.compPopSize = compPopSize;
+        this.parentPopulation = parentPopulation;
     }
 
     private void updateVariablesPhase(){
         if(GameLoop.PHASE == GameLoop.Phase.BEGIN){
-            this.generations = 5;
+            this.generations = 4;
             this.popSize = 100;
             this.threshold = popSize/2;
             crossovers = popSize /4;
@@ -61,6 +73,7 @@ public class Evolution implements Algorithm {
                 System.out.println("Middle phase");
             }
         }
+        //TODO second move already is ending phase
         else if(GameLoop.PHASE == GameLoop.Phase.END){
             generations = 6;
             popSize = 700;
@@ -78,13 +91,13 @@ public class Evolution implements Algorithm {
      * @param amazons
      * @param arrows
      */
-    private void initializeVariables(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop){
+    private void initializeVariables(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution){
 
         initialBoard = new TestBoard(amazons,arrows);
         population = new Genome[popSize];
         this.gameLoop = gameLoop;
         this.rnd = new Random();
-
+        this.competitiveCoevolution = competitiveCoevolution;
 
     }
 
@@ -188,7 +201,20 @@ public class Evolution implements Algorithm {
                 }
             }
 
-            this.best = bestGenome.getMove();
+            this.best = bestGenome;
+        }
+        if(this.competitiveCoevolution){
+            Genome[] opponentBest = new Genome[numberCompGens];
+            Evolution[] ourBest = new Evolution[numberCompGens];
+            for (int i = 0; i < numberCompGens; i++) {
+                opponentBest[i] = parentPopulation[(parentPopulation.length-1)-i];
+            }
+            for (int i = 0; i < ourBest.length; i++) {
+                TestBoard curOppBoard = opponentBest[i].getCurrentBoard();
+                ourBest[i] = new Evolution(curOppBoard.getAmazons(),curOppBoard.getArrows(),this.gameLoop,false,compGenerations,compPopSize,population);
+                ourBest[i].initialize(opponent);
+            }
+
         }
 
         return population;
@@ -212,7 +238,7 @@ public class Evolution implements Algorithm {
             }
             return gens;
         }
-    return g;
+        return g;
     }
 
 
@@ -229,7 +255,7 @@ public class Evolution implements Algorithm {
         updateVariablesPhase();
         updateInitialBoard(player.getGameLoop());
         computeGenerations(player);
-        return this.best;
+        return this.best.getMove();
     }
 
     /**
@@ -241,21 +267,21 @@ public class Evolution implements Algorithm {
     }
 
     @Override
-    public void initialize(AI p) {
-        synchronized (this) {
-            this.player = p;
-            this.genThread = new Thread(new GenomeGenerator());
-
+    public void initialize(Player p) {
+        this.player = p;
+        if(p.getSide() == 'W'){
+            opponent = gameLoop.getBlack();
         }
+        else{
+            opponent = gameLoop.getWhite();
+        }
+
 
     }
 
-    private class GenomeGenerator implements Runnable{
-        @Override
-        public void run() {
 
-        }
+
+    public Genome getBest() {
+        return best;
     }
-
-
 }
