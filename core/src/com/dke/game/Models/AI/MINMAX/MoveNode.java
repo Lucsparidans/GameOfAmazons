@@ -1,6 +1,7 @@
 package com.dke.game.Models.AI.MINMAX;
 
 import com.dke.game.Controller.Player.AI;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Amazon;
 import com.dke.game.Models.DataStructs.Cell;
@@ -129,7 +130,7 @@ public class MoveNode {
         return  0;
     }
 
-    private double evaluateQueens(AI playerAI, TestBoard testBoard) {
+   /* private double evaluateQueens(AI playerAI, TestBoard testBoard) {
         if (this.data != null) {
             if (this.getData().isPlayerMaximizing(playerAI)) {
                // double val = queenCells(testBoard.getBoard());
@@ -151,6 +152,7 @@ public class MoveNode {
         }
         return 0;
     }
+    */
     /*
     Because the node only contains a move object which describes the action that takes us from the state in the parent-node to the state in this node.
     Because only the state of the rootnode of the movetree is kept, we backtrack from our node to the root while putting the current node we are referencing into
@@ -270,8 +272,11 @@ public class MoveNode {
         return value;
 
     }
-   public int countMove=0;
-    public void realDeealHeuristics(Amazon amazon,ArrayList<Amazon> allQueens, Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
+
+
+
+
+    public void realDealHeuristics(Amazon amazon,ArrayList<Amazon> allQueens, Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
         //ArrayList<> allqueens= ourQueens + enemyQueens;
 
         //for every queen
@@ -300,8 +305,9 @@ public class MoveNode {
 
 
     }
-
+    public int countMove=0;
     public void checkTiles(Cell C) {
+
         if (C.getMoveID() == null) {
             //can't detect if conflicting the enemy q so moveID changed to string
             C.setMoveID("W");
@@ -323,6 +329,8 @@ public class MoveNode {
                      continue;
                     }*/
             //cover the same side conflicting parts
+
+
         }
     }
     //</editor-fold>

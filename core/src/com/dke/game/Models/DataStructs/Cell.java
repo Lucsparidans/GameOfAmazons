@@ -1,5 +1,11 @@
 package com.dke.game.Models.DataStructs;
 
+import com.dke.game.Models.AI.MINMAX.TestBoard;
+import com.dke.game.Models.GraphicalModels.Amazon2D;
+import com.dke.game.Models.GraphicalModels.Board2D;
+
+import java.util.ArrayList;
+
 /**
  * The cell class of which the array in the board class exists, this is basically a container for the datastructures we might need
  */
@@ -28,6 +34,70 @@ public class Cell {
     public void setMoveID(String moveID) {
         this.belongsTo = moveID;
     }
+
+    //<editor-fold desc="PossibleMovesOfCell">
+    //gives back a list of all possible queenlike moves of a cell
+    public ArrayList<Cell> PossibleMovesOfCell(TestBoard testBoard, Cell cell){
+
+        Cell[][] board = testBoard.getBoard();
+        diagonal(cell, board);
+        vertical(cell,board);
+        horisontal(cell,board);
+        return possibleMovesCell;
+    }
+
+    int counterD=1;
+    ArrayList<Cell> possibleMovesCell= new ArrayList<>();
+
+    public void diagonal(Cell cell,Cell[][] board){
+        int i = cell.getI();
+        int j = cell.getJ();
+
+            if( !board[i+counterD][j+counterD].isOccupied() && i+counterD < board.length && j+counterD< board.length) {
+
+                Cell newC = board[i + counterD][j + counterD];
+            possibleMovesCell.add(board[i + counterD][j + counterD]);
+            counterD++;
+            diagonal(newC, board);
+        }
+        return;
+    }
+    int counterV=1;
+    public void vertical(Cell cell,Cell[][] board) {
+        int i = cell.getI();
+        int j = cell.getJ();
+
+        if (!board[i + counterV][j + counterV].isOccupied() && i + counterV < board.length && j + counterV < board.length) {
+            Cell newC = board[i + counterV][j ]; // goes up, stays horisontally in the same position
+            Cell newCell = board[i - counterV][j ];//goes down
+            possibleMovesCell.add(newC);
+            possibleMovesCell.add(newCell);
+            counterV++;
+            vertical(newCell,board);
+            vertical(newC,board);
+        }
+    }
+    int counterH=1;
+    public void horisontal(Cell cell,Cell[][] board) {
+        int i = cell.getI();
+        int j = cell.getJ();
+
+        if (!board[i + counterH][j + counterH].isOccupied() && i + counterH < board.length && j + counterH < board.length) {
+            Cell newC = board[i][j + counterH];// goes right
+            Cell newCell = board[i][j - counterH];//goes left
+            possibleMovesCell.add(newC);
+            possibleMovesCell.add(newCell);
+            counterH++;
+            horisontal(newCell,board);
+            horisontal(newC,board);
+
+
+        }
+        return;
+    }
+
+//end possibleMovesCell
+//</editor-fold>
 
     public Cell(Piece content, Coordinate topLeft, Coordinate topRight, Coordinate bottomRight, Coordinate bottomLeft, int i, int j) {
         this.content = content;
@@ -364,11 +434,11 @@ public class Cell {
         else if(blackQ == true && whiteQ == false){
             closest = 2;
         }
-        else if(blackQ == true && whiteQ == true) {
+        /*else if(blackQ == true && whiteQ == true) {
             for (Cell cell:oneDisCells) {
-               cell.possibleCells()
+               cell.possibleCells();
             }
-        }
+        }*/
         else { closest = 3;}
         return closest;
     }
