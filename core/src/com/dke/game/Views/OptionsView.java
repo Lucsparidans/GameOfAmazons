@@ -22,9 +22,12 @@ public class OptionsView extends View {
     private Stage stage;
     private TextButton textButton;
     private CheckBox debug;
+    private CheckBox opponentModeling;
     private SelectBox<String> boardSize;
     private SelectBox<String> algorithms;
     public static String SELECTED_ALGORITHM = "Evolution";
+    public static boolean OPPONENT_MODELING = true;
+
 
 
     protected OptionsView(ViewManager viewManager) {
@@ -66,6 +69,10 @@ public class OptionsView extends View {
         table.add(algorithms);
         table.row();
 
+        opponentModeling = new CheckBox("Opponent modeling: ",skin);
+        opponentModeling.setChecked(true);
+        table.add(opponentModeling);
+        table.row();
 
         textButton = new TextButton("Return", skin);
         table.add(textButton).expand().bottom();
@@ -96,6 +103,17 @@ public class OptionsView extends View {
         stage.addActor(table);
     }
     private void createListeners(){
+        algorithms.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(algorithms.getSelected().equals("Evolution")){
+                    opponentModeling.setVisible(true);
+                }
+                else{
+                    opponentModeling.setVisible(false);
+                }
+            }
+        });
         textButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -112,6 +130,12 @@ public class OptionsView extends View {
                     Board.boardSize = Board.BoardSize.FIVExSIX;
                 }
                 SELECTED_ALGORITHM = algorithms.getSelected();
+                if(opponentModeling.isChecked()){
+                    OPPONENT_MODELING = true;
+                }
+                else{
+                    OPPONENT_MODELING = false;
+                }
                 viewManager.pop();
             }
         });

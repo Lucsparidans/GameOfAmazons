@@ -63,7 +63,12 @@ public class GameLoop {
     //TODO implement this
     private void setAlgorithm(){
         if(OptionsView.SELECTED_ALGORITHM.equals("Evolution")) {
-            algo = new Evolution(amazons, arrow, this, false);
+            if(OptionsView.OPPONENT_MODELING) {
+                algo = new Evolution(amazons, arrow, this, true);
+            }
+            else{
+                algo = new Evolution(amazons, arrow, this, false);
+            }
         }
         else if(OptionsView.SELECTED_ALGORITHM.equals("Greedy")){
             //algo = ;
