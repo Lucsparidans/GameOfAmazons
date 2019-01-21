@@ -51,7 +51,9 @@ public class Evolution implements Algorithm {
         initializeVariables(amazons,arrows,gameLoop,competitiveCoevolution);
         this.generations = compGenerations;
         this.popSize = compPopSize;
-        population = new Genome[popSize];
+        this.population = new Genome[popSize];
+        this.threshold = popSize / 2;
+        this.crossovers = popSize / 4;
         this.parentPopulation = parentPopulation;
     }
 
@@ -62,7 +64,7 @@ public class Evolution implements Algorithm {
             this.threshold = popSize / 2;
             crossovers = popSize / 4;
             this.compPopSize = 4;
-            this.compGenerations = 1;
+            this.compGenerations = 2;
             this.population = new Genome[popSize];
         } else if (GameLoop.PHASE == GameLoop.Phase.MIDDLE) {
             generations = 5;
@@ -140,7 +142,8 @@ public class Evolution implements Algorithm {
                     }
                 }
 
-//                for (int i = 0; i < popSize * mutationRate; i++) {
+                //<editor-fold desc="Crossover and mutation">
+                //                for (int i = 0; i < popSize * mutationRate; i++) {
 //                    try {
 //
 //                        population[rnd.nextInt(popSize)].mutate();
@@ -148,30 +151,32 @@ public class Evolution implements Algorithm {
 //                        e.printStackTrace();
 //                    }
 //                }
-                Genome[] crossover = new Genome[popSize];
-                int counter = 0;
-                for (int i = 0; i < crossovers; i++) {
-                    try {
-                        crossover[counter] = population[rnd.nextInt(popSize)].crossover(population[rnd.nextInt(popSize)]);
-                        if(crossover[counter] != null) {
-                            counter++;
-                        }
-                    } catch (Action.InvalidActionTypeException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(counter>=1) {
-                    crossover = removeNullElements(crossover);
-                    if (Evolution.debugPrinting) {
-                        System.out.println("###############################################################");
-                        System.out.printf("                     Crossover array:\n");
-                        System.out.println("###############################################################");
-                        System.out.println();
-                        for (int i = 0; i < crossover.length; i++) {
-                            System.out.printf("Crossover %d has value: %f\n", i, crossover[i].getEval());
-                        }
-                    }
-                }
+//                Genome[] crossover = new Genome[popSize];
+//                int counter = 0;
+//                for (int i = 0; i < crossovers; i++) {
+//                    try {
+//                        crossover[counter] = population[rnd.nextInt(popSize)].crossover(population[rnd.nextInt(popSize)]);
+//                        if(crossover[counter] != null) {
+//                            counter++;
+//                        }
+//                    } catch (Action.InvalidActionTypeException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                if(counter>=1) {
+//                    crossover = removeNullElements(crossover);
+//                    if (Evolution.debugPrinting) {
+//                        System.out.println("###############################################################");
+//                        System.out.printf("                     Crossover array:\n");
+//                        System.out.println("###############################################################");
+//                        System.out.println();
+//                        for (int i = 0; i < crossover.length; i++) {
+//                            System.out.printf("Crossover %d has value: %f\n", i, crossover[i].getEval());
+//                        }
+//                    }
+//                }
+                //</editor-fold>
+
                 Arrays.sort(population);
                 for (Genome g :
                         population) {
