@@ -4,9 +4,10 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MiniMax;
+import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
+import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
+import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
-import com.dke.game.Models.DataStructs.Pieces;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
@@ -22,17 +23,16 @@ public class GameLoop {
 
     private GameView gameView;
     private Board2D board2D;
-    private boolean running = false;
+    private boolean running;
     private Cell[][] boardCoordinates;
     private Amazon2D[] amazons;
     private ArrayList<Arrow2D> arrow;
-    private volatile Thread thread;
     private ViewManager viewManager;
     private Player white;
     private Player black;
     private Player currentPlayer;
-    private Algorithm algo = new MiniMax();
-
+    //private Algorithm algo = new MiniMax();
+    public Algorithm algo;
 
 
     // get current board
@@ -40,175 +40,209 @@ public class GameLoop {
         return board2D;
     }
     // another constructor to avoid static fields
-    public GameLoop(ViewManager viewManager, String white_Type, String black_Type){
+    public GameLoop(ViewManager viewManager, String white_Type, String black_Type) {
         this.viewManager = viewManager;
-        arrow = new ArrayList<Arrow2D>();
+        arrow = new ArrayList<>();
         initialiseGame();
         gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
+        createPlayers(white_Type, black_Type, gameView);
+        gameView.setPlayers(white, black);
         gameView.getStage().addActor(board2D);
+        algo = new ChristmasCarlo('B',2,2700,true);
         placePieces();
-        createPlayers(white_Type,black_Type,gameView);
-        gameView.setPlayers(white,black);
         this.viewManager.push(gameView);
         currentPlayer = white;
+        running = true;
+    }
 
-        thread = new GameThread();
-        thread.start();
-    }
     public GameLoop(ViewManager viewmanager) {
-        this(viewmanager,"Human","Human");
+        this(viewmanager, "Human", "Human");
     }
+
     //Thread stuff
-    private void createPlayers(String white_Type,String black_Type,GameView gameView){
-        if(white_Type.equals("Human")){
-            if(black_Type.equals("AI")){
-                white = new Human('W',gameView, this);
-                black = new AI('B',algo,board2D,this);
+    private void createPlayers(String white_Type, String black_Type, GameView gameView) {
+        //THIS IS BAD CODING::: TODO IMPROVE
+        algo = new ChristmasCarlo('B',2,2700, true);
+        if(algo == null){System.out.println("null yeet feut");}
+        System.out.println(algo.getClass().getSimpleName());
+        ////
+        ////
+        System.out.println("Created players");
+        if (white_Type.equals("Human")) {
+            if (black_Type.equals("AI")) {
+                white = new Human('W', gameView, this);
+                black = new AI('B', algo, this);
+            } else if (black_Type.equals("Human")) {
+                white = new Human('W', gameView, this);
+                black = new Human('B', gameView, this);
             }
-            else if(black_Type.equals("Human")){
-                white = new Human('W',gameView, this);
-                black = new Human('B',gameView, this);
+        } else if (white_Type.equals("AI")) {
+            if (black_Type.equals("AI")) {
+                white = new AI('W', algo, this);
+                black = new AI('B', algo, this);
+            } else if (black_Type.equals("Human")) {
+                white = new AI('B', algo, this);
+                black = new Human('B', gameView, this);
             }
         }
-        else if(white_Type.equals("AI")){
-            if(black_Type.equals("AI")){
-                white = new AI('W',algo,board2D,this);
-                black = new AI('B',algo,board2D,this);
-            }
-            else if(black_Type.equals("Human")){
-                white = new AI('B',algo,board2D,this);
-                black = new Human('B',gameView, this);
-            }
+    }
+
+    public ArrayList<Arrow2D> getArrows() {
+        ArrayList<Arrow2D> arrows = new ArrayList<>();
+        for (Amazon2D a : this.getAmazons()) {
+            arrows.addAll(a.getArrowShots());
         }
+        return arrows;
     }
 
     public boolean isRunning() {
         return running;
     }
 
+
     //Tread stuff
-    private void update() {
-        if(gameView.getTurnCounter()%2==0){
-            currentPlayer=white;
+    public void update() {
+
+        if (gameView.getTurnCounter() % 2 == 0) {
+            currentPlayer = white;
+        } else {
+            currentPlayer = black;
         }
-        else{
-            currentPlayer=black;
-        }
-        if(currentPlayer instanceof Human) {
-            Human p = (Human)currentPlayer;
-            if (this.checkEnd()&&p.getPhase()==1) {
+        if (currentPlayer instanceof Human) {
+            Human p = (Human) currentPlayer;
+
+            if (this.checkEnd() && p.getPhase() == 1) {
                 running = false;
             }
-        }
-        else{
+        } else {
             if (this.checkEnd()) {
                 running = false;
             }
         }
 
 
+
     }
 
     //initial setup of the game
-    private void initialiseGame() {
-        board2D = new Board2D();
-        boardCoordinates = board2D.getBoardCoordinates();
-        this.amazons = new Amazon2D[8];
-        amazons[0] = new Amazon2D('W', boardCoordinates[0][3]);
-        amazons[1] = new Amazon2D('W', boardCoordinates[9][3]);
-        amazons[2] = new Amazon2D('W', boardCoordinates[3][0]);
-        amazons[3] = new Amazon2D('W', boardCoordinates[6][0]);
-        amazons[4] = new Amazon2D('B', boardCoordinates[0][6]);
-        amazons[5] = new Amazon2D('B', boardCoordinates[9][6]);
-        amazons[6] = new Amazon2D('B', boardCoordinates[3][9]);
-        amazons[7] = new Amazon2D('B', boardCoordinates[6][9]);
-
-    }
-    //Place the amazons on the board
-    private void placePieces() {
-        for (Amazon2D a : amazons) {
-            gameView.getStage().addActor(a);
-            board2D.occupy(a,a.getCell());
-        }
-
-    }
-    //Push new view and some thread stuff
-    public void endGame(int wScore, int bScore){
-        ScoreView scoreTime = new ScoreView(viewManager, wScore, bScore);
-        this.viewManager.push(scoreTime);
+    private void initialiseGame()  {
         try {
-            thread.join();
-        } catch (InterruptedException e) {
+            board2D = new Board2D();
+        } catch (Board.IllegalBoardDimensionsException e) {
             e.printStackTrace();
         }
+        boardCoordinates = board2D.getBoardCoordinates();
+        this.amazons = new Amazon2D[8];
+        if(boardCoordinates.length == 5 && boardCoordinates[0].length == 6) {
+            amazons[0] = new Amazon2D('W', boardCoordinates[0][1], false, 0);
+            amazons[1] = new Amazon2D('W', boardCoordinates[1][0], false, 1);
+            amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false, 2);
+            amazons[3] = new Amazon2D('W', boardCoordinates[4][1], false, 3);
+            amazons[4] = new Amazon2D('B', boardCoordinates[0][4], false, 4);
+            amazons[5] = new Amazon2D('B', boardCoordinates[1][5], false, 5);
+            amazons[6] = new Amazon2D('B', boardCoordinates[3][5], false, 6);
+            amazons[7] = new Amazon2D('B', boardCoordinates[4][4], false, 7);
+        }
+
+        if(boardCoordinates.length == 10 && boardCoordinates[0].length == 10) {
+            amazons[0] = new Amazon2D('W', boardCoordinates[0][3], false, 0);
+            amazons[1] = new Amazon2D('W', boardCoordinates[9][3], false, 1);
+            amazons[2] = new Amazon2D('W', boardCoordinates[3][0], false, 2);
+            amazons[3] = new Amazon2D('W', boardCoordinates[6][0], false, 3);
+            amazons[4] = new Amazon2D('B', boardCoordinates[0][6], false, 4);
+            amazons[5] = new Amazon2D('B', boardCoordinates[9][6], false, 5);
+            amazons[6] = new Amazon2D('B', boardCoordinates[3][9], false, 6);
+            amazons[7] = new Amazon2D('B', boardCoordinates[6][9], false, 7);
+        }
+    }
+
+    //Place the amazons on the board
+    private void placePieces() {
+
+        for (Amazon2D a : amazons) {
+            gameView.getStage().addActor(a);
+
+        }
+
+        //preloadBoard(false);
 
     }
+
+    private void preloadBoard(boolean random) {
+        if (random) {
+            for (int i = 0; i < (boardCoordinates.length * boardCoordinates[0].length) / 2; i++) {
+                boolean madeShot = false;
+                while (!madeShot) {
+                    Cell option = boardCoordinates[(int) (boardCoordinates.length * Math.random())][(int) (boardCoordinates[0].length * Math.random())];
+                    if (!option.isOccupied()) {
+                        amazons[0].shoot(option);
+                        madeShot = true;
+                    }
+                }
+            }
+        }
+        else{
+            for (int i = 2; i < 8; i++) {
+                for (int j = 2; j < 8; j++) {
+                    amazons[0].shoot(boardCoordinates[i][j]);
+                }
+            }
+        }
+    }
+
+    //Push new view and some thread stuff
+    public void endGame(int wScore, int bScore) {
+        ScoreView scoreTime = new ScoreView(viewManager, wScore, bScore);
+        this.viewManager.push(scoreTime);
+    }
+
     //Check if the game has reached an end condition
-    private boolean checkEnd(){
+    private boolean checkEnd() {
+        //this.board2D.printBoard();
         int checkCount = 0;
 
-        for(int i = 0; i<amazons.length; i++){
+        for (int i = 0; i < amazons.length; i++) {
 
-            if(amazons[i].endMe(boardCoordinates)){
+            if (amazons[i].endMe(boardCoordinates)) {
                 checkCount++;
             }
         }
         int current = 0;
-        for(int i = 0; i<amazons.length; i++) {
+        for (int i = 0; i < amazons.length; i++) {
 
             if (!(amazons[i].endMe(boardCoordinates))) {
                 amazons[i].possibleMoves(board2D);
-                if((amazons[i].getPossibleMoves()).size() == 0) {
+                if ((amazons[i].getPossibleMoves()).size() == 0) {
                     current++;
                 }
             }
         }
         int currentWhite = 0;
-        for(int j = 0; j<4; j++){
+        for (int j = 0; j < 4; j++) {
             amazons[j].possibleMoves(board2D);
-            if(amazons[j].getPossibleMoves().size() == 0){
+            if (amazons[j].getPossibleMoves().size() == 0) {
                 currentWhite++;
             }
         }
         int currentBlack = 0;
-        for(int j = 4; j<8; j++){
+        for (int j = 4; j < 8; j++) {
             amazons[j].possibleMoves(board2D);
-            if(amazons[j].getPossibleMoves().size() == 0){
+            if (amazons[j].getPossibleMoves().size() == 0) {
                 currentBlack++;
             }
         }
         //if all isolated
-        if(checkCount==amazons.length){
+        if (checkCount == amazons.length) {
             return true;
         }
         //if all isolated or immobile
-        else if(current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4){
+        else if (current == amazons.length - checkCount || currentWhite == 4 || currentBlack == 4) {
             return true;
         }
 
         return false;
     }
 
-
-
-
-
-
-    //<editor-fold desc="Thread class">
-    //Thread class
-    class GameThread extends Thread {
-
-        @Override
-        public void run() {
-            running = true;
-            while(running) {
-                update();
-            }
-
-
-        }
-    }
-    //</editor-fold>
 
     //<editor-fold desc="Getters and Setters">
     public GameView getGameView() {
@@ -243,20 +277,8 @@ public class GameLoop {
         this.amazons = amazons;
     }
 
-    public ArrayList<Arrow2D> getArrow() {
-        return arrow;
-    }
-
     public void setArrow(ArrayList<Arrow2D> arrow) {
         this.arrow = arrow;
-    }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public void setThread(Thread thread) {
-        this.thread = thread;
     }
 
     public ViewManager getViewManager() {
@@ -300,7 +322,6 @@ public class GameLoop {
     }
     //</editor-fold>
 }
-//<editor-fold desc="Commented code">
     /*
     public void turnOrder(){
         int isolCount = 0;
@@ -409,6 +430,5 @@ public class GameLoop {
         }
         //then black turn, change endMe to a loop to check all amazons
         */
-//</editor-fold>
 
 
