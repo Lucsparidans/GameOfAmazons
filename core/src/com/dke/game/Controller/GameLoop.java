@@ -61,7 +61,7 @@ public class GameLoop {
 
     //Thread stuff
     private void createPlayers(String white_Type, String black_Type, GameView gameView) {
-        //THIS IS BAD CODING:::
+        //THIS IS BAD CODING::: TODO IMPROVE
         algo = new ChristmasCarlo('B',2,this);
         if(algo == null){System.out.println("null yeet feut");}
         System.out.println(algo.getClass().getSimpleName());

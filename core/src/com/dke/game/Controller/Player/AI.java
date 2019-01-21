@@ -95,4 +95,8 @@ public class AI extends Player {
     public char getSide(){
         return side;
     }
+
+    public GameLoop getGameLoop(){
+        return gameLoop;
+    }
 }

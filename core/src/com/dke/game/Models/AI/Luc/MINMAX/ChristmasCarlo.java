@@ -514,7 +514,7 @@ public class ChristmasCarlo implements Algorithm {
     public Move getBestMove(AI player, MoveNode root) {
         System.out.println("GETBESTMOVE CARLLO ACTIVATED");
         this.AIside = player.getSide();
-        Board2D b2d = gameLoop.getBoard2D();
+        Board2D b2d = player.getGameLoop().getBoard2D();
         Cell[][] boardCoordinates = b2d.getBoardCoordinates();
         char[][] charBoardCoordinates = generateSimpleMatrix(boardCoordinates);
         char[][] bestMove= startalgoWithCharArray(charBoardCoordinates, this.AIside);
