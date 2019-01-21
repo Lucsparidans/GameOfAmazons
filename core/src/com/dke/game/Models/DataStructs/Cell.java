@@ -2,7 +2,6 @@ package com.dke.game.Models.DataStructs;
 
 import com.dke.game.Models.AI.MINMAX.TestBoard;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
-import com.dke.game.Models.GraphicalModels.Board2D;
 
 import java.util.ArrayList;
 
@@ -37,64 +36,95 @@ public class Cell {
 
     //<editor-fold desc="PossibleMovesOfCell">
     //gives back a list of all possible queenlike moves of a cell
-    public ArrayList<Cell> PossibleMovesOfCell(TestBoard testBoard, Cell cell){
+    ArrayList<Cell> possibleMovesCell= new ArrayList<>();
+    /*
+    * @param queenLikeMoves true if queenlike possible moves, false if kinglike possible moves*/
+    int counter =1;
+    public ArrayList<Cell> PossibleMovesOfCell(TestBoard testBoard, Cell cell, boolean queenLikeMoves){
 
         Cell[][] board = testBoard.getBoard();
-        diagonal(cell, board);
-        vertical(cell,board);
-        horisontal(cell,board);
-        return possibleMovesCell;
-    }
-
-    int counterD=1;
-    ArrayList<Cell> possibleMovesCell= new ArrayList<>();
-
-    public void diagonal(Cell cell,Cell[][] board){
         int i = cell.getI();
         int j = cell.getJ();
 
-            if( !board[i+counterD][j+counterD].isOccupied() && i+counterD < board.length && j+counterD< board.length) {
+            boolean ur = false;
+            boolean ul = false;
+            boolean dr = false;
+            boolean dl = false;
 
-                Cell newC = board[i + counterD][j + counterD];
-            possibleMovesCell.add(board[i + counterD][j + counterD]);
-            counterD++;
-            diagonal(newC, board);
-        }
-        return;
+            boolean vu = false;
+            boolean vd = false;
+            boolean hr = false;
+            boolean hl = false;
+            if (queenLikeMoves){
+                while (!ur || !ul || !dr || !dl||!vu||!vd ||!hr||hl) {
+
+                    if (!ur && !board[i + counter][j + counter].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                        Cell newC = board[i + counter][j + counter];
+                        possibleMovesCell.add(board[i + counter][j + counter]);
+
+                    } else
+                        ur = true;
+
+                    if (!dl && !board[i - counter][j - counter].isOccupied() && i - counter < board.length && j - counter < board.length) {
+
+                        Cell newCe = board[i - counter][j - counter];
+                        possibleMovesCell.add(board[i - counter][j - counter]);
+
+                    } else
+                        dl = true;
+
+                    if (!ul && !board[i + counter][j - counter].isOccupied() && i + counter < board.length && j - counter < board.length) {
+                        Cell newCel = board[i + counter][j - counter];
+                        possibleMovesCell.add(board[i + counter][j - counter]);
+
+                    } else
+                        ul = true;
+
+                    if (!dr && !board[i - counter][j + counter].isOccupied() && i - counter < board.length && j + counter < board.length) {
+                        Cell newCell = board[i - counter][j + counter];
+                        possibleMovesCell.add(board[i - counter][j + counter]);
+
+
+                    } else
+                        dr = true;
+                    if (!vu && !board[i + counter][j].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                        Cell newC = board[i + counter][j]; // goes up, stays horisontally in the same position
+                        possibleMovesCell.add(newC);
+                    } else
+                        vu = true;
+
+                    if (!vd && !board[i - counter][j].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                        Cell newCell = board[i - counter][j];//goes down
+
+                        possibleMovesCell.add(newCell);
+
+                    } else
+                        vd = true;
+
+                    if (!hr && !board[i][j + counter].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                        Cell newC = board[i][j + counter];// goes right
+                        possibleMovesCell.add(newC);
+
+                    } else hr = true;
+
+                    if (!hl && !board[i][j + counter].isOccupied() && i + counter < board.length && j + counter < board.length) {
+
+                        Cell newCell = board[i][j - counter];//goes left
+
+                        possibleMovesCell.add(newCell);
+                    } else
+                        hl = true;
+
+                    counter++;
+                }
+
+                    } else {//kingmoves
+
+                 }
+           return possibleMovesCell;
+
     }
-    int counterV=1;
-    public void vertical(Cell cell,Cell[][] board) {
-        int i = cell.getI();
-        int j = cell.getJ();
 
-        if (!board[i + counterV][j + counterV].isOccupied() && i + counterV < board.length && j + counterV < board.length) {
-            Cell newC = board[i + counterV][j ]; // goes up, stays horisontally in the same position
-            Cell newCell = board[i - counterV][j ];//goes down
-            possibleMovesCell.add(newC);
-            possibleMovesCell.add(newCell);
-            counterV++;
-            vertical(newCell,board);
-            vertical(newC,board);
-        }
-    }
-    int counterH=1;
-    public void horisontal(Cell cell,Cell[][] board) {
-        int i = cell.getI();
-        int j = cell.getJ();
-
-        if (!board[i + counterH][j + counterH].isOccupied() && i + counterH < board.length && j + counterH < board.length) {
-            Cell newC = board[i][j + counterH];// goes right
-            Cell newCell = board[i][j - counterH];//goes left
-            possibleMovesCell.add(newC);
-            possibleMovesCell.add(newCell);
-            counterH++;
-            horisontal(newCell,board);
-            horisontal(newC,board);
-
-
-        }
-        return;
-    }
 
 //end possibleMovesCell
 //</editor-fold>

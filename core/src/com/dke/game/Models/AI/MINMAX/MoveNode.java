@@ -119,7 +119,7 @@ public class MoveNode {
                 //System.out.println(val);
                 return val;
             } else {
-
+                realDealHeuristics(playerAI.getMyAmazons(),playerAI.getEnemyAmazons());
                 //double val = mobility(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
                 double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
                 //System.out.println(val);
@@ -276,7 +276,7 @@ public class MoveNode {
 
 
 
-    public void realDealHeuristics(Amazon amazon,ArrayList<Amazon> allQueens, Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
+    public void realDealHeuristics( Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
         //ArrayList<> allqueens= ourQueens + enemyQueens;
 
         //for every queen
@@ -305,6 +305,7 @@ public class MoveNode {
 
 
     }
+
     public int countMove=0;
     public void checkTiles(Cell C) {
 
