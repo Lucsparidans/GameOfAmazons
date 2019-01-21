@@ -19,11 +19,15 @@ public class MoveNode {
     private List<MoveNode> children = new ArrayList<>();
     private double value;
     private static Random random = new Random(10);
+    private int ID;
+    public static int nodeID = 0;
 
     public MoveNode(Move data, MoveNode parent) {
         this.data = data;
         this.parent = parent;
         this.DEPTH = this.getDepth();
+        this.ID = nodeID;
+        nodeID++;
     }
 
 
@@ -67,6 +71,10 @@ public class MoveNode {
 
     public double getValue() {
         return this.value;
+    }
+
+    public void setValue(double newValue){
+        this.value = newValue;
     }
 
     public int getDEPTH() {
@@ -118,7 +126,7 @@ public class MoveNode {
 //                //System.out.println(val);
 //                return val;
 //            }
-            return random.nextDouble();
+            return Math.random();
         }
         return  0;
     }
@@ -241,5 +249,17 @@ Heuristics
         return value;
 
     }
+    public int getID(){
+        return  this.ID;
+    }
+    /*public void setNodeID(int x){
+
+    }
+
+    public static void setNodeID(int x){
+        nodeID = x;
+    }*/
+
+
     //</editor-fold>
 }

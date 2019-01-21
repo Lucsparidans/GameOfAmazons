@@ -5,6 +5,7 @@ import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
+import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -47,7 +48,7 @@ public class GameLoop {
             this.viewManager = viewManager;
             arrow = new ArrayList<>();
             initialiseGame();
-            setAlgorithm();
+            algo = new MiniMax();
             gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
             createPlayers(white_Type, black_Type, gameView);
             gameView.setPlayers(white, black);
