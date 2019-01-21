@@ -48,7 +48,7 @@ public class GameLoop {
         createPlayers(white_Type, black_Type, gameView);
         gameView.setPlayers(white, black);
         gameView.getStage().addActor(board2D);
-        algo = new ChristmasCarlo('B',2,this );
+        algo = new ChristmasCarlo('B',2);
         placePieces();
         this.viewManager.push(gameView);
         currentPlayer = white;
@@ -62,7 +62,7 @@ public class GameLoop {
     //Thread stuff
     private void createPlayers(String white_Type, String black_Type, GameView gameView) {
         //THIS IS BAD CODING::: TODO IMPROVE
-        algo = new ChristmasCarlo('B',2,this);
+        algo = new ChristmasCarlo('B',2);
         if(algo == null){System.out.println("null yeet feut");}
         System.out.println(algo.getClass().getSimpleName());
         ////
@@ -119,6 +119,7 @@ public class GameLoop {
                 running = false;
             }
         }
+
 
 
     }

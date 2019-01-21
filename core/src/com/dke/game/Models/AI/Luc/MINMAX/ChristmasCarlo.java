@@ -38,11 +38,10 @@ public class ChristmasCarlo implements Algorithm {
     int nondiagonalMoves = 0;
     double moveLengthsum = 0;
     double moveAmount = 0;
-    private GameLoop gameLoop;
 
-    public ChristmasCarlo(char AIside, int expansionFactor, GameLoop gl){
+
+    public ChristmasCarlo(char AIside, int expansionFactor){
         System.out.println("Constructed ChristmasCarlo");
-        this.gameLoop = gl;
         this.expansionFactor = expansionFactor;
         this.AIside = AIside;
         randomGenerator = new Random();
@@ -539,6 +538,7 @@ public class ChristmasCarlo implements Algorithm {
                         startCoordinateAmazon = new CarloCoordinate(i, j);
                     }if((endCharMatrix[i][j]=='B'||endCharMatrix[i][j] =='W')&&startCharMatrix[i][j]== emptyChar[0]){
                         endCoordinateAmazon = new CarloCoordinate(i,j);
+                        
                     }if(endCharMatrix[i][j]=='A'&&startCharMatrix[i][j] != 'A'){
                         arrowCoordinate = new CarloCoordinate(i, j);
                     }
