@@ -60,7 +60,7 @@ public class OptionsView extends View {
         table.add(boardSize);
         table.row();
 
-        String[] algorithmOptions = {"Evolution", "Greedy", "Alpha-beta", "Monte-Carlo"};
+        String[] algorithmOptions = {"Evolution", "Greedy", "Alpha-Beta", "Monte-Carlo"};
         algorithms = new SelectBox<String>(skin);
         algorithms.setItems(algorithmOptions);
         table.add(algorithms);
