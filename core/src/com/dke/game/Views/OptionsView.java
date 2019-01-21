@@ -7,8 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.MainLoop;
+import com.dke.game.Controller.Player.AI;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
 import com.dke.game.Models.DataStructs.Board;
@@ -22,11 +23,23 @@ public class OptionsView extends View {
     private Stage stage;
     private TextButton textButton;
     private CheckBox debug;
+    private CheckBox opponentModeling;
+    private CheckBox opponentModeling2;
     private SelectBox<String> boardSize;
+    private SelectBox<String> algorithms;
+    private SelectBox<String> algorithms2;
+    private String p1;
+    private String p2;
+    public static String SELECTED_ALGORITHM_1 = "Evolution";
+    public static boolean OPPONENT_MODELING_1 = false;
+    public static String SELECTED_ALGORITHM_2 = "Evolution";
+    public static boolean OPPONENT_MODELING_2 = false;
 
 
-    protected OptionsView(ViewManager viewManager) {
+    protected OptionsView(ViewManager viewManager, String p1, String p2) {
         super(viewManager);
+        this.p1 = p1;
+        this.p2 = p2;
     }
 
     @Override
@@ -40,33 +53,67 @@ public class OptionsView extends View {
 
 
         Table table = new Table();
-
+        Table titleTable = new Table();
+        titleTable.top();
         Label title = new Label("Options Menu", skin,"title");
-        table.add(title).expand().top();
-        table.row();
+        titleTable.add(title).padTop(200);
+        //table.row();
 
         debug = new CheckBox("Debug mode ",MainLoop.skin);
         if(Evolution.debugPrinting){
             debug.setChecked(true);
         }
-        table.add(debug);
+        table.add(debug).uniform();
         table.row();
 
         String[] boardSizeOptions = {"5x6","10x10"};
         boardSize = new SelectBox<String>(skin);
         boardSize.setItems(boardSizeOptions);
-        table.add(boardSize);
+        table.add(boardSize).uniform();
         table.row();
+        if(p1.equals("AI") || p2.equals("AI")) {
+            Table algorithmChoices = new Table();
+            String[] algorithmOptions = {"Evolution", "Greedy", "Alpha-Beta", "Monte-Carlo"};
+            algorithms = new SelectBox<>(skin);
+            algorithms.setItems(algorithmOptions);
+            algorithmChoices.add(algorithms).uniform();
 
+            if (p1.equals("AI") && p2.equals("AI")) {
+                algorithms2 = new SelectBox<>(skin);
+                algorithms2.setItems(algorithmOptions);
+                algorithmChoices.add(algorithms2).uniform();
+            }
+            table.add(algorithmChoices).uniform();
+            table.row();
+        }
+        if(p1.equals("AI") || p2.equals("AI")) {
+            Table options = new Table();
+            opponentModeling = new CheckBox("Opponent modeling for algorithm 1: ", skin);
+            if (OPPONENT_MODELING_1) {
+                opponentModeling.setChecked(true);
+            }
+            options.add(opponentModeling).uniform();
+            if (p1.equals("AI") && p2.equals("AI")) {
+                opponentModeling2 = new CheckBox("Opponent modeling for algorithm 2: ", skin);
+                if (OPPONENT_MODELING_2) {
+                    opponentModeling2.setChecked(true);
+                }
+                options.add(opponentModeling2).uniform();
+            }
+            table.add(options).uniform();
+            table.row();
+        }
 
         textButton = new TextButton("Return", skin);
-        table.add(textButton).expand().bottom();
+        table.add(textButton).bottom();
         table.row();
 
 
-        //table.debugAll();
+//        titleTable.debugAll();
+//        table.debugAll();
         table.setFillParent(true);
-        float pad = 1/100f * stage.getWidth();
+        titleTable.setFillParent(true);
+        //float pad = 1/100f * stage.getWidth();
 
 
 
@@ -85,9 +132,34 @@ public class OptionsView extends View {
 
 
         createListeners();
+        stage.addActor(titleTable);
         stage.addActor(table);
     }
     private void createListeners(){
+        if(algorithms != null) {
+            algorithms.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if (algorithms.getSelected().equals("Evolution")) {
+                        opponentModeling.setVisible(true);
+                    } else {
+                        opponentModeling.setVisible(false);
+                    }
+                }
+            });
+        }
+        if (algorithms2!=null) {
+            algorithms2.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if (algorithms2.getSelected().equals("Evolution")) {
+                        opponentModeling2.setVisible(true);
+                    } else {
+                        opponentModeling2.setVisible(false);
+                    }
+                }
+            });
+        }
         textButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -102,6 +174,22 @@ public class OptionsView extends View {
                 }
                 else if(boardSize.getSelected().equals("5x6")){
                     Board.boardSize = Board.BoardSize.FIVExSIX;
+                }
+                if (p1.equals("AI") || p2.equals("AI")) {
+                    SELECTED_ALGORITHM_1 = algorithms.getSelected();
+                    if (opponentModeling.isChecked()) {
+                        OPPONENT_MODELING_1 = true;
+                    } else {
+                        OPPONENT_MODELING_1 = false;
+                    }
+                    if(p1.equals("AI") && p2.equals("AI")) {
+                        SELECTED_ALGORITHM_2 = algorithms2.getSelected();
+                        if (opponentModeling.isChecked()) {
+                            OPPONENT_MODELING_2 = true;
+                        } else {
+                            OPPONENT_MODELING_2 = false;
+                        }
+                    }
                 }
                 viewManager.pop();
             }

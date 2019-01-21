@@ -5,6 +5,7 @@ import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
+import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
 import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
 import com.dke.game.Models.DataStructs.Board;
@@ -13,6 +14,7 @@ import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
 import com.dke.game.Models.GraphicalModels.Board2D;
 import com.dke.game.Views.GameView;
+import com.dke.game.Views.OptionsView;
 import com.dke.game.Views.ScoreView;
 
 import java.util.ArrayList;
@@ -33,10 +35,10 @@ public class GameLoop {
     private Player black;
     private Player currentPlayer;
     private Algorithm algo;
-    public static AI.Phase PHASE = AI.Phase.BEGIN;
+    private Algorithm algo2;
+    public static Phase PHASE = Phase.BEGIN;
     public static final int END_BEGIN = 10;
     public static final int END_MID = 30;
-    //private Algorithm algo = new MiniMax();
 
 
 
@@ -50,7 +52,7 @@ public class GameLoop {
             this.viewManager = viewManager;
             arrow = new ArrayList<>();
             initialiseGame();
-            algo = new Evolution(amazons, arrow, this, true);
+            setAlgorithms();
             gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
             createPlayers(white_Type, black_Type, gameView);
             gameView.setPlayers(white, black);
@@ -62,6 +64,45 @@ public class GameLoop {
 
         }
     }
+
+    //TODO implement this
+    private void setAlgorithms(){
+        if(OptionsView.SELECTED_ALGORITHM_1.equals("Evolution")) {
+            if(OptionsView.OPPONENT_MODELING_1) {
+                algo = new Evolution(amazons, arrow, this, true);
+            }
+            else{
+                algo = new Evolution(amazons, arrow, this, false);
+            }
+        }
+        else if(OptionsView.SELECTED_ALGORITHM_1.equals("Greedy")){
+            //algo = ;
+        }
+        else if(OptionsView.SELECTED_ALGORITHM_1.equals("Alpha-Beta")){
+            //algo = ;
+        }
+        else if(OptionsView.SELECTED_ALGORITHM_1.equals("Monte-Carlo")){
+            //algo = ;
+        }
+        if(OptionsView.SELECTED_ALGORITHM_2.equals("Evolution")) {
+            if(OptionsView.OPPONENT_MODELING_2) {
+                algo2 = new Evolution(amazons, arrow, this, true);
+            }
+            else{
+                algo2 = new Evolution(amazons, arrow, this, false);
+            }
+        }
+        else if(OptionsView.SELECTED_ALGORITHM_2.equals("Greedy")){
+            //algo = ;
+        }
+        else if(OptionsView.SELECTED_ALGORITHM_2.equals("Alpha-Beta")){
+            //algo = ;
+        }
+        else if(OptionsView.SELECTED_ALGORITHM_2.equals("Monte-Carlo")){
+            //algo = ;
+        }
+    }
+
 
     public GameLoop(ViewManager viewmanager) {
         this(viewmanager, "Human", "Human");
@@ -80,7 +121,7 @@ public class GameLoop {
         } else if (white_Type.equals("AI")) {
             if (black_Type.equals("AI")) {
                 white = new AI('W', algo, this);
-                black = new AI('B', algo, this);
+                black = new AI('B', algo2, this);
             } else if (black_Type.equals("Human")) {
                 white = new AI('B', algo, this);
                 black = new Human('B', gameView, this);
@@ -173,6 +214,10 @@ public class GameLoop {
 
     }
 
+    /**
+     * Place amazons on the board to reduce the amount of possible moves when testing
+     * @param random
+     */
     private void preloadBoard(boolean random) {
         if (random) {
             for (int i = 0; i < (boardCoordinates.length * boardCoordinates[0].length) / 2; i++) {

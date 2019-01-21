@@ -20,13 +20,15 @@ public class MiniMax implements Algorithm {
      */
     @Override
     public Move getBestMove(AI player) {
+        System.out.println("happens");
         this.movesTree = player.getTree();
-        MoveNode bestEval = MiniMax(movesTree.getRootNode(), depth, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, player);
-
-        while (bestEval.getParent().getParent() != null) {
-            bestEval = bestEval.getParent();
-        }
-        return bestEval.getData();
+        return movesTree.getTheMove();
+//        MoveNode bestEval = MiniMax(movesTree.getRootNode(), depth, true, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, player);
+//
+//        while (bestEval.getParent().getParent() != null) {
+//            bestEval = bestEval.getParent();
+//        }
+//        return bestEval.getData();
 
     }
 

@@ -83,6 +83,9 @@ public class AI extends Player {
         long e = System.nanoTime();
         System.out.println("The elapsed time is: " + (e - b) * 1e-9 + " to generate the tree");
         rootNode = this.tree.getRootNode();
+        /*for(int i = 0; i<this.tree.getRootNode().getChildren().size(); i++){
+            this.tree.getRootNode().getChildren().get(i).evaluateNode(this, );
+        }*/
     }
 
     @Override

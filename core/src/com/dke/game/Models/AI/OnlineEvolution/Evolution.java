@@ -36,7 +36,7 @@ public class Evolution implements Algorithm {
     private float mutationRate = 0.1f;
     private float crossovers;
     private boolean competitiveCoevolution;
-    private boolean debug = true;
+    private boolean debug = false;
     public static boolean debugPrinting = true;
 
     /**
@@ -49,20 +49,23 @@ public class Evolution implements Algorithm {
     }
     public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution,int compGenerations, int compPopSize, Genome[] parentPopulation){
         initializeVariables(amazons,arrows,gameLoop,competitiveCoevolution);
+        //Below initializing the variables for the coevolution because values are different from the updateVariablesPhase() method.
         this.generations = compGenerations;
         this.popSize = compPopSize;
-        population = new Genome[popSize];
+        this.population = new Genome[popSize];
+        this.threshold = popSize / 2;
+        this.crossovers = popSize / 4;
         this.parentPopulation = parentPopulation;
     }
 
     private void updateVariablesPhase() {
         if (GameLoop.PHASE == GameLoop.Phase.BEGIN) {
-            this.generations = 1;
-            this.popSize = 2;
-            this.threshold = popSize / 2;
-            crossovers = popSize / 4;
-            this.compPopSize = 4;
-            this.compGenerations = 1;
+            this.generations = 1;                           //Number of generation for the evolution
+            this.popSize = 2;                               //Number of elements in each population in this evolution
+            this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
+            crossovers = popSize / 4;                       //Number of crossovers
+            this.compPopSize = 4;                           //Number of elements in the coevolution populations
+            this.compGenerations = 2;                       //Number of generations generated in the coevolution
             this.population = new Genome[popSize];
         } else if (GameLoop.PHASE == GameLoop.Phase.MIDDLE) {
             generations = 5;
@@ -140,38 +143,41 @@ public class Evolution implements Algorithm {
                     }
                 }
 
-//                for (int i = 0; i < popSize * mutationRate; i++) {
-//                    try {
-//
-//                        population[rnd.nextInt(popSize)].mutate();
-//                    } catch (Action.InvalidActionTypeException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-                Genome[] crossover = new Genome[popSize];
-                int counter = 0;
-                for (int i = 0; i < crossovers; i++) {
+                //<editor-fold desc="Crossover and mutation">
+                                for (int i = 0; i < popSize * mutationRate; i++) {
                     try {
-                        crossover[counter] = population[rnd.nextInt(popSize)].crossover(population[rnd.nextInt(popSize)]);
-                        if(crossover[counter] != null) {
-                            counter++;
-                        }
+
+                        population[rnd.nextInt(popSize)].mutate();
                     } catch (Action.InvalidActionTypeException e) {
                         e.printStackTrace();
                     }
                 }
-                if(counter>=1) {
-                    crossover = removeNullElements(crossover);
-                    if (Evolution.debugPrinting) {
-                        System.out.println("###############################################################");
-                        System.out.printf("                     Crossover array:\n");
-                        System.out.println("###############################################################");
-                        System.out.println();
-                        for (int i = 0; i < crossover.length; i++) {
-                            System.out.printf("Crossover %d has value: %f\n", i, crossover[i].getEval());
-                        }
-                    }
-                }
+//                Genome[] crossover = new Genome[popSize];
+//                int counter = 0;
+//                for (int i = 0; i < crossovers; i++) {
+//                    try {
+//                        crossover[counter] = population[rnd.nextInt(popSize)].crossover(population[rnd.nextInt(popSize)]);
+//                        if(crossover[counter] != null) {
+//                            counter++;
+//                        }
+//                    } catch (Action.InvalidActionTypeException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                if(counter>=1) {
+//                    crossover = removeNullElements(crossover);
+//                    if (Evolution.debugPrinting) {
+//                        System.out.println("###############################################################");
+//                        System.out.printf("                     Crossover array:\n");
+//                        System.out.println("###############################################################");
+//                        System.out.println();
+//                        for (int i = 0; i < crossover.length; i++) {
+//                            System.out.printf("Crossover %d has value: %f\n", i, crossover[i].getEval());
+//                        }
+//                    }
+//                }
+                //</editor-fold>
+
                 Arrays.sort(population);
                 for (Genome g :
                         population) {

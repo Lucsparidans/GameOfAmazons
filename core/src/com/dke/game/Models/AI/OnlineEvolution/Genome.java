@@ -314,6 +314,7 @@ return null;
                 actionSequence.set(actionSequence.size()-1,shootAction);
                 a.shoot(shot);
                 gameStates.set(gameStates.size()-1,new GameState(shootAction,gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),true));
+                break;
             }
             else if(a.getSide() == side && side == 'B'){
                 ArrayList<Cell> possibleMoves = a.possibleMoves(currentBoard);
@@ -322,6 +323,7 @@ return null;
                 actionSequence.set(actionSequence.size()-1,shootAction);
                 a.shoot(shot);
                 gameStates.set(gameStates.size()-1,new GameState(shootAction,gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),false));
+                break;
             }
         }
         if(Evolution.debugPrinting){
@@ -395,10 +397,12 @@ return null;
 
         }
         if(state.isWhiteMove()) {
-            return moveWeight*(newMovW-prevMovW)-(1-moveWeight)*(newMovB-prevMovB);
+            return moveWeight*(newMovW-prevMovW)
+                    -(1-moveWeight)*(newMovB-prevMovB);
         }
         else{
-            return moveWeight*(newMovB-prevMovB)-(1-moveWeight)*(newMovW-prevMovW);
+            return moveWeight*(newMovB-prevMovB)
+                    -(1-moveWeight)*(newMovW-prevMovW);
         }
     }
     public Move getMove(){

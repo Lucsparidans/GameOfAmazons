@@ -108,7 +108,7 @@ public class MenuView extends View {
         settingsButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                viewManager.push(new OptionsView(viewManager));
+                viewManager.push(new OptionsView(viewManager,player1.getSelected(),player2.getSelected()));
             }
         });
 
