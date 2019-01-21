@@ -36,7 +36,7 @@ public class Evolution implements Algorithm {
     private float mutationRate = 0.1f;
     private float crossovers;
     private boolean competitiveCoevolution;
-    private boolean debug = false;
+    private boolean debug = true;
     public static boolean debugPrinting = true;
 
     /**
@@ -194,8 +194,9 @@ public class Evolution implements Algorithm {
                     System.out.println("###############################################################");
                     System.out.println();
                     for (int i = 0; i < population.length; i++) {
-                        System.out.printf("Population %d has value: %f\n", i, population[i].getEval());
+                        System.out.printf("Population %d has value: %f\n", i+1, population[i].getEval());
                     }
+                    System.out.println();
                 }
 
                 this.best = bestGenome;
@@ -220,10 +221,24 @@ public class Evolution implements Algorithm {
                     opponentBest[i].computeBestMove();
                 }
                 double[] finalValues = new double[numberCompGens];
+                double bestEval = Double.NEGATIVE_INFINITY;
                 for (int i = 0; i < finalValues.length; i++) {
                     finalValues[i] = ourBest[i].getEval() - opponentBest[i].getBest().getEval();
-                    System.out.printf("Final values: %f\n",finalValues[i]);
+                    if(debug) {
+                        System.out.printf("Index: %d gives =>\n" +
+                                "Ourbest.value: %f\n" +
+                                " OpponentBest.value: %f\n",i,ourBest[i].getEval(),opponentBest[i].getBest().getEval());
+                        System.out.printf("Final values: %f\n", finalValues[i]);
+                    }
+                    if(finalValues[i] > bestEval){
+                        this.best = ourBest[i];
+                        bestEval = finalValues[i];
+                    }
                 }
+                if(debug){
+                    System.out.printf("The best evaluation found has value: %f\n",bestEval);
+                }
+
 
             }
 
