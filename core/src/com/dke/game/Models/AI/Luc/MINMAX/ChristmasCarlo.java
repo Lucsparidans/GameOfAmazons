@@ -40,7 +40,8 @@ public class ChristmasCarlo implements Algorithm {
     double moveLengthsum = 0;
     double moveAmount = 0;
 
-    boolean fixTotalamountOfExpansions;
+
+
 
     public ChristmasCarlo(char AIside, int expansionFactor, double amountOfTotalExpansionsPerMove, boolean fixTotalExpansions){
         this.fixTotalamountOfExpansions = fixTotalExpansions;
@@ -83,6 +84,9 @@ public class ChristmasCarlo implements Algorithm {
     public char[][] startalgoWithCharArray(char[][] convertedToCharMatrix, char sideTurn){
         ArrayList<char[][]> nextPossibleMoves = generateNextPossibleStates(sideTurn, convertedToCharMatrix);
         int sizeofMoveArray = nextPossibleMoves.size();
+        double[] nextMovesScores = new double[sizeofMoveArray];
+
+        double expansionfactorDouble = (double) expansionFactor;
         //System.out.println("Size of array:" + sizeofMoveArray);
         double[] nextMovesScores = new double[sizeofMoveArray];
         double expansionfactorDouble;
@@ -125,7 +129,7 @@ public class ChristmasCarlo implements Algorithm {
         for(int i =0; i< nextMovesScores.length; i++){
             if(nextMovesScores[i]==maxScore){
                 intlist.add(i);
-            }
+            }///////TODO FINISH THIS !! SELECTS A RANDOM BEST MOVE
 
         }
         int bestIndex = (int) getRandomArrayListElement(intlist);
@@ -463,7 +467,7 @@ public class ChristmasCarlo implements Algorithm {
                 newState = startalgoWithCharArray(startState, whoseTurn);
                 //printCharMatrix(newState);
             }else {
-               // System.out.println("RandomMove");
+                //System.out.println("RandomMove");
                 //System.out.println("Random :" +switchSide(AIside)+"'s turn:");
                 newState = getNextRandomState(whoseTurn, startState);
                 //printCharMatrix(newState);

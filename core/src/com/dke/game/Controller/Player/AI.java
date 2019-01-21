@@ -2,6 +2,10 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
+import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
+import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
+import com.dke.game.Models.AI.Luc.MINMAX.MovesTree;
 import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.AI.MINMAX.MoveNode;
 import com.dke.game.Models.AI.MINMAX.MovesTree;
@@ -57,9 +61,6 @@ public class AI extends Player {
         return tree;
     }
 
-    public GameLoop getGameLoop() {
-        return gameLoop;
-    }
 
     private void move() {
         Move bestMove = algorithm.getBestMove(this);
@@ -95,5 +96,13 @@ public class AI extends Player {
 
     public enum Phase {
         START_PHASE, MID_PHASE, END_PHASE
+    }
+
+    public char getSide(){
+        return side;
+    }
+
+    public GameLoop getGameLoop(){
+        return gameLoop;
     }
 }

@@ -46,6 +46,8 @@ public abstract class Amazon extends Piece {
         return Character.toString(side);
     }
 
+    public char getSideChar(){return side;}
+
     //returns id num(1-4) and color)
     @Override
     protected String getID() {
