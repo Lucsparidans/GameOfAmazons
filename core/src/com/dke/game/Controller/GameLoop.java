@@ -191,6 +191,10 @@ public class GameLoop {
 
     }
 
+    /**
+     * Place amazons on the board to reduce the amount of possible moves when testing
+     * @param random
+     */
     private void preloadBoard(boolean random) {
         if (random) {
             for (int i = 0; i < (boardCoordinates.length * boardCoordinates[0].length) / 2; i++) {

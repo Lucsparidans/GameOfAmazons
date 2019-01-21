@@ -26,7 +26,7 @@ public class OptionsView extends View {
     private SelectBox<String> boardSize;
     private SelectBox<String> algorithms;
     public static String SELECTED_ALGORITHM = "Evolution";
-    public static boolean OPPONENT_MODELING = true;
+    public static boolean OPPONENT_MODELING = false;
 
 
 
@@ -70,7 +70,9 @@ public class OptionsView extends View {
         table.row();
 
         opponentModeling = new CheckBox("Opponent modeling: ",skin);
-        opponentModeling.setChecked(true);
+        if(OPPONENT_MODELING) {
+            opponentModeling.setChecked(true);
+        }
         table.add(opponentModeling);
         table.row();
 
