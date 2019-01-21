@@ -46,7 +46,7 @@ public class GameLoop {
             this.viewManager = viewManager;
             arrow = new ArrayList<>();
             initialiseGame();
-            algo = new Evolution(amazons, arrow, this, false);
+            algo = new Evolution(amazons, arrow, this, true);
             gameView = new GameView(this.viewManager, board2D, boardCoordinates, amazons, arrow, this);
             createPlayers(white_Type, black_Type, gameView);
             gameView.setPlayers(white, black);
