@@ -306,7 +306,7 @@ public class OptionsView extends View {
                     }
                     if(p1.equals("AI") && p2.equals("AI")) {
                         SELECTED_ALGORITHM_2 = algorithms2.getSelected();
-                        if (opponentModeling.isChecked()) {
+                        if (opponentModeling2.isChecked()) {
                             OPPONENT_MODELING_2 = true;
                         } else {
                             OPPONENT_MODELING_2 = false;

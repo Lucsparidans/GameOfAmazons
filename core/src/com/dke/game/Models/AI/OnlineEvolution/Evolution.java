@@ -22,7 +22,7 @@ public class Evolution implements Algorithm {
     private int compGenerations;
     private int compPopSize;
     private Genome[] parentPopulation;
-    private int numberCompGens = 2;
+    private int numberCompGens = 5;
     private int popSize;
     private Random rnd;
     private final int genomeLength = 0;
@@ -64,8 +64,8 @@ public class Evolution implements Algorithm {
             this.popSize = 100;                               //Number of elements in each population in this evolution
             this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
             crossovers = popSize / 4;                       //Number of crossovers
-            this.compPopSize = 4;                           //Number of elements in the coevolution populations
-            this.compGenerations = 2;                       //Number of generations generated in the coevolution
+            this.compPopSize = 100;                           //Number of elements in the coevolution populations
+            this.compGenerations = 1;                       //Number of generations generated in the coevolution
             this.population = new Genome[popSize];
         } else if (GameLoop.PHASE == GameLoop.Phase.MIDDLE) {
             generations = 5;
