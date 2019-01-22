@@ -194,6 +194,10 @@ public class Genome implements Comparable{
     }
 
 
+
+
+
+
     // TODO create crossover functionality
     /**
      * Crossover function

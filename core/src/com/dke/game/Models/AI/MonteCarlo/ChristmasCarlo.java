@@ -1,8 +1,6 @@
-package com.dke.game.Models.AI.Luc.MINMAX;
+package com.dke.game.Models.AI.MonteCarlo;
 
-import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.Player.Player;
-import com.dke.game.Models.AI.Luc.MyAlgo.ConsoleColors;
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Models.AI.Algorithm;
 
@@ -12,7 +10,6 @@ import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
-import com.dke.game.Models.AI.Luc.MyAlgo.CarloCoordinate;
 import com.dke.game.Models.GraphicalModels.Board2D;
 
 import java.util.ArrayList;

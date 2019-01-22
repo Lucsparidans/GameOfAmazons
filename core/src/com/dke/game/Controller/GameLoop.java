@@ -4,10 +4,9 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Greedy.Greedy;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
 import com.dke.game.Models.AI.MINMAX.MiniMax;
-import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
+import com.dke.game.Models.AI.MonteCarlo.ChristmasCarlo;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -114,7 +113,8 @@ public class GameLoop {
         if (white_Type.equals("Human")) {
             if (black_Type.equals("AI")) {
                 white = new Human('W', gameView, this);
-                black = new AI('B', algo, this);
+                black = new AI('B', algo2, this);
+                algo2.initialize(black);
             } else if (black_Type.equals("Human")) {
                 white = new Human('W', gameView, this);
                 black = new Human('B', gameView, this);
@@ -122,9 +122,12 @@ public class GameLoop {
         } else if (white_Type.equals("AI")) {
             if (black_Type.equals("AI")) {
                 white = new AI('W', algo, this);
+                algo.initialize(white);
                 black = new AI('B', algo2, this);
+                algo2.initialize(black);
             } else if (black_Type.equals("Human")) {
-                white = new AI('B', algo, this);
+                white = new AI('W', algo, this);
+                algo.initialize(white);
                 black = new Human('B', gameView, this);
             }
         }

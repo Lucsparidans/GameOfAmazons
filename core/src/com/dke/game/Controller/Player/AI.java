@@ -2,7 +2,6 @@ package com.dke.game.Controller.Player;
 
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
 
 import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.AI.MINMAX.MoveNode;
@@ -26,7 +25,6 @@ public class AI extends Player {
         super(side);
         this.algorithm = algorithm;
         System.out.println(algorithm.getClass().getSimpleName());
-        this.algorithm.initialize(this);
         this.gameLoop = gameLoop;
         this.board2D=gameLoop.getBoard2D();
         enemyAmazons = new Amazon2D[4];

@@ -1,4 +1,4 @@
-package com.dke.game.Models.AI.Luc.MyAlgo;
+package com.dke.game.Models.AI.MonteCarlo;
 
 public class CarloCoordinate {
     int x, y;
