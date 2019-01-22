@@ -120,6 +120,65 @@ public class Cell {
 
                     } else {//kingmoves
 
+                counter = 1;
+
+                if (!ur && !board[i + counter][j + counter].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                    Cell newC = board[i + counter][j + counter];
+                    possibleMovesCell.add(board[i + counter][j + counter]);
+
+                } else
+                    ur = true;
+
+                if (!dl && !board[i - counter][j - counter].isOccupied() && i - counter < board.length && j - counter < board.length) {
+
+                    Cell newCe = board[i - counter][j - counter];
+                    possibleMovesCell.add(board[i - counter][j - counter]);
+
+                } else
+                    dl = true;
+
+                if (!ul && !board[i + counter][j - counter].isOccupied() && i + counter < board.length && j - counter < board.length) {
+                    Cell newCel = board[i + counter][j - counter];
+                    possibleMovesCell.add(board[i + counter][j - counter]);
+
+                } else
+                    ul = true;
+
+                if (!dr && !board[i - counter][j + counter].isOccupied() && i - counter < board.length && j + counter < board.length) {
+                    Cell newCell = board[i - counter][j + counter];
+                    possibleMovesCell.add(board[i - counter][j + counter]);
+
+
+                } else
+                    dr = true;
+                if (!vu && !board[i + counter][j].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                    Cell newC = board[i + counter][j]; // goes up, stays horisontally in the same position
+                    possibleMovesCell.add(newC);
+                } else
+                    vu = true;
+
+                if (!vd && !board[i - counter][j].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                    Cell newCell = board[i - counter][j];//goes down
+
+                    possibleMovesCell.add(newCell);
+
+                } else
+                    vd = true;
+
+                if (!hr && !board[i][j + counter].isOccupied() && i + counter < board.length && j + counter < board.length) {
+                    Cell newC = board[i][j + counter];// goes right
+                    possibleMovesCell.add(newC);
+
+                } else hr = true;
+
+                if (!hl && !board[i][j + counter].isOccupied() && i + counter < board.length && j + counter < board.length) {
+
+                    Cell newCell = board[i][j - counter];//goes left
+
+                    possibleMovesCell.add(newCell);
+                } else
+                    hl = true;
+
                  }
            return possibleMovesCell;
 
@@ -262,11 +321,12 @@ public class Cell {
                         else if(queen.getSide() == 'B'){
                             blackQ = true;
                         }
-                        else{
-                            oneDisCells.add(boardCoordinates[x+i][y]);
-                        }
+
 
                     }
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x+i][y]);
                 }
             }
             if (negative) {
@@ -279,12 +339,13 @@ public class Cell {
                         else if(queen.getSide() == 'B'){
                             blackQ = true;
                         }
-                        else{
-                            oneDisCells.add(boardCoordinates[x-i][y]);
-                        }
+
 
                     }
                     // boardCoordinates[this.cell.getI() - i][this.cell.getJ()].setAvailable("true");
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x-i][y]);
                 }
             }
         }
@@ -310,12 +371,13 @@ public class Cell {
                          else if(queen.getSide() == 'B'){
                              blackQ = true;
                          }
-                         else{
-                             oneDisCells.add(boardCoordinates[x][y + i]);
-                         }
+
 
                     }
                     //boardCoordinates[this.cell.getI()][this.cell.getJ() + i].setAvailable("true");
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x][y + i]);
                 }
             }
 
@@ -329,12 +391,13 @@ public class Cell {
                         else if(queen.getSide() == 'B'){
                             blackQ = true;
                         }
-                        else{
-                            oneDisCells.add(boardCoordinates[x][y - i]);
-                        }
+
 
                     }
                     //boardCoordinates[this.cell.getI()][this.cell.getJ() - i].setAvailable("true");
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x][y - i]);
                 }
             }
 
@@ -369,12 +432,13 @@ public class Cell {
                         else if(queen.getSide() == 'B'){
                             blackQ = true;
                         }
-                        else{
-                            oneDisCells.add(boardCoordinates[x+i][y+i]);
-                        }
+
 
                     }
                     //boardCoordinates[this.cell.getI() + i][this.cell.getJ() + i].setAvailable("true");
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x+i][y+i]);
                 }
             }
             if (negative) {
@@ -387,12 +451,13 @@ public class Cell {
                         else if(queen.getSide() == 'B'){
                             blackQ = true;
                         }
-                        else{
-                            oneDisCells.add(boardCoordinates[x+-i][y-i]);
-                        }
+
 
                     }
                     // boardCoordinates[this.cell.getI() - i][this.cell.getJ() - i].setAvailable("true");
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x+-i][y-i]);
                 }
             }
 
@@ -426,12 +491,13 @@ public class Cell {
                         else if(queen.getSide() == 'B'){
                             blackQ = true;
                         }
-                        else{
-                            oneDisCells.add(boardCoordinates[x-i][y+i]);
-                        }
+
 
                     }
                     // boardCoordinates[this.cell.getI() - i][this.cell.getJ() + i].setAvailable("true");
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x-i][y+i]);
                 }
             }
 
@@ -445,12 +511,12 @@ public class Cell {
                         else if(queen.getSide() == 'B'){
                             blackQ = true;
                         }
-                        else{
-                            oneDisCells.add(boardCoordinates[x+i][y-i]);
-                        }
 
                     }
                     //boardCoordinates[this.cell.getI() + i][this.cell.getJ() - i].setAvailable("true");
+                }
+                else{
+                    oneDisCells.add(boardCoordinates[x+i][y-i]);
                 }
             }
         }
@@ -464,11 +530,12 @@ public class Cell {
         else if(blackQ == true && whiteQ == false){
             closest = 2;
         }
-        /*else if(blackQ == true && whiteQ == true) {
+        else if(blackQ == true && whiteQ == true) {
             for (Cell cell:oneDisCells) {
-               cell.possibleCells();
+               cell.possibleCells(boardCoordinates, getI(), getJ());
             }
-        }*/
+            closest = 0;
+        }
         else { closest = 3;}
         return closest;
     }
