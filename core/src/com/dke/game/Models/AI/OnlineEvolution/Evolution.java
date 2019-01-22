@@ -61,7 +61,7 @@ public class Evolution implements Algorithm {
     private void updateVariablesPhase() {
         if (GameLoop.PHASE == GameLoop.Phase.BEGIN) {
             this.generations = 1;                           //Number of generation for the evolution
-            this.popSize = 2;                               //Number of elements in each population in this evolution
+            this.popSize = 100;                               //Number of elements in each population in this evolution
             this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
             crossovers = popSize / 4;                       //Number of crossovers
             this.compPopSize = 4;                           //Number of elements in the coevolution populations
@@ -144,14 +144,14 @@ public class Evolution implements Algorithm {
                 }
 
                 //<editor-fold desc="Crossover and mutation">
-//                                for (int i = 0; i < popSize * mutationRate; i++) {
-//                    try {
-//
-//                        population[rnd.nextInt(popSize)].mutate();
-//                    } catch (Action.InvalidActionTypeException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+                                for (int i = 0; i < popSize * mutationRate; i++) {
+                    try {
+
+                        population[rnd.nextInt(popSize)].mutate();
+                    } catch (Action.InvalidActionTypeException e) {
+                        e.printStackTrace();
+                    }
+                }
 //                Genome[] crossover = new Genome[popSize];
 //                int counter = 0;
 //                for (int i = 0; i < crossovers; i++) {
