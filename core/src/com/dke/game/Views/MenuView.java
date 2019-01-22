@@ -20,6 +20,7 @@ import static com.dke.game.Controller.MainLoop.skin;
 
 public class MenuView extends View {
 
+
     private Stage stage;
     private TextButton textButton;
     private TextButton settingsButton;
@@ -27,6 +28,7 @@ public class MenuView extends View {
     private SelectBox<String> player2;
     private Player w;
     private Player b;
+    private MenuView menuView = this;
 
 
     public MenuView(ViewManager viewManager) {
@@ -37,60 +39,29 @@ public class MenuView extends View {
     public void create() {
         stage = new Stage();
 
-
         Table table = new Table();
-
         Label title = new Label("Game of Amazons", skin,"title");
-        table.add(title).top();
+        table.add(title).top().padTop(200).padBottom(20);
         table.row();
 
         textButton = new TextButton("Click me", skin);
-        table.add(textButton).center();
+        table.add(textButton).bottom().padBottom(200).fillX();
         table.row();
 
-        String[] content = {"Human", "AI"};
-        //String[] c2 = {"AI","Human"};
-        player1 = new SelectBox<String>(skin);
-        player1.setItems(content);
-        player2 = new SelectBox<String>(skin);
-        player2.setItems(content);
-        Table players = new Table();
-        players.add(new Label("White", skin));
-        players.add(new Label("Black", skin));
-        players.row();
-        players.add(player1);
-        players.add(player2);
-        table.add(players).center();
-        table.row();
         //table.debugAll();
         table.setFillParent(true);
-        float pad = 1/100f * stage.getWidth();
 
-
-
-//        List settings = new List(MainLoop.skin);
-//        String[] settingsContent = {"Settings", "Difficulty", "Player-Setup", "Video-Settings"};
-//        settings.setItems(settingsContent);
-//
-//
-//
-//// align all actors to the top of the screen
-//        Table menuBar = new Table();
-//        menuBar.setFillParent(true);
-//        menuBar.add(settings).expand().left().fillY(); // set to screen width
-//
-//        stage.addActor(menuBar);
         Table settings = new Table(skin);
         settings.setBackground("menu-bg");
-        settings.left();
+        settings.left().padLeft(20);
         settings.setFillParent(true);
-        ButtonGroup buttonGroup = new ButtonGroup();
+
+
         settings.row();
         settingsButton = new TextButton("Settings", skin, "menu");
         settingsButton.getLabel().setAlignment(Align.left);
-        buttonGroup.add(settingsButton);
-        settings.add(settingsButton);
-        settings.add(settingsButton).top();
+        settings.add(settingsButton).width(200);
+
 
         stage.addActor(settings);
         stage.addActor(table);
@@ -108,7 +79,7 @@ public class MenuView extends View {
         settingsButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                viewManager.push(new OptionsView(viewManager,player1.getSelected(),player2.getSelected()));
+                viewManager.push(new OptionsView(viewManager,menuView));
             }
         });
 

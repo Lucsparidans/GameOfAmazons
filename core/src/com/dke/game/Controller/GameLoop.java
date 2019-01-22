@@ -93,13 +93,13 @@ public class GameLoop {
             }
         }
         else if(OptionsView.SELECTED_ALGORITHM_2.equals("Greedy")){
-            //algo = ;
+            //algo2 = ;
         }
         else if(OptionsView.SELECTED_ALGORITHM_2.equals("Alpha-Beta")){
-            //algo = ;
+            //algo2 = ;
         }
         else if(OptionsView.SELECTED_ALGORITHM_2.equals("Monte-Carlo")){
-            //algo = ;
+            //algo2 = ;
         }
     }
 
