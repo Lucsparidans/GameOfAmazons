@@ -62,12 +62,12 @@ public class Evolution implements Algorithm, Comparable {
 
     private void updateVariablesPhase() {
         if (GameLoop.PHASE == GameLoop.Phase.BEGIN) {
-            this.generations = 1;                           //Number of generation for the evolution
-            this.popSize = 2;                               //Number of elements in each population in this evolution
+            this.generations = 5;                           //Number of generation for the evolution
+            this.popSize = 100;                               //Number of elements in each population in this evolution
             this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
             crossovers = popSize / 4;                       //Number of crossovers
             this.compPopSize = 100;                           //Number of elements in the coevolution populations
-            this.compGenerations = 1;                       //Number of generations generated in the coevolution
+            this.compGenerations = 2;                       //Number of generations generated in the coevolution
             this.population = new Genome[popSize];
         } else if (GameLoop.PHASE == GameLoop.Phase.MIDDLE) {
             generations = 5;
@@ -146,14 +146,14 @@ public class Evolution implements Algorithm, Comparable {
                 }
 
                 //<editor-fold desc="Crossover and mutation">
-                                for (int i = 0; i < popSize * mutationRate; i++) {
-                    try {
-
-                        population[rnd.nextInt(popSize)].mutate();
-                    } catch (Action.InvalidActionTypeException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                                for (int i = 0; i < popSize * mutationRate; i++) {
+//                    try {
+//
+//                        population[rnd.nextInt(popSize)].mutate();
+//                    } catch (Action.InvalidActionTypeException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 //                Genome[] crossover = new Genome[popSize];
 //                int counter = 0;
 //                for (int i = 0; i < crossovers; i++) {
