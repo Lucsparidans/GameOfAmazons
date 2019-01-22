@@ -24,10 +24,9 @@ public class MenuView extends View {
     private Stage stage;
     private TextButton textButton;
     private TextButton settingsButton;
-    private SelectBox<String> player1;
-    private SelectBox<String> player2;
     private Player w;
     private Player b;
+    private String p1 = "Human", p2 = "Human";
     private MenuView menuView = this;
 
 
@@ -73,7 +72,7 @@ public class MenuView extends View {
         textButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                new GameLoop(viewManager,player1.getSelected(),player2.getSelected());
+                new GameLoop(viewManager,p1,p2);
             }
         });
         settingsButton.addListener(new ClickListener(){
@@ -120,4 +119,11 @@ public class MenuView extends View {
 
     }
 
+    public void setP1(String p1) {
+        this.p1 = p1;
+    }
+
+    public void setP2(String p2) {
+        this.p2 = p2;
+    }
 }
