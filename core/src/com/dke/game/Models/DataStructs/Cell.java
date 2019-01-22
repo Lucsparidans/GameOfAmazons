@@ -14,16 +14,25 @@ public class Cell {
     public static int CELL_SIZE = 50;
     private Coordinate topLeft, topRight, bottomRight, bottomLeft;
     private int i,j;
-    public  String belongsTo;
-    public int moveNum;
+    private String belongsTo;
+    private int moveNumWhite;
+    private int moveNumBlack;
 
-    public int getMoveNum() {
-        return moveNum;
+    public int getMoveNumBlack() {
+        return moveNumBlack;
+    }
+    public void setMoveNumBlack(int moveNumBalck) {
+        this.moveNumBlack = moveNumBlack;
+    }
+    public void setMoveNumWhite(int moveNumWhite) {
+        this.moveNumWhite = moveNumWhite;
     }
 
-    public void setMoveNum(int moveNum) {
-        this.moveNum = moveNum;
+    public int getMoveNumWhite() {
+        return moveNumWhite;
     }
+
+
     public Cell() {}
 
     public String getMoveID() {
@@ -35,12 +44,14 @@ public class Cell {
     }
 
     //<editor-fold desc="PossibleMovesOfCell">
-    //gives back a list of all possible queenlike moves of a cell
+
     ArrayList<Cell> possibleMovesCell= new ArrayList<>();
     /*
-    * @param queenLikeMoves true if queenlike possible moves, false if kinglike possible moves*/
+    * @param queenLikeMoves true if queenlike possible moves, false if kinglike possible moves
+    * @return  a list of all possible queenlike moves of a cell
+    * */
     int counter =1;
-    public ArrayList<Cell> PossibleMovesOfCell(TestBoard testBoard, Cell cell, boolean queenLikeMoves){
+    public ArrayList<Cell> possibleMovesOfCell(TestBoard testBoard, Cell cell, boolean queenLikeMoves){
 
         Cell[][] board = testBoard.getBoard();
         int i = cell.getI();

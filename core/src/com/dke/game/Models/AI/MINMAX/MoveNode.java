@@ -114,12 +114,13 @@ public class MoveNode {
         // mobility(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
         if(this.data != null) {
             if (this.getData().isPlayerMaximizing(playerAI)) {
-                // double val = mobility(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+                MSP(testBoard,playerAI);
+                 // double val = mobility(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
                 double val = positioHheuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
                 //System.out.println(val);
                 return val;
             } else {
-                realDealHeuristics(playerAI.getMyAmazons(),playerAI.getEnemyAmazons());
+                    MSP(testBoard,playerAI);
                 //double val = mobility(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
                 double val = positioHheuristics(testBoard, playerAI.getEnemyAmazons(), playerAI.getMyAmazons());
                 //System.out.println(val);
@@ -274,28 +275,109 @@ public class MoveNode {
     }
 
 
+    // pos : current board position
+    // evaluate the territory feature for the board position “pos” and return the result.
+    int whiteStonePly;
+    int blackStonePly;
+   public int MSP(TestBoard testBoard,AI playerAI){
 
 
-    public void realDealHeuristics( Amazon2D[] ourQueens, Amazon2D[] enemyQueens){
-        //ArrayList<> allqueens= ourQueens + enemyQueens;
+       int  blackSquares = 0;
+       int  whiteSquares = 0;
+       TestBoard testBoard1 = realDealHeuristics(testBoard, playerAI.getMyAmazons(), playerAI.getEnemyAmazons());
+       Cell[][] pos=testBoard1.getBoard();
+       for (int i = 0; i<pos.length; i++){
+            for(int j=0; j< pos.length;j++){
+//all empty squares x do
+                if(!pos[i][j].isOccupied()){
+                    String moveID = pos[i][j].getMoveID();
+                    //whiteStonePly = the minimum number of moves that a white piece needs to arrive at x;
+                     whiteStonePly = pos[i][j].getMoveNumWhite();
+                    //blackStonePly = the minimum number of moves that a black piece needs to arrive at x;
+                    blackStonePly = pos[i][j].getMoveNumBlack();
+                }
+            }
 
-        //for every queen
-        for (Amazon Q: ourQueens) {
-            //get possible moves
-            ArrayList<Cell> possibleMoves = Q.getPossibleMoves();
-            //mark every cell in the possible moves list as 1 (so moveNum=1)
-            for (Cell C : possibleMoves) {
-                //if cell not occupied
-                //and if cell not marked
-                if (!C.isOccupied()) {
-                    checkTiles(C);
+
+
+         if (blackStonePly < whiteStonePly){
+            blackSquares = blackSquares + 1;
+         }
+         else
+            whiteSquares = whiteSquares + 1;
+    }
+       // white’s turn to play
+if (playerAI.getSide()=='W') {
+    return (whiteSquares -blackSquares);
+}else{
+        return (blackSquares -whiteSquares);
+        }
+   }
+
+
+public TestBoard realDealHeuristics( TestBoard testBoard,Amazon2D[] ourQueens, Amazon2D[] enemyQueens) {
+    //make sure the queens and cells we're talking about are connected to the testBoard as we're trying to change it
+    //for every queen
+    int countMove=0;
+    //for us
+    for (Amazon Q : ourQueens) {
+        //get possible moves
+        ArrayList<Cell> possibleMoves = Q.getPossibleMoves();
+        //mark every cell in the possible moves list as 1 (so moveNum=1)
+        for (Cell C : possibleMoves) {
+            //if cell not occupied
+            //and if cell not marked
+            if (!C.isOccupied()) {
+                checkTiles(C, countMove,Q.getSide());
+                //queen-like moves
+                ArrayList<Cell> possibleMovesOfCell = C.possibleMovesOfCell(testBoard, C, true);
+                countMove++;// going 2 ply deep
+                //maybe remove tiles marked as 10 from the possible moves ans not possible anymore
+                for (Cell cell : possibleMovesOfCell) {
+                    checkTiles(cell,countMove,Q.getSide());
+
+                }
+                //king-like moves
+                ArrayList<Cell> possibleMovesOfCell1 = C.possibleMovesOfCell(testBoard, C, false);
+                for (Cell cell : possibleMovesOfCell) {
+                    checkTiles(cell,countMove,Q.getSide());
 
                 }
 
-            }
-        }
 
-             //for every cell in the possible moves make a recursion 4 deep
+            }
+
+        }
+    }
+    //for enemy
+    for (Amazon Q : enemyQueens) {
+        ArrayList<Cell> possibleMoves = Q.getPossibleMoves();
+          for (Cell C : possibleMoves) {
+
+
+                checkTiles(C, countMove,Q.getSide());
+                 ArrayList<Cell> possibleMovesOfCellenemy = C.possibleMovesOfCell(testBoard, C, true);
+                countMove++;// going 2 ply deep
+                 for (Cell cell : possibleMovesOfCellenemy) {
+                    checkTiles(cell,countMove,Q.getSide());
+
+                }
+                //king-like moves
+                ArrayList<Cell> possibleMovesOfCellenemy1 = C.possibleMovesOfCell(testBoard, C, false);
+                for (Cell cell : possibleMovesOfCellenemy1) {
+                    checkTiles(cell,countMove,Q.getSide());
+
+                }
+
+
+
+
+        }
+    }
+    return testBoard;
+}
+
+
             //if cell marked
         //mark all those unmarked cells with adequate moveID
         //
@@ -304,36 +386,74 @@ public class MoveNode {
 
 
 
-    }
-
-    public int countMove=0;
-    public void checkTiles(Cell C) {
-
-        if (C.getMoveID() == null) {
-            //can't detect if conflicting the enemy q so moveID changed to string
-            C.setMoveID("W");
-            C.setMoveNum(countMove + 1);
-        }//if cell already marked,
-        // if cell moveID and moveNum of our queen = to cell moveID and moveNum of the enemy,
-        // then moveID of that cell is 0.
-        else if (C.getMoveID() != "W" && C.getMoveNum() == countMove + 1) {
-            C.setMoveNum(0);//for not existss
 
 
-        } //if cell already marked by black,
-        //and if cell moveNum > our potential moveNum
-        //reset movNum to the potential one
-        else if (C.getMoveID() != "W" && C.getMoveNum() > countMove + 1) {
-            C.setMoveNum(countMove + 1);
+/*
+* changes the test board, doesn't return anything as the cells of the testBoard are being changed
+* */
+    public void checkTiles(Cell C,int countMove, char side ) {
+        if (side == 'W') {
+            if (C.getMoveID() == null) {
+                //can't detect if conflicting the enemy q so moveID changed to string
+                C.setMoveID("W");
+                C.setMoveNumWhite(countMove + 1);
+            }//if cell already marked by enemy,
+            // if cell moveID and moveNum of our queen = to cell moveNum of the enemy,
+            // then moveNumours and movenumenemy of that cell is 10 for nonexistant.
+            else if (C.getMoveID() != "W" && C.getMoveNumBlack() == countMove + 1) {
+                C.setMoveNumWhite(10);//for not exist
+                C.setMoveNumBlack(10);
 
-                   /* }else if(C.getMoveID()!="W"&& C.getMoveNum()<countMove+1){
-                     continue;
-                    }*/
-            //cover the same side conflicting parts
+            } //if cell already marked by enemy,
+            //and if cell moveNumEnemy > our potential moveNumOurs
+            //reset movNuOours to the potential one
+            else if (C.getMoveID() != "W" && C.getMoveNumBlack() > countMove + 1 || C.getMoveNumBlack() < countMove + 1) {
+                C.setMoveNumWhite(countMove + 1);
 
 
+                //cover the same side conflicting parts
+                //if what we have is slower that what we could have, change it
+                //if what we have is equal to what we found, do nothing
+                //if what we have is faster(takes less moves) than what we found, do nothing
+            } else if (C.getMoveID() == "W" && C.getMoveNumWhite() > countMove + 1) {
+                C.setMoveNumWhite(countMove + 1);
+
+            } else {
+                C.setMoveNumWhite(countMove + 1);
+            }
+        } else {
+
+            if (C.getMoveID() == null) {
+                //can't detect if conflicting the enemy q so moveID changed to string
+                C.setMoveID("B");
+                C.setMoveNumBlack(countMove + 1);
+            }//if cell already marked by enemy,
+            // if cell moveID and moveNum of our queen = to cell moveNum of the enemy,
+            // then moveNumours and movenumenemy of that cell is 10 for nonexistant.
+            else if (C.getMoveID() != "B" && C.getMoveNumWhite() == countMove + 1) {
+                C.setMoveNumWhite(10);//for not exist
+                C.setMoveNumBlack(10);
+
+            } //if cell already marked by enemy,
+            //and if cell moveNumEnemy > our potential moveNumOurs
+            //reset movNuOours to the potential one
+            else if (C.getMoveID() != "B" && C.getMoveNumWhite() > countMove + 1 || C.getMoveNumWhite() < countMove + 1) {
+                C.setMoveNumBlack(countMove + 1);
+
+
+                //cover the same side conflicting parts
+                //if what we have is slower that what we could have, change it
+                //if what we have is equal to what we found, do nothing
+                //if what we have is faster(takes less moves) than what we found, do nothing
+            } else if (C.getMoveID() == "B" && C.getMoveNumBlack() > countMove + 1) {
+                C.setMoveNumBlack(countMove + 1);
+
+            } else {
+                C.setMoveNumBlack(countMove + 1);
+            }
         }
     }
+
     //</editor-fold>
 
 
