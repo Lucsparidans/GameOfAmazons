@@ -172,7 +172,7 @@ public class OptionsView extends View {
         playerSetupTable.add(player2).fill().pad(5);
         playerSetupTable.row();
 
-        String[] algorithmOptions = {"Evolution", "Greedy", "Alpha-Beta", "Monte-Carlo"};
+        String[] algorithmOptions = {"Evolution", "Alpha-Beta", "Monte-Carlo"};
         algorithms = new SelectBox<>(skin);
         algorithms.setItems(algorithmOptions);
         playerSetupTable.add(algorithms).fill().pad(5);
