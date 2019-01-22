@@ -4,10 +4,10 @@ import com.dke.game.Controller.Player.AI;
 import com.dke.game.Controller.Player.Human;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Algorithm;
+import com.dke.game.Models.AI.Greedy.Greedy;
 import com.dke.game.Models.AI.OnlineEvolution.Evolution;
 import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
-import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
 import com.dke.game.Models.DataStructs.Board;
 import com.dke.game.Models.DataStructs.Cell;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
@@ -39,6 +39,7 @@ public class GameLoop {
     public static Phase PHASE = Phase.BEGIN;
     public static final int END_BEGIN = 10;
     public static final int END_MID = 30;
+    //private Algorithm algo = new MiniMax();
 
 
 
@@ -76,13 +77,13 @@ public class GameLoop {
             }
         }
         else if(OptionsView.SELECTED_ALGORITHM_1.equals("Greedy")){
-            //algo = ;
+            //
         }
         else if(OptionsView.SELECTED_ALGORITHM_1.equals("Alpha-Beta")){
-            //algo = ;
+            algo = new MiniMax();
         }
         else if(OptionsView.SELECTED_ALGORITHM_1.equals("Monte-Carlo")){
-            //algo = ;
+            algo = new ChristmasCarlo('H', 4, 2400, false ) ;
         }
         if(OptionsView.SELECTED_ALGORITHM_2.equals("Evolution")) {
             if(OptionsView.OPPONENT_MODELING_2) {
@@ -96,10 +97,10 @@ public class GameLoop {
             //algo2 = ;
         }
         else if(OptionsView.SELECTED_ALGORITHM_2.equals("Alpha-Beta")){
-            //algo2 = ;
+            algo2 = new MiniMax();
         }
         else if(OptionsView.SELECTED_ALGORITHM_2.equals("Monte-Carlo")){
-            //algo2 = ;
+            algo2 = new ChristmasCarlo('H', 4, 2400, true ) ;
         }
     }
 

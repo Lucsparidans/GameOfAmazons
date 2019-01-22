@@ -29,33 +29,32 @@ public class DesktopLauncher {
 
         //TODO REMOVE TEST THIS:
 //        {
-//            ChristmasCarlo TESTCARLO = new ChristmasCarlo('B',10,500,true);
-//            char[][] testCharBoard = new char[10][10];
-//            testCharBoard[3][0] = 'W';
-//            testCharBoard[6][0] = 'W';
-//            testCharBoard[0][3] = 'W';
-//            testCharBoard[9][3] = 'W';
-//            testCharBoard[0][6] = 'B';
-//            testCharBoard[9][6] = 'B';
-//            testCharBoard[3][9] = 'B';
-//            testCharBoard[6][9] = 'B';
-//
-//            char[][] tinyBoard = new char[5][5];
-//            tinyBoard[2][1] = 'W';
-//            tinyBoard[4][4] = 'B';
-//
-//            long startTime = System.currentTimeMillis();
-//            //TESTCARLO.startalgoWithCharArray(testCharBoard, 'B');
-//            double amountofloops = 25;
-//            double sum = 0;
-//            for(int i = 0; i< amountofloops; i++) {
-//                sum += TESTCARLO.expandRandomVSAI('B', 'B', testCharBoard);
-//                System.out.println(i);
-//            }
-//            long endTime = System.currentTimeMillis();
-//            System.out.println("That took " + (endTime - startTime) + " milliseconds");
-//
-//            System.out.println("avg wins: "+ sum/amountofloops);
+            ChristmasCarlo TESTCARLO = new ChristmasCarlo('B',10,500,false);
+            char[][] testCharBoard = new char[10][10];
+            testCharBoard[3][0] = 'W';
+            testCharBoard[6][0] = 'W';
+            testCharBoard[0][3] = 'W';
+            testCharBoard[9][3] = 'W';
+            testCharBoard[0][6] = 'B';
+            testCharBoard[9][6] = 'B';
+            testCharBoard[3][9] = 'B';
+            testCharBoard[6][9] = 'B';
+
+            char[][] tinyBoard = new char[5][5];
+            tinyBoard[2][1] = 'W';
+            tinyBoard[4][4] = 'B';
+
+            long startTime = System.currentTimeMillis();
+            //TESTCARLO.startalgoWithCharArray(testCharBoard, 'B');
+            double amountofloops = 0;
+            double sum = 0;
+            for(int i = 0; i< amountofloops; i++) {
+                sum += TESTCARLO.expandRandomVSAI('B', 'B', testCharBoard);
+                System.out.println(i);
+            }
+            long endTime = System.currentTimeMillis();
+            System.out.println("That took " + (endTime - startTime) + " milliseconds");
+            System.out.println("avg wins: "+ sum/amountofloops);
 //
 ////            testCharBoard[3][3] = 'B';
 ////            testCharBoard[5][5] = 'W';

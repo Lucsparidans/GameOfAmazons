@@ -3,9 +3,7 @@ package com.dke.game.Controller.Player;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Models.AI.Algorithm;
 import com.dke.game.Models.AI.Luc.MINMAX.ChristmasCarlo;
-import com.dke.game.Models.AI.Luc.MINMAX.MiniMax;
-import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
-import com.dke.game.Models.AI.Luc.MINMAX.MovesTree;
+
 import com.dke.game.Models.AI.MINMAX.MiniMax;
 import com.dke.game.Models.AI.MINMAX.MoveNode;
 import com.dke.game.Models.AI.MINMAX.MovesTree;
@@ -27,6 +25,7 @@ public class AI extends Player {
     public AI(char side, Algorithm algorithm, GameLoop gameLoop) {
         super(side);
         this.algorithm = algorithm;
+        System.out.println(algorithm.getClass().getSimpleName());
         this.algorithm.initialize(this);
         this.gameLoop = gameLoop;
         this.board2D=gameLoop.getBoard2D();

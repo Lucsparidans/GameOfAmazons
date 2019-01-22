@@ -306,6 +306,7 @@ public class Evolution implements Algorithm {
         @Override
         public void initialize(Player p) {
             this.player = p;
+            System.out.println("Player: " + player.getClass().getSimpleName());
             if(p.getSide() == 'W'){
                 opponent = gameLoop.getBlack();
             }

@@ -1,13 +1,14 @@
 package com.dke.game.Models.AI.Luc.MINMAX;
 
 import com.dke.game.Controller.GameLoop;
+import com.dke.game.Controller.Player.Player;
 import com.dke.game.Models.AI.Luc.MyAlgo.ConsoleColors;
 import com.dke.game.Controller.Player.AI;
 import com.dke.game.Models.AI.Algorithm;
-import com.dke.game.Models.AI.Luc.MINMAX.MoveNode;
-import com.dke.game.Models.AI.Luc.MINMAX.NoPossibleMovesException;
-import com.dke.game.Models.AI.Luc.Move;
+
+
 import com.dke.game.Models.DataStructs.Cell;
+import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.DataStructs.Piece;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
@@ -39,6 +40,7 @@ public class ChristmasCarlo implements Algorithm {
     int nondiagonalMoves = 0;
     double moveLengthsum = 0;
     double moveAmount = 0;
+    boolean fixTotalamountOfExpansions;
 
 
 
@@ -86,10 +88,8 @@ public class ChristmasCarlo implements Algorithm {
         int sizeofMoveArray = nextPossibleMoves.size();
         double[] nextMovesScores = new double[sizeofMoveArray];
 
-        double expansionfactorDouble = (double) expansionFactor;
-        //System.out.println("Size of array:" + sizeofMoveArray);
-        double[] nextMovesScores = new double[sizeofMoveArray];
         double expansionfactorDouble;
+        //System.out.println("Size of array:" + sizeofMoveArray);
         if(fixTotalamountOfExpansions) {
             double newExpansionfactorRelative = (amountOfTotalExpansionsPerMove / (double) sizeofMoveArray);
             if (newExpansionfactorRelative < 1) {
@@ -98,11 +98,12 @@ public class ChristmasCarlo implements Algorithm {
 
             expansionfactorDouble = newExpansionfactorRelative;
             expansionFactor = (int) newExpansionfactorRelative;
-            //System.out.println("ExpansionFactor: " + expansionFactor);
 
         }else{
             expansionfactorDouble = (double) expansionFactor;
         }
+        //System.out.println("ExpansionFactor: " + expansionFactor);
+
 
 
         char switchedside = switchSide(sideTurn);
@@ -159,7 +160,7 @@ public class ChristmasCarlo implements Algorithm {
                     Piece piece = currentCell.getContent();
                     if(piece instanceof Amazon2D){
                         Amazon2D amazon = (Amazon2D) piece;
-                        simpleMatrix[i][j] = amazon.getSideChar();
+                        simpleMatrix[i][j] = amazon.getSide();
                     }else if(piece instanceof Arrow2D){
                         simpleMatrix[i][j] = 'A';
                     }
@@ -533,9 +534,10 @@ public class ChristmasCarlo implements Algorithm {
 
 
     @Override
-    public Move getBestMove(AI player, MoveNode root) {
+    public Move getBestMove(AI player) {
         System.out.println("GETBESTMOVE CARLLO ACTIVATED");
         this.AIside = player.getSide();
+        System.out.println("AI side carlo: " + AIside);
         Board2D b2d = player.getGameLoop().getBoard2D();
         Cell[][] boardCoordinates = b2d.getBoardCoordinates();
         char[][] charBoardCoordinates = generateSimpleMatrix(boardCoordinates);
@@ -544,6 +546,11 @@ public class ChristmasCarlo implements Algorithm {
         Move theMove = produceMove(boardCoordinates, charBoardCoordinates, bestMove);
 
         return theMove;
+    }
+
+    @Override
+    public void initialize(Player p) {
+
     }
 
     public Move produceMove(Cell[][] startCellMatrix, char[][] startCharMatrix, char[][] endCharMatrix){
