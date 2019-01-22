@@ -51,6 +51,8 @@ public class OptionsView extends View {
     private SelectBox<String> player2;
     private String p1;
     private String p2;
+    public static boolean TESTING = true;
+    public static final int TEST_ITERATIONS = 10;
     public static String SELECTED_ALGORITHM_1 = "Evolution";
     public static boolean OPPONENT_MODELING_1 = false;
     public static String SELECTED_ALGORITHM_2 = "Evolution";

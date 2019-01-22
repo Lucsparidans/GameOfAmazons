@@ -38,7 +38,6 @@ public class GameLoop {
     public static Phase PHASE = Phase.BEGIN;
     public static final int END_BEGIN = 10;
     public static final int END_MID = 30;
-    //private Algorithm algo = new MiniMax();
 
 
 

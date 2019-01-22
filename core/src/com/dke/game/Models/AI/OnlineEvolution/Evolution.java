@@ -8,6 +8,8 @@ import com.dke.game.Models.AI.MINMAX.TestBoard;
 import com.dke.game.Models.DataStructs.Move;
 import com.dke.game.Models.GraphicalModels.Amazon2D;
 import com.dke.game.Models.GraphicalModels.Arrow2D;
+import com.dke.game.Views.OptionsView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -15,7 +17,7 @@ import java.util.Random;
 /**
  * Main class for the online evolution algorithm
  */
-public class Evolution implements Algorithm {
+public class Evolution implements Algorithm, Comparable {
     private TestBoard initialBoard;
     private Genome[] population;
     private int generations;
@@ -47,11 +49,11 @@ public class Evolution implements Algorithm {
     public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution) {
         initializeVariables(amazons, arrows, gameLoop, competitiveCoevolution);
     }
-    public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution,int compGenerations, int compPopSize, Genome[] parentPopulation){
+    public Evolution(Amazon2D[] amazons, ArrayList<Arrow2D> arrows, GameLoop gameLoop, boolean competitiveCoevolution,int Generations, int PopSize, Genome[] parentPopulation){
         initializeVariables(amazons,arrows,gameLoop,competitiveCoevolution);
         //Below initializing the variables for the coevolution because values are different from the updateVariablesPhase() method.
-        this.generations = compGenerations;
-        this.popSize = compPopSize;
+        this.generations = Generations;
+        this.popSize = PopSize;
         this.population = new Genome[popSize];
         this.threshold = popSize / 2;
         this.crossovers = popSize / 4;
@@ -61,7 +63,7 @@ public class Evolution implements Algorithm {
     private void updateVariablesPhase() {
         if (GameLoop.PHASE == GameLoop.Phase.BEGIN) {
             this.generations = 1;                           //Number of generation for the evolution
-            this.popSize = 100;                               //Number of elements in each population in this evolution
+            this.popSize = 2;                               //Number of elements in each population in this evolution
             this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
             crossovers = popSize / 4;                       //Number of crossovers
             this.compPopSize = 4;                           //Number of elements in the coevolution populations
@@ -286,6 +288,23 @@ public class Evolution implements Algorithm {
             updateVariablesPhase();
             updateInitialBoard(player.getGameLoop());
             computeGenerations(player);
+            if(OptionsView.TESTING){
+                debugPrinting = false;
+                Evolution[] evolutions = new Evolution[OptionsView.TEST_ITERATIONS];
+                System.out.println("----------Test evoltions----------");
+                for (int i = 0; i < OptionsView.TEST_ITERATIONS; i++) {
+                    evolutions[i] = new Evolution(initialBoard.getAmazons(), initialBoard.getArrows(), this.gameLoop, competitiveCoevolution, generations, popSize,null);
+
+                    evolutions[i].initialize(player);
+                    evolutions[i].computeBestMove();
+
+                }
+                Arrays.sort(evolutions);
+                for (Evolution e :
+                        evolutions) {
+                    System.out.printf("Evolution has best.value: %f\n",e.getBest().getEval());
+                }
+            }
             return this.best.getMove();
         }
 
@@ -306,7 +325,7 @@ public class Evolution implements Algorithm {
         @Override
         public void initialize(Player p) {
             this.player = p;
-            System.out.println("Player: " + player.getClass().getSimpleName());
+            //System.out.println("Player: " + player.getClass().getSimpleName());
             if(p.getSide() == 'W'){
                 opponent = gameLoop.getBlack();
             }
@@ -322,4 +341,20 @@ public class Evolution implements Algorithm {
         public Genome getBest() {
             return best;
         }
+
+    @Override
+    public int compareTo(Object o) {
+            if(o instanceof Evolution) {
+                Evolution e = (Evolution)o;
+                if (this.getBest().getEval() > e.getBest().getEval()){
+                    return 1;
+                }
+                else if(this.getBest().getEval() == e.getBest().getEval()){
+                    return 0;
+                }else if(this.getBest().getEval() < e.getBest().getEval()){
+                    return -1;
+                }
+            }
+            return 0;
     }
+}
