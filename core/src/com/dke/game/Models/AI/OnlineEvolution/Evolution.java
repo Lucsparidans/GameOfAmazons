@@ -144,14 +144,14 @@ public class Evolution implements Algorithm {
                 }
 
                 //<editor-fold desc="Crossover and mutation">
-                                for (int i = 0; i < popSize * mutationRate; i++) {
-                    try {
-
-                        population[rnd.nextInt(popSize)].mutate();
-                    } catch (Action.InvalidActionTypeException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                                for (int i = 0; i < popSize * mutationRate; i++) {
+//                    try {
+//
+//                        population[rnd.nextInt(popSize)].mutate();
+//                    } catch (Action.InvalidActionTypeException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 //                Genome[] crossover = new Genome[popSize];
 //                int counter = 0;
 //                for (int i = 0; i < crossovers; i++) {

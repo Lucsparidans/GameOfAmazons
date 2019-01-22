@@ -21,7 +21,7 @@ public class DesktopLauncher {
         config.title = "Game of Amazons";
 
         config.resizable = false;
-        DisplayMode displayMode = DisplayMode.MED_REZ;
+        DisplayMode displayMode = DisplayMode.HIGH_REZ;
         setDisplayMode(config,displayMode);
 
         new LwjglApplication(new MainLoop(), config);
@@ -89,7 +89,7 @@ public class DesktopLauncher {
 
     }
     //Multiple display configurations you can choose from by changing the displayMode variable above
-    private static void setDisplayMode(LwjglApplicationConfiguration config,DisplayMode displayMode){
+    public static void setDisplayMode(LwjglApplicationConfiguration config,DisplayMode displayMode){
         switch (displayMode) {
             case LOW_REZ:
                 config.fullscreen = false;
