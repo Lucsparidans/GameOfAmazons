@@ -146,38 +146,39 @@ public class Evolution implements Algorithm, Comparable {
                 }
 
                 //<editor-fold desc="Crossover and mutation">
-//                                for (int i = 0; i < popSize * mutationRate; i++) {
-//                    try {
-//
-//                        population[rnd.nextInt(popSize)].mutate();
-//                    } catch (Action.InvalidActionTypeException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                Genome[] crossover = new Genome[popSize];
-//                int counter = 0;
-//                for (int i = 0; i < crossovers; i++) {
-//                    try {
-//                        crossover[counter] = population[rnd.nextInt(popSize)].crossover(population[rnd.nextInt(popSize)]);
-//                        if(crossover[counter] != null) {
-//                            counter++;
-//                        }
-//                    } catch (Action.InvalidActionTypeException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if(counter>=1) {
-//                    crossover = removeNullElements(crossover);
-//                    if (Evolution.debugPrinting) {
-//                        System.out.println("###############################################################");
-//                        System.out.printf("                     Crossover array:\n");
-//                        System.out.println("###############################################################");
-//                        System.out.println();
-//                        for (int i = 0; i < crossover.length; i++) {
-//                            System.out.printf("Crossover %d has value: %f\n", i, crossover[i].getEval());
-//                        }
-//                    }
-//                }
+                                for (int i = 0; i < popSize * mutationRate; i++) {
+                    try {
+
+                        population[rnd.nextInt(popSize)].mutate();
+                    } catch (Action.InvalidActionTypeException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Genome[] crossover = new Genome[popSize];
+                int counter = 0;
+                for (int i = 0; i < crossovers; i++) {
+                    try {
+                        crossover[counter] = population[rnd.nextInt(popSize)].crossover(population[rnd.nextInt(popSize)]);
+                        if(crossover[counter] != null) {
+                            counter++;
+                        }
+                    } catch (Action.InvalidActionTypeException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(counter>=1) {
+                    crossover = removeNullElements(crossover);
+                    if (Evolution.debugPrinting) {
+                        System.out.println("###############################################################");
+                        System.out.printf("                     Crossover array:\n");
+                        System.out.println("###############################################################");
+                        System.out.println();
+                        Arrays.sort(crossover);
+                        for (int i = 0; i < crossover.length; i++) {
+                            System.out.printf("Crossover %d has value: %f\n", i, crossover[i].getEval());
+                        }
+                    }
+                }
                 //</editor-fold>
 
                 Arrays.sort(population);

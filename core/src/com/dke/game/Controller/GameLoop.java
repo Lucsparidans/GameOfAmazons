@@ -121,13 +121,13 @@ public class GameLoop {
         } else if (white_Type.equals("AI")) {
             if (black_Type.equals("AI")) {
                 white = new AI('W', algo, this);
-                algo.initialize(white);
                 black = new AI('B', algo2, this);
+                algo.initialize(white);
                 algo2.initialize(black);
             } else if (black_Type.equals("Human")) {
                 white = new AI('W', algo, this);
-                algo.initialize(white);
                 black = new Human('B', gameView, this);
+                algo.initialize(white);
             }
         }
     }

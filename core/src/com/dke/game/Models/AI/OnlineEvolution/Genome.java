@@ -55,7 +55,9 @@ public class Genome implements Comparable{
     private Genome(TestBoard initialBoard, Player player, ArrayList<Action> actionSequence, TestBoard newBoard, boolean whiteMove){
         initializeVariables(initialBoard.deepCopy(),player);
         this.actionSequence = actionSequence;
-        this.gameStates.add(1,new GameState(actionSequence.get(actionSequence.size()-1),initialState,newBoard,whiteMove));
+
+            this.gameStates.add(new GameState(initialState, newBoard, whiteMove));
+
     }
 
     /**
@@ -81,10 +83,10 @@ public class Genome implements Comparable{
             }
         }
         if(currentPlayer.getSide()=='W') {
-            initialState = new GameState(null, null, initialBoard.deepCopy(), true);
+            initialState = new GameState( null, initialBoard.deepCopy(), true);
         }
         else{
-            initialState = new GameState(null,null,initialBoard.deepCopy(),false);
+            initialState = new GameState(null,initialBoard.deepCopy(),false);
         }
     }
 
@@ -165,9 +167,9 @@ public class Genome implements Comparable{
             Action moveAction = new Action(Action.ActionType.MOVE, moveCell,amazon);
             actionSequence.add(moveAction);
             if (gameStates.isEmpty()) {
-                gameStates.add(new GameState(moveAction, null, board.deepCopy(),whiteMove));
+                gameStates.add(new GameState(null, board.deepCopy(),whiteMove));
             } else {
-                gameStates.add(new GameState(moveAction, gameStates.get(gameStates.size() - 1), board.deepCopy(),whiteMove));
+                gameStates.add(new GameState(gameStates.get(gameStates.size() - 1), board.deepCopy(),whiteMove));
             }
             //board.printBoard();
             possibleMoves = amazon.possibleMoves(board);
@@ -178,7 +180,7 @@ public class Genome implements Comparable{
             amazon.shoot(board.getBoard()[shootCell.getI()][shootCell.getJ()]);
             Action shootAction = new Action(Action.ActionType.SHOT, shootCell,amazon);
             actionSequence.add(shootAction);
-            gameStates.add(new GameState(shootAction, gameStates.get(gameStates.size() - 1), board.deepCopy(),whiteMove));
+            gameStates.add(new GameState(gameStates.get(gameStates.size() - 1), board.deepCopy(),whiteMove));
             if(Evolution.debugPrinting) {
                 board.printBoard();
             }
@@ -256,7 +258,7 @@ public class Genome implements Comparable{
                     }
                 }
             }
-            if(!actionSequence.isEmpty() && actionSequence.size()==1){
+            if(actionSequence.size()==1){
                 return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), true);
             }
         }
@@ -287,7 +289,7 @@ public class Genome implements Comparable{
                     }
                 }
             }
-            if(!actionSequence.isEmpty() && actionSequence.size()==2) {
+            if(actionSequence.size()==2) {
                 return new Genome(this.initialState.getBoard().deepCopy(), this.player, actionSequence, initialBoard.deepCopy(), false);
             }
         }
@@ -317,7 +319,7 @@ return null;
                 Action shootAction = new Action(ActionType.SHOT,shot,a);
                 actionSequence.set(actionSequence.size()-1,shootAction);
                 a.shoot(shot);
-                gameStates.set(gameStates.size()-1,new GameState(shootAction,gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),true));
+                gameStates.set(gameStates.size()-1,new GameState(gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),true));
                 break;
             }
             else if(a.getSide() == side && side == 'B'){
@@ -326,7 +328,7 @@ return null;
                 Action shootAction = new Action(ActionType.SHOT,shot,a);
                 actionSequence.set(actionSequence.size()-1,shootAction);
                 a.shoot(shot);
-                gameStates.set(gameStates.size()-1,new GameState(shootAction,gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),false));
+                gameStates.set(gameStates.size()-1,new GameState(gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),false));
                 break;
             }
         }

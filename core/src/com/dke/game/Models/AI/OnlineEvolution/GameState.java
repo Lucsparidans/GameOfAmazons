@@ -5,14 +5,14 @@ import com.dke.game.Models.AI.MINMAX.TestBoard;
 import java.util.Stack;
 
 public class GameState {
-    private Action parentAction;
+
     private TestBoard board;
     private TestBoard parentBoard;
     private boolean whiteMove;
     private GameState parent;
 
-    public GameState(Action action, GameState parent, TestBoard board, boolean whiteMove) {
-        this.parentAction = action;
+    public GameState(GameState parent, TestBoard board, boolean whiteMove) {
+
         this.parent = parent;
         if(parent!=null) {
             this.parentBoard = parent.getBoard();
@@ -24,9 +24,7 @@ public class GameState {
         return this.board;
     }
 
-    public Action getParentAction() {
-        return parentAction;
-    }
+
 
     public TestBoard getParentBoard() {
         return parentBoard;
