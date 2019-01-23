@@ -301,7 +301,7 @@ return null;
      * Mutation function
      * @throws InvalidActionTypeException
      */
-    public void mutate() throws InvalidActionTypeException{
+    public void mutate() throws InvalidActionTypeException, IllegalArgumentException, NullPointerException{
 //        if(rnd.nextBoolean()){
 //            //mutate move
 //
