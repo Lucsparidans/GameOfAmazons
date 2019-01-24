@@ -62,25 +62,28 @@ public class Evolution implements Algorithm, Comparable {
             this.generations = 2;                           //Number of generation for the evolution
             this.popSize = 100;                               //Number of elements in each population in this evolution
             this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
+            Genome.moveWeight = 0.35;
             crossovers = popSize / 4;                       //Number of crossovers
             this.compPopSize = 100;                           //Number of elements in the coevolution populations
             this.compGenerations = 2;                       //Number of generations generated in the coevolution
             this.population = new Genome[popSize];
         } else if (GameLoop.PHASE == GameLoop.Phase.MIDDLE) {
-            generations = 5;
-            popSize = 500;
+            generations = 3;
+            popSize = 200;
             this.threshold = popSize / 2;
+            Genome.moveWeight = 0.45;
             crossovers = popSize / 4;
-            this.compPopSize = 2;
-            this.compGenerations = 1;
+            this.compPopSize = 100;
+            this.compGenerations = 2;
             this.population = new Genome[popSize];
         } else if (GameLoop.PHASE == GameLoop.Phase.END) {
-            generations = 6;
-            popSize = 700;
+            generations = 4;
+            popSize = 300;
             this.threshold = popSize / 2;
+            Genome.moveWeight = 0.8;
             crossovers = popSize / 4;
-            this.compPopSize = 2;
-            this.compGenerations = 1;
+            this.compPopSize = 100;
+            this.compGenerations = 2;
             this.population = new Genome[popSize];
         }
     }
@@ -222,11 +225,16 @@ int cnt = 0;
                 ourBest[i] = population[(population.length-1)-i];
             }
             for (int i = 0; i < ourBest.length; i++) {
+
                 TestBoard curOppBoard = ourBest[i].getCurrentBoard();
                 if(debugPrinting) {
                     System.out.println("---------------------------------------------------------------");
                     System.out.printf("                     Board for coevolution:\n");
-                    curOppBoard.printBoard();
+                    try {
+                        curOppBoard.printBoard();
+                    }catch(NullPointerException e){
+                        System.out.printf("i: %d",i);
+                    }
                     System.out.println("---------------------------------------------------------------");
                     System.out.println();
                 }

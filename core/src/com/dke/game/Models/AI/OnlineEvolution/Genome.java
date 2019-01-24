@@ -20,7 +20,7 @@ public class Genome implements Comparable{
     private HashMap actionPair;
     private ArrayList<GameState> gameStates;
     private ArrayList<Action> actionSequence;
-    private double moveWeight = 0.5;
+    public static double moveWeight = 0.35;
     private GameState initialState;
     private Random rnd;
     private Amazon2D[] amazons;
@@ -55,7 +55,7 @@ public class Genome implements Comparable{
     private Genome(TestBoard initialBoard, Player player, ArrayList<Action> actionSequence, TestBoard newBoard, boolean whiteMove){
         initializeVariables(initialBoard.deepCopy(),player);
         this.actionSequence = actionSequence;
-
+            currentBoard = newBoard;
             this.gameStates.add(new GameState(initialState, newBoard, whiteMove));
 
     }
@@ -319,7 +319,7 @@ return null;
                 Action shootAction = new Action(ActionType.SHOT,shot,a);
                 actionSequence.set(actionSequence.size()-1,shootAction);
                 a.shoot(shot);
-                gameStates.set(gameStates.size()-1,new GameState(gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),true));
+                gameStates.set(gameStates.size()-1,new GameState(gameStates.get(gameStates.size()-1),currentBoard.deepCopy(),true));
                 break;
             }
             else if(a.getSide() == side && side == 'B'){
@@ -328,7 +328,7 @@ return null;
                 Action shootAction = new Action(ActionType.SHOT,shot,a);
                 actionSequence.set(actionSequence.size()-1,shootAction);
                 a.shoot(shot);
-                gameStates.set(gameStates.size()-1,new GameState(gameStates.get(gameStates.size()-2),currentBoard.deepCopy(),false));
+                gameStates.set(gameStates.size()-1,new GameState(gameStates.get(gameStates.size()-1),currentBoard.deepCopy(),false));
                 break;
             }
         }

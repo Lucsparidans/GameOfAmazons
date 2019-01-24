@@ -36,8 +36,8 @@ public class GameLoop {
     private Algorithm algo;
     private Algorithm algo2;
     public static Phase PHASE = Phase.BEGIN;
-    public static final int END_BEGIN = 10;
-    public static final int END_MID = 30;
+    public static final int END_BEGIN = 3;
+    public static final int END_MID = 6;
 
 
 
