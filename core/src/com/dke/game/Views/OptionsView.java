@@ -436,6 +436,8 @@ public class OptionsView extends View {
                 if(player1.getSelected().equals("Human") && player2.getSelected().equals("Human")) {
                     algorithms.setVisible(false);
                     algorithms2.setVisible(false);
+                    opponentModeling.setVisible(false);
+                    opponentModeling2.setVisible(false);
                 }else if(player1.getSelected().equals("AI") && player2.getSelected().equals("AI")){
                     algorithms.setVisible(true);
                     if(algorithms.getSelected().equals("Evolution")){
@@ -447,16 +449,26 @@ public class OptionsView extends View {
                     }
 
                 }
-                else if(player1.getSelected().equals("AI")){
+                else if(player1.getSelected().equals("AI") && player2.getSelected().equals("Human")){
                     algorithms.setVisible(true);
+                    algorithms2.setVisible(false);
+                    opponentModeling2.setVisible(false);
                     if(algorithms.getSelected().equals("Evolution")){
                         opponentModeling.setVisible(true);
                     }
+                    else{
+                        opponentModeling.setVisible(false);
+                    }
                 }
-                else if(player2.getSelected().equals("AI")){
-                    algorithms.setVisible(true);
+                else if(player2.getSelected().equals("AI") && player1.getSelected().equals("Human")){
+                    algorithms.setVisible(false);
+                    algorithms2.setVisible(true);
+                    opponentModeling.setVisible(false);
                     if(algorithms2.getSelected().equals("Evolution")){
                         opponentModeling2.setVisible(true);
+                    }
+                    else{
+                        opponentModeling2.setVisible(false);
                     }
                 }
 
@@ -471,6 +483,8 @@ public class OptionsView extends View {
                 if(player1.getSelected().equals("Human") && player2.getSelected().equals("Human")) {
                     algorithms.setVisible(false);
                     algorithms2.setVisible(false);
+                    opponentModeling.setVisible(false);
+                    opponentModeling2.setVisible(false);
                 }else if(player1.getSelected().equals("AI") && player2.getSelected().equals("AI")){
                     algorithms.setVisible(true);
                     if(algorithms.getSelected().equals("Evolution")){
@@ -482,16 +496,26 @@ public class OptionsView extends View {
                     }
 
                 }
-                else if(player1.getSelected().equals("AI")){
+                else if(player1.getSelected().equals("AI") && player2.getSelected().equals("Human")){
                     algorithms.setVisible(true);
+                    algorithms2.setVisible(false);
+                    opponentModeling2.setVisible(false);
                     if(algorithms.getSelected().equals("Evolution")){
                         opponentModeling.setVisible(true);
                     }
+                    else{
+                        opponentModeling.setVisible(false);
+                    }
                 }
-                else if(player2.getSelected().equals("AI")){
-                    algorithms.setVisible(true);
+                else if(player2.getSelected().equals("AI") && player1.getSelected().equals("Human")){
+                    algorithms.setVisible(false);
+                    algorithms2.setVisible(true);
+                    opponentModeling.setVisible(false);
                     if(algorithms2.getSelected().equals("Evolution")){
                         opponentModeling2.setVisible(true);
+                    }
+                    else{
+                        opponentModeling2.setVisible(false);
                     }
                 }
 
@@ -503,15 +527,19 @@ public class OptionsView extends View {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(algorithms.getSelected().equals("Evolution") && algorithms2.getSelected().equals("Evolution")){
-                    opponentModeling.setVisible(true);
-                    opponentModeling2.setVisible(true);
+                    if(player1.getSelected().equals("AI")){
+                        opponentModeling.setVisible(true);
+                    }
+                    if(player2.getSelected().equals("AI")) {
+                        opponentModeling2.setVisible(true);
+                    }
                 }
-                else if(algorithms.getSelected().equals("Evolution")){
+                else if(algorithms.getSelected().equals("Evolution") && player1.getSelected().equals("AI")){
                     opponentModeling.setVisible(true);
                     opponentModeling2.setVisible(false);
 
                 }
-                else if(algorithms2.getSelected().equals("Evolution")){
+                else if(algorithms2.getSelected().equals("Evolution") && player2.getSelected().equals("AI")){
                     opponentModeling.setVisible(false);
                     opponentModeling2.setVisible(true);
                 }
@@ -526,15 +554,19 @@ public class OptionsView extends View {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(algorithms.getSelected().equals("Evolution") && algorithms2.getSelected().equals("Evolution")){
-                    opponentModeling.setVisible(true);
-                    opponentModeling2.setVisible(true);
+                    if(player1.getSelected().equals("AI")){
+                        opponentModeling.setVisible(true);
+                    }
+                    if(player2.getSelected().equals("AI")) {
+                        opponentModeling2.setVisible(true);
+                    }
                 }
-                else if(algorithms.getSelected().equals("Evolution")){
+                else if(algorithms.getSelected().equals("Evolution") && player1.getSelected().equals("AI")){
                     opponentModeling.setVisible(true);
                     opponentModeling2.setVisible(false);
 
                 }
-                else if(algorithms2.getSelected().equals("Evolution")){
+                else if(algorithms2.getSelected().equals("Evolution") && player2.getSelected().equals("AI")){
                     opponentModeling.setVisible(false);
                     opponentModeling2.setVisible(true);
                 }
