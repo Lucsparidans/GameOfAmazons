@@ -188,7 +188,17 @@ synchronized (this) {//<-thread stuff
         synchronized (this) {
             super.handleInput();
             gameLoop.update();
+if(gameLoop.getWhite() instanceof AI && gameLoop.getBlack() instanceof AI){
+    setPhase();
+    if(turnCounter%2==0){
 
+        white.performTurn();
+    }
+    else{
+
+        black.performTurn();
+    }
+}
             if (Gdx.input.justTouched() || repeat) {
                 setPhase();
                 if(turnCounter%2==0){

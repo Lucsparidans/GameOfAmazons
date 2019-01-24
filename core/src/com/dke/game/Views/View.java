@@ -32,6 +32,7 @@ public abstract class View extends InputAdapter implements ApplicationListener {
             }
         }
     }
+
 }
 
 

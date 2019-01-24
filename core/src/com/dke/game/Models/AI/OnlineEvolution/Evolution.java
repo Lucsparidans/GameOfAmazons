@@ -36,8 +36,8 @@ public class Evolution implements Algorithm, Comparable {
     private float mutationRate = 0.1f;
     private float crossovers;
     private boolean competitiveCoevolution;
-    private boolean debug = true;
-    public static boolean debugPrinting = true;
+    private boolean debug = false;
+    public static boolean debugPrinting = false;
 
     /**
      * Constructor
@@ -62,7 +62,7 @@ public class Evolution implements Algorithm, Comparable {
             this.generations = 2;                           //Number of generation for the evolution
             this.popSize = 100;                               //Number of elements in each population in this evolution
             this.threshold = popSize / 2;                   //Number of elements to be selected for redo for the next generation
-            Genome.moveWeight = 0.35;
+            Genome.moveWeight = 0.4;
             crossovers = popSize / 4;                       //Number of crossovers
             this.compPopSize = 100;                           //Number of elements in the coevolution populations
             this.compGenerations = 2;                       //Number of generations generated in the coevolution

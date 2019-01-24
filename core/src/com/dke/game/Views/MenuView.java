@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dke.game.Controller.GameLoop;
 import com.dke.game.Controller.Player.Player;
 import com.dke.game.Controller.ViewManager;
@@ -37,6 +38,8 @@ public class MenuView extends View {
     @Override
     public void create() {
         stage = new Stage();
+
+
 
         Table table = new Table();
         Label title = new Label("Game of Amazons", skin,"title");
@@ -86,7 +89,7 @@ public class MenuView extends View {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override

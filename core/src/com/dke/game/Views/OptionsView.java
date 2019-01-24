@@ -419,7 +419,10 @@ public class OptionsView extends View {
             public void changed(ChangeEvent event, Actor actor) {
                 if (fullScreen.isChecked()) {
 
-                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode(Gdx.graphics.getPrimaryMonitor()));
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+
+                    stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+                    stage.getCamera().update();
 
 
                 }else {
@@ -581,7 +584,23 @@ public class OptionsView extends View {
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+        String ew = Integer.toString(Gdx.graphics.getWidth());
+        String eh = Integer.toString(Gdx.graphics.getHeight());
+        String sw = Integer.toString(width);
+        String sh = Integer.toString(height);
+        String logicalW = Integer.toString(Gdx.graphics.getBackBufferWidth());
+        String logicalH = Integer.toString(Gdx.graphics.getBackBufferHeight());
+        String mode;
+        if (Gdx.graphics.isFullscreen()) {
+            mode = "FULLSCREEN";
 
+        } else {
+            mode = "WINDOW";
+        }
+        System.out.println("resizing to " + mode + ": " + sw + ", " + sh
+                + " (Gdx.graphics.getX: " + ew +  ", " + eh + ")"
+                + " (Gdx.graphics.getBackBufferX: " + logicalW +  ", " + logicalH + ")");
     }
 
     @Override
